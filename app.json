@@ -3,6 +3,7 @@
     "name": "MomocloGO",
     "slug": "MomocloGO",
     "version": "1.0.0",
+    "privacy": "unlisted",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {

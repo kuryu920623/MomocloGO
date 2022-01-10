@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
-import { StyleSheet, Text, View } from 'react-native';
 import firebase from 'firebase';
 
 import { firebaseConfig } from './env';

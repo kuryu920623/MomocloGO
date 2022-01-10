@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
-  View, StyleSheet, TextInput, Text, TouchableOpacity,
+  View, StyleSheet, TextInput, Text, Alert,
 } from 'react-native';
+import firebase from 'firebase';
 
 import Button from '../components/Button';
 
@@ -12,10 +13,25 @@ export default function SignUpScreen(props) {
   const [fixPassword, setFixPassword] = useState('');
 
   function handlePress() {
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'SignUp' }],
-    });
+    if (password !== fixPassword) {
+      Alert.alert('確認用パスワードが異なります。');
+      return;
+    }
+    if (email.length < 5) {
+      Alert.alert('ユーザーIDは6文字以上です。');
+    }
+    firebase.auth().createUserWithEmailAndPassword(email + '@fake_1234321.com', password)
+      .then((userCredential) => {
+        const { user } = userCredential;
+        console.log(user.uid);
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'MemoList' }],
+        });
+      })
+      .catch((error) => {
+        console.log(error.code, error.message);
+      });
   }
 
   return (
@@ -26,15 +42,14 @@ export default function SignUpScreen(props) {
 
         <Text style={styles.label}>
           <Text style={styles.textRequire}>* </Text>
-          ユーザーID
+          ユーザーID (英数字6文字以上)
         </Text>
         <TextInput
           value={email}
           style={styles.input}
           onChangeText={(text) => { setEmail(text); }}
           autoCapitalize="none"
-          keyboardType="email-address"
-          placeholder="Email Address"
+          placeholder="userID"
           textContentType="emailAddress"
         />
 
@@ -42,7 +57,7 @@ export default function SignUpScreen(props) {
 
         <Text style={styles.label}>
           <Text style={styles.textRequire}>* </Text>
-          パスワード
+          パスワード(6文字以上)
         </Text>
         <TextInput
           value={password}

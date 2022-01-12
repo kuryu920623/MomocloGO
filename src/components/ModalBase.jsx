@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  Modal, StyleSheet, Text, Pressable, View,
+  Modal, StyleSheet, Pressable, View,
 } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import { func, bool, elementType } from 'prop-types';
 
 export default function ModalBase(props) {
@@ -23,11 +24,8 @@ export default function ModalBase(props) {
         />
         <View style={styles.modalView}>
           {children}
-          <Pressable
-            style={[styles.buttonClose]}
-            onPress={() => onPress(!modalVisible)}
-          >
-            <Text style={styles.textStyle}>閉じる</Text>
+          <Pressable onPress={() => onPress(!modalVisible)}>
+            <AntDesign name="closecircleo" size={32} color="black" />
           </Pressable>
         </View>
 
@@ -66,16 +64,5 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 35,
     alignItems: 'center',
-  },
-  buttonClose: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
 });

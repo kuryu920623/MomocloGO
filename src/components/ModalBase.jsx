@@ -24,7 +24,7 @@ export default function ModalBase(props) {
         <View style={styles.modalView}>
           {children}
           <Pressable
-            style={[styles.button, styles.buttonClose]}
+            style={[styles.buttonClose]}
             onPress={() => onPress(!modalVisible)}
           >
             <Text style={styles.textStyle}>閉じる</Text>
@@ -40,6 +40,10 @@ ModalBase.propTypes = {
   children: elementType.isRequired,
   onPress: func.isRequired,
   modalVisible: bool,
+};
+
+ModalBase.defaultProps = {
+  modalVisible: false,
 };
 
 const styles = StyleSheet.create({
@@ -63,15 +67,10 @@ const styles = StyleSheet.create({
     padding: 35,
     alignItems: 'center',
   },
-  button: {
+  buttonClose: {
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
     backgroundColor: '#2196F3',
   },
   textStyle: {

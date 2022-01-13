@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   StyleSheet, Text, Pressable, View, Dimensions,
 } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 import ModalBase from '../components/ModalBase';
 
@@ -33,8 +33,13 @@ export default function MapScreen() {
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
-          initialRegion={{ latitude: 37.78825, longitude: -122.4324 }}
-        />
+          mapType="standard"
+          initialRegion={{ latitude: 35, longitude: 135 }}
+          showsUserLocation
+          followsUserLocation
+        >
+          <Marker key={1} coordinate={{ latitude: 35, longitude: 135 }} />
+        </MapView>
         {/* <Pressable
           style={[styles.button, styles.buttonOpen]}
           onPress={() => GenAndShoweModalContents()}

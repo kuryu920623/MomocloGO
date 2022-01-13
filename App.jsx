@@ -9,7 +9,7 @@ import { firebaseConfig } from './env';
 
 import SignUpScreen from './src/screens/SignUpScreen';
 import LogInScreen from './src/screens/LogInScreen';
-import MainScreen from './src/screens/MainScreen';
+import MapScreen from './src/screens/MapScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -29,17 +29,17 @@ function TabScreen() {
     >
       <Tab.Screen
         name="Medals"
-        component={MainScreen}
+        component={MapScreen}
         options={{ tabBarIcon: () => <FontAwesome5 name="medal" size={28}/> }}
       />
       <Tab.Screen
         name="Map"
-        component={MainScreen}
+        component={MapScreen}
         options={{ tabBarIcon: () => <FontAwesome5 name="map-marker-alt" size={28}/> }}
       />
       <Tab.Screen
         name="List"
-        component={MainScreen}
+        component={MapScreen}
         options={{ tabBarIcon: () => <FontAwesome5 name="table" size={28}/> }}
       />
     </Tab.Navigator>
@@ -50,7 +50,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SignUp"
+        initialRouteName="Main"
         screenOptions={{
           headerStyle: { backgroundColor: '#467FD3' },
           headerTitleStyle: { color: '#FFFFFF' },

@@ -10,7 +10,7 @@ export default function ModalBase(props) {
   const { children, onPress, modalVisible } = props;
 
   return (
-    <View style={styles.centeredView}>
+    <View style={[styles.centeredView]}>
 
       <Modal
         animationType="fade"
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'absolute',
   },
   modalBackGroundView: {
     opacity: 0.7,

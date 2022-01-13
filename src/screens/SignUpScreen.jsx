@@ -29,6 +29,13 @@ export default function SignUpScreen(props) {
   }
 
   function submit() {
+    // とりあえず
+    navigation.navigate('Main');
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Main' }],
+    });
+
     if (password !== fixPassword) {
       Alert.alert('確認用パスワードが異なります。');
       return;

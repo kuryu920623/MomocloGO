@@ -3,7 +3,7 @@ import {
   Modal, StyleSheet, Pressable, View,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { func, bool, elementType } from 'prop-types';
+import { func, bool } from 'prop-types';
 
 export default function ModalBase(props) {
   // const [modalVisible, setModalVisible] = useState(false);
@@ -35,7 +35,7 @@ export default function ModalBase(props) {
 }
 
 ModalBase.propTypes = {
-  children: elementType.isRequired,
+  // children: elementType.isRequired,
   onPress: func.isRequired,
   modalVisible: bool,
 };

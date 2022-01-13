@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import firebase from 'firebase';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import { firebaseConfig } from './env';
 
@@ -19,10 +20,28 @@ if (firebase.apps.length === 0) {
 
 function TabScreen() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Medals" component={MainScreen} />
-      <Tab.Screen name="Map" component={MainScreen} />
-      <Tab.Screen name="List" component={MainScreen} />
+    <Tab.Navigator
+      initialRouteName="Map"
+      screenOptions={{
+        tabBarActiveTintColor: 'black',
+        tabBarActiveBackgroundColor: 'gray',
+      }}
+    >
+      <Tab.Screen
+        name="Medals"
+        component={MainScreen}
+        options={{ tabBarIcon: () => <FontAwesome5 name="medal" size={28}/> }}
+      />
+      <Tab.Screen
+        name="Map"
+        component={MainScreen}
+        options={{ tabBarIcon: () => <FontAwesome5 name="map-marker-alt" size={28}/> }}
+      />
+      <Tab.Screen
+        name="List"
+        component={MainScreen}
+        options={{ tabBarIcon: () => <FontAwesome5 name="table" size={28}/> }}
+      />
     </Tab.Navigator>
   );
 }

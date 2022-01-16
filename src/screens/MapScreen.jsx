@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, Text, Pressable, View, Dimensions,
+  StyleSheet, Text, Pressable, View, Dimensions, FlatList,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { Location, Permissions } from 'expo';
 
 import ModalBase from '../components/ModalBase';
 
@@ -14,10 +15,29 @@ export default function MapScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalBlock, setModalBlock] = useState(<Text>test</Text>);
 
-  function GenAndShoweModalContents() {
+  let objList = [];
+  for (let i = 0; i < 10; i += 1) {
+    objList.push({
+      key: i,
+      val: i * 2,
+    });
+  }
+
+  function GenAndShoweModalContents(obj) {
+    console.log(obj);
     let block = GenerateModalContents();
     setModalBlock(block);
     setModalVisible(true);
+  }
+
+  function renderItem({ item, index }) {
+    const lon = 135 + 0.0001 * index;
+    const lat = 35 + 0.0001 * index;
+    return (
+      <Marker
+        coordinate={{ latitude: lat, longitude: lon }}
+      />
+    );
   }
 
   return (
@@ -34,11 +54,25 @@ export default function MapScreen() {
           provider={PROVIDER_GOOGLE}
           style={styles.map}
           mapType="standard"
-          initialRegion={{ latitude: 35, longitude: 135 }}
+          initialRegion={{
+            latitude: 35,
+            longitude: 135,
+            latitudeDelta: 0.001,
+            longitudeDelta: 0.001,
+          }}
           showsUserLocation
           followsUserLocation
         >
-          <Marker key={1} coordinate={{ latitude: 35, longitude: 135 }} />
+          {objList.map((obj, index) => (
+            <Marker
+              key={obj.key}
+              coordinate={{
+                latitude: 35 + 0.0001 * index,
+                longitude: 135 + 0.0001 * index,
+              }}
+              onPress={() => GenAndShoweModalContents(obj)}
+            />
+          ))}
         </MapView>
         {/* <Pressable
           style={[styles.button, styles.buttonOpen]}

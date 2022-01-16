@@ -13,7 +13,7 @@ export default function ModalBase(props) {
     <View style={[styles.centeredView]}>
 
       <Modal
-        animationType="fade"
+        animationType="slide"
         transparent
         visible={modalVisible}
       >

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import {
-  StyleSheet, Text, Pressable, View, Dimensions, FlatList,
+  StyleSheet, Text, Pressable, View, Dimensions,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { Location, Permissions } from 'expo';
+import * as Location from 'expo-location';
 
 import ModalBase from '../components/ModalBase';
 
@@ -14,9 +14,33 @@ function GenerateModalContents() {
 export default function MapScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalBlock, setModalBlock] = useState(<Text>test</Text>);
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: 35.665755,
+    longitude: 139.698257,
+  });
+  const [places, setPlaces] = useState([]);
 
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') { return; }
+
+      let tmp = await Location.getCurrentPositionAsync({});
+      let location = {};
+      location.latitude = tmp.coords.latitude;
+      location.longitude = tmp.coords.longitude;
+      setCurrentLocation(location);
+    })();
+  }, []);
+
+  useEffect(() => {
+    // 近くの聖地リストを取得
+    setPlaces([]);
+  }, []);
+
+  // DB から現在位置周辺の聖地情報を取得する。
   let objList = [];
-  for (let i = 0; i < 10; i += 1) {
+  for (let i = 0; i < 30; i += 1) {
     objList.push({
       key: i,
       val: i * 2,
@@ -26,7 +50,7 @@ export default function MapScreen() {
   function GenAndShoweModalContents(obj) {
     console.log(obj);
     let block = GenerateModalContents();
-    setModalBlock(block);
+    setModalBlock(<Text>{obj.key}</Text>);
     setModalVisible(true);
   }
 
@@ -40,6 +64,35 @@ export default function MapScreen() {
     );
   }
 
+  const Child = memo(() => (
+    <MapView
+      provider={PROVIDER_GOOGLE}
+      style={styles.map}
+      mapType="standard"
+      initialRegion={{
+        ...currentLocation,
+        ...{
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        },
+      }}
+      showsUserLocation
+      followsUserLocation
+    >
+
+      {objList.map((obj, index) => (
+        <Marker
+          key={obj.key}
+          coordinate={{
+            latitude: 35 + 10 * (Math.random() - 0.5),
+            longitude: 135 + 10 * (Math.random() - 0.5),
+          }}
+          onPress={() => GenAndShoweModalContents(obj)}
+        />
+      ))}
+    </MapView>
+  ));
+
   return (
     <>
       <ModalBase
@@ -50,36 +103,7 @@ export default function MapScreen() {
 
       </ModalBase>
       <View style={styles.centeredView}>
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          mapType="standard"
-          initialRegion={{
-            latitude: 35,
-            longitude: 135,
-            latitudeDelta: 0.001,
-            longitudeDelta: 0.001,
-          }}
-          showsUserLocation
-          followsUserLocation
-        >
-          {objList.map((obj, index) => (
-            <Marker
-              key={obj.key}
-              coordinate={{
-                latitude: 35 + 0.0001 * index,
-                longitude: 135 + 0.0001 * index,
-              }}
-              onPress={() => GenAndShoweModalContents(obj)}
-            />
-          ))}
-        </MapView>
-        {/* <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => GenAndShoweModalContents()}
-        >
-          <Text style={styles.textStyle}>Show Modal</Text>
-        </Pressable> */}
+        <Child />
       </View>
     </>
   );

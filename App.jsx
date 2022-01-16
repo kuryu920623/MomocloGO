@@ -10,6 +10,8 @@ import { firebaseConfig } from './env';
 import SignUpScreen from './src/screens/SignUpScreen';
 import LogInScreen from './src/screens/LogInScreen';
 import MapScreen from './src/screens/MapScreen';
+import TestScreen from './src/screens/TestScreen';
+import InitDatabase from './src/utils/InitDataBase';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -34,7 +36,7 @@ function TabScreen() {
       />
       <Tab.Screen
         name="Map"
-        component={MapScreen}
+        component={TestScreen}
         options={{ tabBarIcon: () => <FontAwesome5 name="map-marker-alt" size={28}/> }}
       />
       <Tab.Screen
@@ -47,6 +49,8 @@ function TabScreen() {
 }
 
 export default function App() {
+  // InitDatabase();
+
   return (
     <NavigationContainer>
       <Stack.Navigator

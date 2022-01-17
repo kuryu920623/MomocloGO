@@ -36,12 +36,12 @@ function TabScreen() {
       />
       <Tab.Screen
         name="Map"
-        component={TestScreen}
+        component={MapScreen}
         options={{ tabBarIcon: () => <FontAwesome5 name="map-marker-alt" size={28}/> }}
       />
       <Tab.Screen
         name="List"
-        component={MapScreen}
+        component={TestScreen}
         options={{ tabBarIcon: () => <FontAwesome5 name="table" size={28}/> }}
       />
     </Tab.Navigator>

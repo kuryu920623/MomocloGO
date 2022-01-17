@@ -8,7 +8,7 @@ import * as Location from 'expo-location';
 import ModalBase from '../components/ModalBase';
 import MainMap from '../components/MainMap';
 
-function GenerateModalContents() {
+function GenerateModalContents(obj) {
   return <Text>text</Text>;
 }
 
@@ -19,7 +19,6 @@ export default function MapScreen() {
     latitude: 35.665755,
     longitude: 139.698257,
   });
-  const [places, setPlaces] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -34,11 +33,6 @@ export default function MapScreen() {
     })();
   }, []);
 
-  useEffect(() => {
-    // 近くの聖地リストを取得
-    setPlaces([]);
-  }, []);
-
   // DB から現在位置周辺の聖地情報を取得する。
   let objList = [];
   for (let i = 0; i < 30; i += 1) {
@@ -50,7 +44,7 @@ export default function MapScreen() {
 
   function GenAndShoweModalContents(obj) {
     console.log(obj);
-    let block = GenerateModalContents();
+    let block = GenerateModalContents(obj);
     setModalBlock(<Text>{obj.key}</Text>);
     setModalVisible(true);
   }
@@ -64,35 +58,6 @@ export default function MapScreen() {
       />
     );
   }
-
-  const Child = memo(() => (
-    <MapView
-      provider={PROVIDER_GOOGLE}
-      style={styles.map}
-      mapType="standard"
-      initialRegion={{
-        ...currentLocation,
-        ...{
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        },
-      }}
-      showsUserLocation
-      followsUserLocation
-    >
-
-      {objList.map((obj, index) => (
-        <Marker
-          key={obj.key}
-          coordinate={{
-            latitude: 35 + 10 * (Math.random() - 0.5),
-            longitude: 135 + 10 * (Math.random() - 0.5),
-          }}
-          onPress={() => GenAndShoweModalContents(obj)}
-        />
-      ))}
-    </MapView>
-  ));
 
   return (
     <>

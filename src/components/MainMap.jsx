@@ -11,6 +11,7 @@ const MainMap = memo((props) => {
     latitude: 35.665755,
     longitude: 139.698257,
   });
+  const [places, setPlaces] = useState([]);
 
   // DB から現在位置周辺の聖地情報を取得する。
   const objList = [];
@@ -20,6 +21,11 @@ const MainMap = memo((props) => {
       val: i * 2,
     });
   }
+
+  useEffect(() => {
+    // 近くの聖地リストを取得
+    setPlaces([]);
+  }, []);
 
   function GenAndShoweModalContents(obj) {
     setModalVisible(true);
@@ -53,6 +59,10 @@ const MainMap = memo((props) => {
       }}
       showsUserLocation
       followsUserLocation
+      showsMyLocationButton
+      showsPointsOfInterest={false}
+      toolbarEnabled={false}
+      moveOnMarkerPress={false}
     >
 
       {objList.map((obj, index) => (

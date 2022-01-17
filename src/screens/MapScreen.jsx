@@ -6,6 +6,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 
 import ModalBase from '../components/ModalBase';
+import MainMap from '../components/MainMap';
 
 function GenerateModalContents() {
   return <Text>text</Text>;
@@ -103,7 +104,10 @@ export default function MapScreen() {
 
       </ModalBase>
       <View style={styles.centeredView}>
-        <Child />
+        <MainMap
+          setModalBlock={setModalBlock}
+          setModalVisible={setModalVisible}
+        />
       </View>
     </>
   );

@@ -15,19 +15,33 @@ const MainMap = memo((props) => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    // 近くの聖地リストを取得
+    // 本当は聖地リストを取得
+    const tmp = [];
     for (let i = 0; i < 30; i += 1) {
-      places.push({
+      tmp.push({
         key: i,
         val: i * 2,
       });
     }
-    setPlaces(places);
+    setPlaces(tmp);
   }, []);
 
+  // ピンがタップされたときに走る、モーダルの内容を変更する関数
   function GenAndShoweModalContents(obj) {
     setModalVisible(true);
     setModalBlock(<Text>{obj.key}</Text>);
+  }
+
+  // Marker コンポーネントを生成する関数
+  function GenMarkerComponent(obj) {
+    return (<Marker
+      key={obj.key}
+      coordinate={{
+        latitude: 35 + 10 * (Math.random() - 0.5),
+        longitude: 135 + 10 * (Math.random() - 0.5),
+      }}
+      onPress={() => GenAndShoweModalContents(obj)}
+    />);
   }
 
   useEffect(() => {
@@ -62,17 +76,7 @@ const MainMap = memo((props) => {
       toolbarEnabled={false}
       moveOnMarkerPress={false}
     >
-
-      {places.map((obj) => (
-        <Marker
-          key={obj.key}
-          coordinate={{
-            latitude: 35 + 10 * (Math.random() - 0.5),
-            longitude: 135 + 10 * (Math.random() - 0.5),
-          }}
-          onPress={() => GenAndShoweModalContents(obj)}
-        />
-      ))}
+      {places.map((obj) => GenMarkerComponent(obj))}
     </MapView>
   );
 });

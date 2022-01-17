@@ -6,7 +6,6 @@ import { AntDesign } from '@expo/vector-icons';
 import { func, bool, object } from 'prop-types';
 
 export default function ModalBase(props) {
-  // const [modalVisible, setModalVisible] = useState(false);
   const { children, onPress, modalVisible } = props;
 
   return (
@@ -20,11 +19,11 @@ export default function ModalBase(props) {
         <Pressable
           activeOpacity={1}
           style={[styles.centeredView, styles.modalBackGroundView]}
-          onPress={() => onPress(!modalVisible)}
+          onPress={() => onPress(false)}
         />
         <View style={styles.modalView}>
           {children}
-          <Pressable onPress={() => onPress(!modalVisible)}>
+          <Pressable onPress={() => onPress(false)}>
             <AntDesign name="closecircleo" size={32} color="black" />
           </Pressable>
         </View>

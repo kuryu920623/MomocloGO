@@ -1,9 +1,10 @@
 import React, { useState, useEffect, memo } from 'react';
 import {
-  StyleSheet, Text, Pressable, View, Dimensions,
+  StyleSheet, Text,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { func } from 'prop-types';
 
 const MainMap = memo((props) => {
   const { setModalBlock, setModalVisible } = props;
@@ -13,18 +14,15 @@ const MainMap = memo((props) => {
   });
   const [places, setPlaces] = useState([]);
 
-  // DB から現在位置周辺の聖地情報を取得する。
-  const objList = [];
-  for (let i = 0; i < 30; i += 1) {
-    objList.push({
-      key: i,
-      val: i * 2,
-    });
-  }
-
   useEffect(() => {
     // 近くの聖地リストを取得
-    setPlaces([]);
+    for (let i = 0; i < 30; i += 1) {
+      places.push({
+        key: i,
+        val: i * 2,
+      });
+    }
+    setPlaces(places);
   }, []);
 
   function GenAndShoweModalContents(obj) {
@@ -34,11 +32,11 @@ const MainMap = memo((props) => {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') { return; }
 
-      let tmp = await Location.getCurrentPositionAsync({});
-      let location = {};
+      const tmp = await Location.getCurrentPositionAsync({});
+      const location = {};
       location.latitude = tmp.coords.latitude;
       location.longitude = tmp.coords.longitude;
       setCurrentLocation(location);
@@ -65,7 +63,7 @@ const MainMap = memo((props) => {
       moveOnMarkerPress={false}
     >
 
-      {objList.map((obj, index) => (
+      {places.map((obj) => (
         <Marker
           key={obj.key}
           coordinate={{
@@ -78,6 +76,11 @@ const MainMap = memo((props) => {
     </MapView>
   );
 });
+
+MainMap.propTypes = {
+  setModalBlock: func.isRequired,
+  setModalVisible: func.isRequired,
+};
 
 const styles = StyleSheet.create({
   map: {

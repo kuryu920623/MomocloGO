@@ -4,6 +4,8 @@ import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import firebase from 'firebase';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { LogBox } from 'react-native';
+import * as SQLite from 'expo-sqlite';
 
 import { firebaseConfig } from './env';
 
@@ -11,7 +13,9 @@ import SignUpScreen from './src/screens/SignUpScreen';
 import LogInScreen from './src/screens/LogInScreen';
 import MapScreen from './src/screens/MapScreen';
 import TestScreen from './src/screens/TestScreen';
-import InitDatabase from './src/utils/InitDataBase';
+import CopyDefaultDatabase from './src/utils/InitDataBase';
+
+LogBox.ignoreLogs(['AsyncStorage has been extracted']);
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -49,7 +53,7 @@ function TabScreen() {
 }
 
 export default function App() {
-  // InitDatabase();
+  CopyDefaultDatabase();
 
   return (
     <NavigationContainer>

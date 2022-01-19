@@ -40,7 +40,10 @@ const MainMap = memo((props) => {
         latitude: 35 + 10 * (Math.random() - 0.5),
         longitude: 135 + 10 * (Math.random() - 0.5),
       }}
-      onPress={() => GenAndShoweModalContents(obj)}
+      onPress={() => {
+        setModalBlock(<Text>{obj.key}</Text>);
+        setModalVisible(true);
+      }}
     />);
   }
 

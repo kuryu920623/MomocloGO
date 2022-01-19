@@ -1,8 +1,10 @@
 import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
+import { Asset } from 'expo-asset';
 
-function GetAndUpdatePlaces(tx, lastUpdateAt) {
+async function GetAndUpdatePlaces(tx, lastUpdateAt) {
   // サーバから lastUpdateAt に更新された聖地リスト取得
+  return;
   const cols = ['place_seq', 'region'].join(',');
   const places = [];
   const vals = '(?,?,?,?,?,?,?),'.repeat(places.length).slice(0, -1);
@@ -13,39 +15,29 @@ function GetAndUpdatePlaces(tx, lastUpdateAt) {
   tx.executeSql(sqlInsertPlaces, places);
 }
 
-export default function InitDatabase() {
-  const db = SQLite.openDatabase('MomocloGO.db');
-
-  console.log(FileSystem.documentDirectory + 'SQLite/');
-
-  db.transaction((tx) => {
-    // tx.executeSql('DROP TABLE placeMaster;', []);
-
-    const sqlCreateTable = [
-      'CREATE TABLE IF NOT EXISTS placeMaster (',
-        'place_seq INTEGER PRIMARY KEY NOT NULL,',
-        'region STRING,',
-        'updated_at DATETIME);',
-    ].join('\n');
-    tx.executeSql(sqlCreateTable, []);
-
-    // tx.executeSql(
-    //   'INSERT INTO placeMaster (place_seq, region, updated_at) VALUES (?, ?, ?)',
-    //   [Math.round(Math.random() * 10000), '関東', Date.now()],
-    //   (_, result) => {},
-    //   (error) => { console.log('insert', error); },
-    // );
-
-    const latestUpdataSql = 'SELECT updated_at FROM placeMaster ORDER BY updated_at DESC LIMIT 1;';
-    tx.executeSql(
-      latestUpdataSql,
-      [],
-      (_, result) => {
-        let lastUpdateAt = '1000-01-01 00:00:00';
-        const { rows } = result;
-        if (rows.length) { lastUpdateAt = rows.item(0).updated_at; }
-        GetAndUpdatePlaces(tx, lastUpdateAt);
-      },
+export default async function CopyDefaultDatabase(name = 'test.db') {
+  const fileExists = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}SQLite/${name}`);
+  if (!fileExists.exists) {
+    if (!(await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}SQLite`)).exists) {
+      await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}SQLite`);
+    }
+    await FileSystem.downloadAsync(
+      Asset.fromModule(require('./test.db')).uri,
+      `${FileSystem.documentDirectory}SQLite/${name}`,
     );
-  });
+    // firebase のメダル獲得情報取得
+  }
+
+  // 更新
+  const db = await SQLite.openDatabase(name);
+  db.transaction((tx) => {
+    tx.executeSql(
+      'SELECT updated_at FROM place_master ORDER BY updated_at DESC LIMIT 1;',
+      [],
+      (_, res) => { GetAndUpdatePlaces(tx, res.item.item[0].updated_at); },
+    );
+
+    // firebase のメダル情報反映
+    // firebase のメダルID情報更新
+  })
 }

@@ -12,7 +12,7 @@ export default function ModalBase(props) {
     <View style={[styles.centeredView]}>
 
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent
         visible={modalVisible}
       >
@@ -53,6 +53,8 @@ const styles = StyleSheet.create({
   modalBackGroundView: {
     opacity: 0.7,
     backgroundColor: 'black',
+    height: '100%',
+    width: '100%',
   },
   modalView: {
     position: 'absolute',

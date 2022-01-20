@@ -1,13 +1,11 @@
 import React, { useState, useEffect, memo } from 'react';
-import {
-  StyleSheet, Text, View,
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { func } from 'prop-types';
 import * as SQLite from 'expo-sqlite';
 
-import PlaceModal from '../components/PlaceModal';
+import PlaceModal from './PlaceModal';
 
 const MainMap = memo((props) => {
   const { setModalBlock, setModalVisible } = props;
@@ -29,7 +27,7 @@ const MainMap = memo((props) => {
         longitude: obj.longitude,
       }}
       onPress={() => {
-        setModalBlock(<PlaceModal obj={obj} />);
+        setModalBlock(<PlaceModal placeObj={obj} />);
         setModalVisible(true);
       }}
     />);

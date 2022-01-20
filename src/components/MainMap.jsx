@@ -1,10 +1,13 @@
 import React, { useState, useEffect, memo } from 'react';
 import {
-  StyleSheet, Text,
+  StyleSheet, Text, View,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { func } from 'prop-types';
+import * as SQLite from 'expo-sqlite';
+
+import PlaceModal from '../components/PlaceModal';
 
 const MainMap = memo((props) => {
   const { setModalBlock, setModalVisible } = props;
@@ -14,38 +17,34 @@ const MainMap = memo((props) => {
   });
   const [places, setPlaces] = useState([]);
 
-  useEffect(() => {
-    // 本当は聖地リストを取得
-    const tmp = [];
-    for (let i = 0; i < 30; i += 1) {
-      tmp.push({
-        key: i,
-        val: i * 2,
-      });
-    }
-    setPlaces(tmp);
-  }, []);
-
-  // ピンがタップされたときに走る、モーダルの内容を変更する関数
-  function GenAndShoweModalContents(obj) {
-    setModalVisible(true);
-    setModalBlock(<Text>{obj.key}</Text>);
-  }
+  // 聖地リスト, 現在地
+  // 現在地,
 
   // Marker コンポーネントを生成する関数
   function GenMarkerComponent(obj) {
     return (<Marker
-      key={obj.key}
+      key={obj.place_seq}
       coordinate={{
-        latitude: 35 + 10 * (Math.random() - 0.5),
-        longitude: 135 + 10 * (Math.random() - 0.5),
+        latitude: obj.latitude,
+        longitude: obj.longitude,
       }}
       onPress={() => {
-        setModalBlock(<Text>{obj.key}</Text>);
+        setModalBlock(<PlaceModal obj={obj} />);
         setModalVisible(true);
       }}
     />);
   }
+
+  useEffect(() => {
+    const db = SQLite.openDatabase('test.db');
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM place_master WHERE longitude IS NOT NULL LIMIT 300;',
+        [],
+        (_, res) => { setPlaces(res.rows._array); },
+      );
+    });
+  }, []);
 
   useEffect(() => {
     (async () => {

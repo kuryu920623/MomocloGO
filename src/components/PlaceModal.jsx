@@ -6,6 +6,7 @@ import * as Location from 'expo-location';
 import {
   bool, number, shape, string,
 } from 'prop-types';
+import * as SQLite from 'expo-sqlite';
 
 import Button from '../components/Button';
 
@@ -19,39 +20,48 @@ function CulcDistanceMeter(lat1, lng1, lat2, lng2) {
     + Math.sin(lat1) * Math.sin(lat2)) * 1000;
   return distance;
 }
+
 export default function PlaceModal(props) {
   const { placeObj } = props;
   const [distance, setDistance] = useState('');
+  const [buttonView, setButtonView] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      const tmp = await Location.getCurrentPositionAsync({});
-      const distMeter = CulcDistanceMeter(
-        placeObj.latitude,
-        placeObj.longitude,
-        tmp.coords.latitude,
-        tmp.coords.longitude,
-      );
-      let dist;
-      if (distMeter > 1000) {
-        const distKM = (distMeter / 1000).toFixed(1);
-        dist = `${distKM.toString()} km`;
-      } else {
-        dist = `${distMeter.toFixed().toString()} m`;
-      }
-      setDistance(dist);
-    })();
-  }, []);
-
-  let button = null;
-  // 距離の判定も必要
-  if (!placeObj.get_flg) {
-    button = (
-      <View style={[styles.views, styles.getButtonView]}>
-        <Button>GET</Button>
-      </View>
+  useEffect(async () => {
+    const tmp = await Location.getCurrentPositionAsync({});
+    const distMeter = CulcDistanceMeter(
+      placeObj.latitude,
+      placeObj.longitude,
+      tmp.coords.latitude,
+      tmp.coords.longitude,
     );
-  }
+    let dist;
+    if (distMeter > 1000) {
+      const distKM = (distMeter / 1000).toFixed(1);
+      dist = `${distKM.toString()} km`;
+    } else {
+      dist = `${distMeter.toFixed().toString()} m`;
+    }
+    setDistance(dist);
+
+    const sqlGetFlg = 'SELECT get_flg FROM place_master WHERE place_seq = ?;';
+    const db = SQLite.openDatabase('test.db');
+    db.transaction((tx) => {
+      tx.executeSql(
+        sqlGetFlg,
+        [placeObj.place_seq],
+        (_, result) => {
+          if (!result.rows._array[0].get_flg && distMeter < 100) {
+            setButtonView(
+              <View style={[styles.views, styles.getButtonView]}>
+                <Button>GET</Button>
+              </View>
+            );
+          }
+        },
+      );
+    });
+    setButtonView(null);
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -64,7 +74,7 @@ export default function PlaceModal(props) {
       <View style={[styles.views, styles.distanceView]}>
         <Text>約 {distance}</Text>
       </View>
-      {button}
+      {buttonView}
     </ScrollView>
   );
 }

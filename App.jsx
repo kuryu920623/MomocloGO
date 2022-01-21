@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import firebase from 'firebase';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { LogBox } from 'react-native';
-import * as SQLite from 'expo-sqlite';
 
 import { firebaseConfig } from './env';
 

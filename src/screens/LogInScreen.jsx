@@ -57,7 +57,7 @@ export default function LogInScreen(props) {
         </View>
 
         <View style={styles.buttonLine}>
-          <Button onPress={() => submit()} style={styles.logInButton}>ログイン</Button>
+          <Button onPress={() => submit()} style={styles.logInButton} label="ログイン" />
         </View>
 
         <View style={styles.signUpLink}>

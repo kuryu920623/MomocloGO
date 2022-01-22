@@ -2,24 +2,30 @@ import React from 'react';
 import {
   StyleSheet, Text, TouchableOpacity,
 } from 'react-native';
-import { string, func } from 'prop-types';
+import { string, func, shape } from 'prop-types';
 
 export default function Button(props) {
-  const { children, onPress } = props;
+  const {
+    label, onPress, containerStyle, labelStyle,
+  } = props;
   return (
-    <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
-      <Text style={styles.buttonLabel}>{children}</Text>
+    <TouchableOpacity style={[styles.buttonContainer, containerStyle]} onPress={onPress}>
+      <Text style={[styles.buttonLabel, labelStyle]}>{label}</Text>
     </TouchableOpacity>
   );
 }
 
 Button.propTypes = {
-  children: string.isRequired,
+  label: string.isRequired,
   onPress: func,
+  containerStyle: shape(),
+  labelStyle: shape(),
 };
 
 Button.defaultProps = {
   onPress: null,
+  containerStyle: null,
+  labelStyle: null,
 };
 
 const styles = StyleSheet.create({
@@ -31,7 +37,6 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     fontSize: 14,
-    height: 32,
     paddingVertical: 8,
     paddingHorizontal: 18,
     color: '#FFFFFF',

@@ -33,7 +33,6 @@ function GetUpdatedPlacesFromAPI(tx, updateAt) {
 }
 
 function InsertUpdatedPlaces(tx, places) {
-  console.log(places);
   const cols = ['place_seq', 'region'].join(',');
   const sqlInsert = `INSERT INTO placeMaster ( ${cols} ) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT DO UPDATE`;
   places.forEach((place) => {

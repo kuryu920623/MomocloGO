@@ -83,7 +83,7 @@ export default function SignUpScreen(props) {
           <View style={{ width: 45 }}>
             <Text style={checkLabelStyle()}>{idCheck}</Text>
           </View>
-          <Button onPress={() => checkIdDuplication()}>取得可能か確認</Button>
+          <Button onPress={() => checkIdDuplication()} label="取得可能か確認" />
 
         </View>
 
@@ -118,7 +118,7 @@ export default function SignUpScreen(props) {
         </View>
 
         <View style={styles.buttonLine}>
-          <Button onPress={() => submit()}>登録</Button>
+          <Button onPress={() => submit()} label="登録" />
         </View>
 
         <View style={styles.signUpLink}>

@@ -7,8 +7,9 @@ import {
   bool, number, shape, string,
 } from 'prop-types';
 import * as SQLite from 'expo-sqlite';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import Button from '../components/Button';
+import Button from './Button';
 
 function CulcDistanceMeter(lat1, lng1, lat2, lng2) {
   const R = Math.PI / 180;
@@ -21,10 +22,39 @@ function CulcDistanceMeter(lat1, lng1, lat2, lng2) {
   return distance;
 }
 
+function AlreadyGotButton() {
+  return (
+    <Button
+      label="取得済み"
+      labelStyle={{
+        fontSize: 40,
+      }}
+      containerStyle={{
+        backgroundColor: 'gray',
+      }}
+    />
+  );
+}
+
+function NotGetButton() {
+  return (
+    <Button
+      label={<MaterialCommunityIcons name="medal-outline" size={32} color="black" />}
+      labelStyle={{
+        fontSize: 24,
+        height: null,
+      }}
+      containerStyle={{
+        backgroundColor: 'gold',
+      }}
+    />
+  );
+}
+
 export default function PlaceModal(props) {
   const { placeObj } = props;
   const [distance, setDistance] = useState('');
-  const [buttonView, setButtonView] = useState(null);
+  const [buttonComponent, setButtonComponent] = useState(null);
 
   useEffect(async () => {
     const tmp = await Location.getCurrentPositionAsync({});
@@ -50,17 +80,17 @@ export default function PlaceModal(props) {
         sqlGetFlg,
         [placeObj.place_seq],
         (_, result) => {
-          if (!result.rows._array[0].get_flg && distMeter < 100) {
-            setButtonView(
-              <View style={[styles.views, styles.getButtonView]}>
-                <Button>GET</Button>
-              </View>
-            );
+          if (result.rows._array[0].get_flg) {
+            setButtonComponent(AlreadyGotButton());
+          } else if (distMeter < 50 ** 10) {
+            setButtonComponent(NotGetButton());
+          } else {
+            setButtonComponent(<Button>距離が遠い</Button>);
           }
         },
       );
     });
-    setButtonView(null);
+    setButtonComponent(null);
   }, []);
 
   return (
@@ -74,7 +104,9 @@ export default function PlaceModal(props) {
       <View style={[styles.views, styles.distanceView]}>
         <Text>約 {distance}</Text>
       </View>
-      {buttonView}
+      <View style={[styles.views, styles.getButtonComponent]}>
+        {buttonComponent}
+      </View>
     </ScrollView>
   );
 }
@@ -102,7 +134,7 @@ const styles = StyleSheet.create({
   distanceView: {
     alignItems: 'flex-end',
   },
-  getButtonView: {
+  getButtonComponent: {
     alignItems: 'center',
   },
 });

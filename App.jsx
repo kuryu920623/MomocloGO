@@ -39,7 +39,7 @@ function TabScreen() {
       />
       <Tab.Screen
         name="Map"
-        component={MapScreen}
+        component={TestScreen}
         options={{ tabBarIcon: () => <FontAwesome5 name="map-marker-alt" size={28}/> }}
       />
       <Tab.Screen

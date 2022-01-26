@@ -12,7 +12,7 @@ export default function LogInScreen(props) {
   const [password, setPassword] = useState('');
 
   function submit() {
-    firebase.auth().signInWithEmailAndPassword(userId + '@dummy_1234321.com', password)
+    firebase.auth().signInWithEmailAndPassword(`${userId}@dummy_1234321.com`, password)
       .then((userCredential) => {
         const { user } = userCredential;
         console.log(user.uid);

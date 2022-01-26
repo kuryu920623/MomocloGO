@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import firebase from 'firebase';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import { LogBox } from 'react-native';
 
 import { firebaseConfig } from './env';
@@ -35,17 +35,17 @@ function TabScreen() {
       <Tab.Screen
         name="Medals"
         component={MapScreen}
-        options={{ tabBarIcon: () => <FontAwesome5 name="medal" size={28}/> }}
+        options={{ tabBarIcon: () => <MaterialCommunityIcons  name="medal-outline" size={28}/> }}
       />
       <Tab.Screen
         name="Map"
         component={TestScreen}
-        options={{ tabBarIcon: () => <FontAwesome5 name="map-marker-alt" size={28}/> }}
+        options={{ tabBarIcon: () => <FontAwesome5 name="map" size={28}/> }}
       />
       <Tab.Screen
         name="List"
         component={TestScreen}
-        options={{ tabBarIcon: () => <FontAwesome5 name="table" size={28}/> }}
+        options={{ tabBarIcon: () => <AntDesign  name="table" size={28}/> }}
       />
     </Tab.Navigator>
   );

@@ -98,6 +98,7 @@ export default function PlaceModal(props) {
       <View style={[styles.views]}>
         <Text style={styles.titleText}>{placeObj.name}</Text>
       </View>
+      {/* 取得済みの場合ツイッター連携アイコン出したい */}
       <View style={[styles.views]}>
         <Text>{placeObj.detail}</Text>
       </View>

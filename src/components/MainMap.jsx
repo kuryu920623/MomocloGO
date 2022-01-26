@@ -4,8 +4,15 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { func } from 'prop-types';
 import * as SQLite from 'expo-sqlite';
+import { Audio } from 'expo-av';
 
 import PlaceModal from './PlaceModal';
+
+async function PlayAudio() {
+  const soundObj = new Audio.Sound();
+  await soundObj.loadAsync(require('../../assets/sounds/modal_open.mp3'));
+  await soundObj.playAsync();
+}
 
 const MainMap = memo((props) => {
   const { setModalBlock, setModalVisible } = props;
@@ -29,7 +36,10 @@ const MainMap = memo((props) => {
       onPress={() => {
         setModalBlock(<PlaceModal placeObj={obj} />);
         setModalVisible(true);
+        PlayAudio();
       }}
+      pinColor={obj.get_flg ? 'red': 'linen'}
+      opacity={obj.get_flg ? 1: 0.8}
     />);
   }
 

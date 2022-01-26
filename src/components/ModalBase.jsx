@@ -5,6 +5,14 @@ import {
 import { AntDesign } from '@expo/vector-icons';
 import { func, bool, object } from 'prop-types';
 
+import { Audio } from 'expo-av';
+
+async function PlayAudio() {
+  const soundObj = new Audio.Sound();
+  await soundObj.loadAsync(require('../../assets/sounds/modal_close.mp3'));
+  await soundObj.playAsync();
+}
+
 export default function ModalBase(props) {
   const { children, onPress, modalVisible } = props;
 
@@ -19,11 +27,11 @@ export default function ModalBase(props) {
         <Pressable
           activeOpacity={1}
           style={[styles.centeredView, styles.modalBackGroundView]}
-          onPress={() => onPress(false)}
+          onPress={() => { onPress(false); PlayAudio(); }}
         />
         <View style={styles.modalView}>
           {children}
-          <Pressable onPress={() => onPress(false)}>
+          <Pressable onPress={() => { onPress(false); PlayAudio(); }}>
             <AntDesign name="closecircleo" size={32} color="black" />
           </Pressable>
         </View>

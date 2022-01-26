@@ -7,9 +7,11 @@ import { func, bool, object } from 'prop-types';
 
 import { Audio } from 'expo-av';
 
+const modalCloseAudio = require('../../assets/sounds/modal_close.mp3');
+
 async function PlayAudio() {
   const soundObj = new Audio.Sound();
-  await soundObj.loadAsync(require('../../assets/sounds/modal_close.mp3'));
+  await soundObj.loadAsync(modalCloseAudio);
   await soundObj.playAsync();
 }
 

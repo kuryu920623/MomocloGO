@@ -12,9 +12,12 @@ import { Audio } from 'expo-av';
 
 import Button from './Button';
 
-async function PlayAudio() {
+const medalGetAudio = require('../../assets/sounds/medal_get.mp3');
+const medalCantGetAudio = require('../../assets/sounds/medal_cannot_get.mp3');
+
+async function PlayAudio(file) {
   const soundObj = new Audio.Sound();
-  await soundObj.loadAsync(require('../../assets/sounds/medal_get.mp3'));
+  await soundObj.loadAsync(file);
   await soundObj.playAsync();
 }
 
@@ -39,6 +42,7 @@ function AlreadyGotButton() {
       containerStyle={{
         backgroundColor: 'gray',
       }}
+      onPress={() => { PlayAudio(medalCantGetAudio); }}
     />
   );
 }
@@ -56,7 +60,7 @@ function GetButton(placeSeq) {
       }}
       onPress={() => {
         UpdateGetPlace(placeSeq);
-        PlayAudio();
+        PlayAudio(medalGetAudio);
       }}
     />
   );
@@ -87,6 +91,7 @@ function farFromPlaceButton() {
       containerStyle={{
         backgroundColor: 'gray',
       }}
+      onPress={() => { PlayAudio(medalCantGetAudio); }}
     />
   );
 }
@@ -122,7 +127,7 @@ export default function PlaceModal(props) {
         (_, result) => {
           if (result.rows._array[0].get_flg) {
             setButtonComponent(AlreadyGotButton());
-          } else if (distMeter < 50 ** 10) {
+          } else if (distMeter < 50) {
             setButtonComponent(GetButton(placeObj.place_seq));
           } else {
             setButtonComponent(farFromPlaceButton());

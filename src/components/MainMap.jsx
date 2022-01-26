@@ -38,8 +38,8 @@ const MainMap = memo((props) => {
         setModalVisible(true);
         PlayAudio();
       }}
-      pinColor={obj.get_flg ? 'red': 'linen'}
-      opacity={obj.get_flg ? 1: 0.8}
+      pinColor={obj.get_flg ? 'blue': 'red'}
+      opacity={obj.get_flg ? 0.7: 1}
     />);
   }
 

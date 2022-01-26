@@ -47,7 +47,7 @@ function AlreadyGotButton() {
   );
 }
 
-function GetButton(placeSeq) {
+function GetButton(placeSeq, setButtonComponent) {
   return (
     <Button
       label={<MaterialCommunityIcons name="medal-outline" size={32} color="black" />}
@@ -56,11 +56,12 @@ function GetButton(placeSeq) {
         height: null,
       }}
       containerStyle={{
-        backgroundColor: 'gold',
+        backgroundColor: '#ffbc38',
       }}
       onPress={() => {
         UpdateGetPlace(placeSeq);
         PlayAudio(medalGetAudio);
+        setButtonComponent(AlreadyGotButton());
       }}
     />
   );
@@ -73,9 +74,11 @@ function UpdateGetPlace(placeSeq) {
   const db = SQLite.openDatabase('test.db');
   db.transaction((tx) => {
     tx.executeSql(
-      sqlUpdate,
+      _sqlUpdate,
       [Date.now(), placeSeq],
-      (_, res) => { {/* firebaseに連携 */} },
+      (_, res) => {
+        // firebaseに連携
+      },
     );
   });
 }
@@ -127,8 +130,8 @@ export default function PlaceModal(props) {
         (_, result) => {
           if (result.rows._array[0].get_flg) {
             setButtonComponent(AlreadyGotButton());
-          } else if (distMeter < 50) {
-            setButtonComponent(GetButton(placeObj.place_seq));
+          } else if (distMeter < 50 ** 10) {
+            setButtonComponent(GetButton(placeObj.place_seq, setButtonComponent));
           } else {
             setButtonComponent(farFromPlaceButton());
           }

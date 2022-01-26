@@ -39,13 +39,18 @@ function TabScreen() {
       />
       <Tab.Screen
         name="Map"
-        component={TestScreen}
+        component={MapScreen}
         options={{ tabBarIcon: () => <FontAwesome5 name="map" size={28}/> }}
       />
       <Tab.Screen
         name="List"
         component={TestScreen}
         options={{ tabBarIcon: () => <AntDesign  name="table" size={28}/> }}
+      />
+      <Tab.Screen
+        name="Friends"
+        component={TestScreen}
+        options={{ tabBarIcon: () => <FontAwesome5  name="user-friends" size={28}/> }}
       />
     </Tab.Navigator>
   );

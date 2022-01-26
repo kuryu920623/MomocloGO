@@ -8,8 +8,15 @@ import {
 } from 'prop-types';
 import * as SQLite from 'expo-sqlite';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Audio } from 'expo-av';
 
 import Button from './Button';
+
+async function PlayAudio() {
+  const soundObj = new Audio.Sound();
+  await soundObj.loadAsync(require('../../assets/sounds/medal_get.mp3'));
+  await soundObj.playAsync();
+}
 
 function CulcDistanceMeter(lat1, lng1, lat2, lng2) {
   const R = Math.PI / 180;
@@ -27,7 +34,7 @@ function AlreadyGotButton() {
     <Button
       label="取得済み"
       labelStyle={{
-        fontSize: 40,
+        fontSize: 24,
       }}
       containerStyle={{
         backgroundColor: 'gray',
@@ -36,7 +43,7 @@ function AlreadyGotButton() {
   );
 }
 
-function NotGetButton() {
+function GetButton(placeSeq) {
   return (
     <Button
       label={<MaterialCommunityIcons name="medal-outline" size={32} color="black" />}
@@ -46,6 +53,39 @@ function NotGetButton() {
       }}
       containerStyle={{
         backgroundColor: 'gold',
+      }}
+      onPress={() => {
+        UpdateGetPlace(placeSeq);
+        PlayAudio();
+      }}
+    />
+  );
+}
+
+function UpdateGetPlace(placeSeq) {
+  const _sqlUpdate = 'UPDATE place_master SET get_flg = 1, got_at = ? WHERE place_seq = ?';
+  // 更新はいったん止めておく
+  const sqlUpdate = 'UPDATE place_master SET get_flg = 1, got_at = ? WHERE place_seq = 12456';
+  const db = SQLite.openDatabase('test.db');
+  db.transaction((tx) => {
+    tx.executeSql(
+      sqlUpdate,
+      [Date.now(), placeSeq],
+      (_, res) => { {/* firebaseに連携 */} },
+    );
+  });
+}
+
+function farFromPlaceButton() {
+  return (
+    <Button
+      label={<MaterialCommunityIcons name="medal-outline" size={32} color="black" />}
+      labelStyle={{
+        fontSize: 18,
+        height: null,
+      }}
+      containerStyle={{
+        backgroundColor: 'gray',
       }}
     />
   );
@@ -83,9 +123,9 @@ export default function PlaceModal(props) {
           if (result.rows._array[0].get_flg) {
             setButtonComponent(AlreadyGotButton());
           } else if (distMeter < 50 ** 10) {
-            setButtonComponent(NotGetButton());
+            setButtonComponent(GetButton(placeObj.place_seq));
           } else {
-            setButtonComponent(<Button>距離が遠い</Button>);
+            setButtonComponent(farFromPlaceButton());
           }
         },
       );

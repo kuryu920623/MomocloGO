@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import firebase from 'firebase';
-import { FontAwesome5, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
+import { FontAwesome5, AntDesign } from '@expo/vector-icons';
 import { LogBox } from 'react-native';
 
 import { firebaseConfig } from './env';
@@ -11,6 +11,7 @@ import { firebaseConfig } from './env';
 import SignUpScreen from './src/screens/SignUpScreen';
 import LogInScreen from './src/screens/LogInScreen';
 import MapScreen from './src/screens/MapScreen';
+import AwardsScreen from './src/screens/AwardsScreen';
 import TestScreen from './src/screens/TestScreen';
 import CopyDefaultDatabase from './src/utils/InitDataBase';
 
@@ -26,16 +27,16 @@ if (firebase.apps.length === 0) {
 function TabScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="Map"
+      initialRouteName="Awards"
       screenOptions={{
         tabBarActiveTintColor: 'black',
         tabBarActiveBackgroundColor: 'gray',
       }}
     >
       <Tab.Screen
-        name="Medals"
-        component={MapScreen}
-        options={{ tabBarIcon: () => <MaterialCommunityIcons  name="medal-outline" size={28}/> }}
+        name="Awards"
+        component={AwardsScreen}
+        options={{ tabBarIcon: () => <FontAwesome5 name="award" size={28}/> }}
       />
       <Tab.Screen
         name="Map"

@@ -8,20 +8,21 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function ProgressMeter(prop) {
-  const { parsentage } = prop;
+  const { persentage } = prop;
+  const endX = persentage + 0.05;
   return (
     <LinearGradient
       style={{
         height: 8,
         width: 40,
         borderWidth: 1,
-        borderColor: '#040404',
-        borderRadius: 2,
-        marginTop: 4,
+        borderColor: '#777777',
+        borderRadius: 0,
+        marginTop: 5,
       }}
-      colors={['#000000', '#FFFFFF']}
-      start={{ x: 0.5, y: 0.5 }}
-      end={{ x: 0.6, y: 0.5 }}
+      colors={['#777777', '#FFFFFF']}
+      start={{ x: persentage, y: 0 }}
+      end={{ x: endX, y: 0 }}
     />
   );
 }

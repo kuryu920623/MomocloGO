@@ -11,6 +11,7 @@ import {
 } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
+import { SvgXml } from 'react-native-svg';
 
 import Button from '../components/Button';
 import ProgressMeter from '../components/PogressMeter';
@@ -50,25 +51,30 @@ export default function AwardsScreen() {
         <View style={styles.awardsRowView}>
           <View style={styles.awardsColView}>
             <FontAwesome5 name="award" size={48} color="#C47222" />
-            <ProgressMeter />
+            <ProgressMeter persentage={1} />
           </View>
           <View style={styles.awardsColView}>
             <FontAwesome5 name="award" size={48} color="rgba(200,200,200,0.3)" />
+            <ProgressMeter persentage={0.6} />
           </View>
           <View style={styles.awardsColView}>
             <FontAwesome5 name="award" size={48} color="rgba(200,200,200,0.3)" />
+            <ProgressMeter persentage={0.3} />
           </View>
           <View style={styles.awardsColView}>
             <Ionicons name="restaurant" size={48} color="#C47222" />
+            <ProgressMeter persentage={1} />
           </View>
         </View>
 
         <View style={styles.awardsRowView}>
           <View style={styles.awardsColView}>
             <Ionicons name="restaurant" size={48} color="#C0C0C0" />
+            <ProgressMeter persentage={1} />
           </View>
           <View style={styles.awardsColView}>
             <Ionicons name="restaurant" size={48} color="rgba(200,200,200,0.3)" />
+            <ProgressMeter persentage={0.6} />
           </View>
         </View>
 

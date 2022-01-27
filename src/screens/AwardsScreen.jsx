@@ -10,37 +10,41 @@ import {
   FontAwesome5, MaterialCommunityIcons, Ionicons, MaterialIcons,
 } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
-import LinearGradient from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import Button from '../components/Button';
 
 export default function AwardsScreen() {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView>
+      <LinearGradient
+        style={styles.container}
+        colors={['rgba(234,246,255,0.5)', 'rgba(183,225,254,0.3)']}
+        start={{ x: 0.3, y: 0.7 }}
+        end={{ x: 0.9, y: 0.1 }}
+      >
 
-      <View style={[styles.views, styles.rankingView]}>
-        <View style={styles.leftLabelView}>
-          <FontAwesome5 name="crown" size={48} color="#ffcc33" />
-          <Text style={styles.rankLabelText}> Ranking</Text>
+        <View style={[styles.views, styles.rankingView]}>
+          <View style={styles.leftLabelView}>
+            <FontAwesome5 name="crown" size={48} color="#ffcc33" />
+            <Text style={styles.rankLabelText}> Ranking</Text>
+          </View>
+          <View style={styles.rightLabelView}>
+            <Text style={styles.rankText}> 123</Text>
+            <Text style={styles.rankLabelText}> / 1234</Text>
+          </View>
         </View>
-        <View style={styles.rightLabelView}>
-          <Text style={styles.rankText}> 123</Text>
-          <Text style={styles.rankLabelText}> / 1234</Text>
-        </View>
-      </View>
 
-      <View style={[styles.views, styles.rankingView]}>
-        <View style={styles.leftLabelView}>
-          <MaterialCommunityIcons name="medal-outline" size={48} color="#ffcc33" />
-          <Text style={styles.rankLabelText}> Medals</Text>
+        <View style={[styles.views, styles.rankingView]}>
+          <View style={styles.leftLabelView}>
+            <MaterialCommunityIcons name="medal-outline" size={48} color="#ffcc33" />
+            <Text style={styles.rankLabelText}> Medals</Text>
+          </View>
+          <View style={styles.rightLabelView}>
+            <Text style={styles.rankText}> 234</Text>
+            <Text style={styles.rankLabelText}> / 2345</Text>
+          </View>
         </View>
-        <View style={styles.rightLabelView}>
-          <Text style={styles.rankText}> 234</Text>
-          <Text style={styles.rankLabelText}> / 2345</Text>
-        </View>
-      </View>
-
-      <View style={styles.awardsContainer}>
 
         <View style={styles.awardsRowView}>
           <View style={styles.awardsColView}>
@@ -66,7 +70,7 @@ export default function AwardsScreen() {
           </View>
         </View>
 
-      </View>
+      </LinearGradient>
     </ScrollView>
   );
 }

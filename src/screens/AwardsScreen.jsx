@@ -13,6 +13,7 @@ import { Audio } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import Button from '../components/Button';
+import ProgressMeter from '../components/PogressMeter';
 
 export default function AwardsScreen() {
   return (
@@ -20,8 +21,8 @@ export default function AwardsScreen() {
       <LinearGradient
         style={styles.container}
         colors={['rgba(234,246,255,0.5)', 'rgba(183,225,254,0.3)']}
-        start={{ x: 0.3, y: 0.7 }}
-        end={{ x: 0.9, y: 0.1 }}
+        start={{ x: 0.5, y: 0.5 }}
+        end={{ x: 0.6, y: 0.6 }}
       >
 
         <View style={[styles.views, styles.rankingView]}>
@@ -49,12 +50,13 @@ export default function AwardsScreen() {
         <View style={styles.awardsRowView}>
           <View style={styles.awardsColView}>
             <FontAwesome5 name="award" size={48} color="#C47222" />
+            <ProgressMeter />
           </View>
           <View style={styles.awardsColView}>
-            <FontAwesome5 name="award" size={48} color="gray" />
+            <FontAwesome5 name="award" size={48} color="rgba(200,200,200,0.3)" />
           </View>
           <View style={styles.awardsColView}>
-            <FontAwesome5 name="award" size={48} color="gray" />
+            <FontAwesome5 name="award" size={48} color="rgba(200,200,200,0.3)" />
           </View>
           <View style={styles.awardsColView}>
             <Ionicons name="restaurant" size={48} color="#C47222" />
@@ -63,10 +65,10 @@ export default function AwardsScreen() {
 
         <View style={styles.awardsRowView}>
           <View style={styles.awardsColView}>
-            <Ionicons name="restaurant" size={48} color="gray" />
+            <Ionicons name="restaurant" size={48} color="#C0C0C0" />
           </View>
           <View style={styles.awardsColView}>
-            <Ionicons name="restaurant" size={48} color="gray" />
+            <Ionicons name="restaurant" size={48} color="rgba(200,200,200,0.3)" />
           </View>
         </View>
 

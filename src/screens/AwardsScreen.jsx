@@ -2,33 +2,61 @@ import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, Text, View, ScrollView, TouchableOpacity,
 } from 'react-native';
-import {
-  bool, number, shape, string,
-} from 'prop-types';
 import * as SQLite from 'expo-sqlite';
 import {
-  FontAwesome5, MaterialCommunityIcons, Ionicons, MaterialIcons,
+  FontAwesome5, MaterialCommunityIcons, Ionicons, MaterialIcons, AntDesign,
 } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
-import { SvgXml } from 'react-native-svg';
 
+import Icon from '../components/Icon';
 import Button from '../components/Button';
 import ProgressMeter from '../components/PogressMeter';
+import iconSet from '@expo/vector-icons/build/Fontisto';
+
+function AwardIconSet(props) {
+  const { icon, progress } = props;
+  return (
+    <View style={iconSetStyles.awardsColView}>
+      <TouchableOpacity
+        style={iconSetStyles.iconView}
+        onPress={() => {}}
+      >
+        {icon}
+      </TouchableOpacity>
+      <View style={iconSetStyles.progressView}>
+        <ProgressMeter persentage={progress} />
+      </View>
+    </View>
+  );
+}
+
+const iconSetStyles = {
+  awardsColView: {
+    width: '25%',
+    alignItems: 'center',
+  },
+  iconView: {
+    height: 50,
+  },
+  progressView: {
+    height: 10,
+  },
+};
 
 export default function AwardsScreen() {
   return (
     <ScrollView>
       <LinearGradient
         style={styles.container}
-        colors={['rgba(234,246,255,0.5)', 'rgba(183,225,254,0.3)']}
-        start={{ x: 0.5, y: 0.5 }}
-        end={{ x: 0.6, y: 0.6 }}
+        colors={['rgba(234,246,255,0.6)', 'rgba(183,225,254,0.4)']}
+        start={{ x: 0.7, y: 0.7 }}
+        end={{ x: 0.3, y: 0.3 }}
       >
 
         <View style={[styles.views, styles.rankingView]}>
           <View style={styles.leftLabelView}>
-            <FontAwesome5 name="crown" size={48} color="#ffcc33" />
+            <FontAwesome5 name="crown" size={48} color="#ffcc66" />
             <Text style={styles.rankLabelText}> Ranking</Text>
           </View>
           <View style={styles.rightLabelView}>
@@ -39,7 +67,7 @@ export default function AwardsScreen() {
 
         <View style={[styles.views, styles.rankingView]}>
           <View style={styles.leftLabelView}>
-            <MaterialCommunityIcons name="medal-outline" size={48} color="#ffcc33" />
+            <MaterialCommunityIcons name="medal-outline" size={48} color="#ffcc66" />
             <Text style={styles.rankLabelText}> Medals</Text>
           </View>
           <View style={styles.rightLabelView}>
@@ -62,20 +90,56 @@ export default function AwardsScreen() {
             <ProgressMeter persentage={0.3} />
           </View>
           <View style={styles.awardsColView}>
-            <Ionicons name="restaurant" size={48} color="#C47222" />
-            <ProgressMeter persentage={1} />
+            <FontAwesome5 name="award" size={48} color="rgba(200,200,200,0.3)" />
+            <ProgressMeter persentage={0.1} />
           </View>
         </View>
 
         <View style={styles.awardsRowView}>
           <View style={styles.awardsColView}>
-            <Ionicons name="restaurant" size={48} color="#C0C0C0" />
+            <Ionicons name="restaurant" size={48} color="#C47222" />
+            <ProgressMeter persentage={1} />
+          </View>
+          <View style={styles.awardsColView}>
+            <Ionicons name="restaurant" size={48} color="#A0A0A0" />
             <ProgressMeter persentage={1} />
           </View>
           <View style={styles.awardsColView}>
             <Ionicons name="restaurant" size={48} color="rgba(200,200,200,0.3)" />
             <ProgressMeter persentage={0.6} />
           </View>
+          <View style={styles.awardsColView}>
+            <Ionicons name="restaurant" size={48} color="rgba(200,200,200,0.3)" />
+            <ProgressMeter persentage={0.3} />
+          </View>
+        </View>
+
+        <View style={styles.awardsRowView}>
+          <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />
+          <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />
+          <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />
+          <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />
+        </View>
+
+        <View style={styles.awardsRowView}>
+          <AwardIconSet icon={<Icon name="sunflower" size={48} color="#ffcc66" />} progress={1} />
+          <AwardIconSet icon={<Icon name="sunflower" size={48} color="rgba(200,200,200,0.3)" />} progress={0.7} />
+          <AwardIconSet icon={<Icon name="sunflower" size={48} color="rgba(200,200,200,0.3)" />} progress={0.5} />
+          <AwardIconSet icon={<Icon name="sunflower" size={48} color="rgba(200,200,200,0.3)" />} progress={0.3} />
+        </View>
+
+        <View style={styles.awardsRowView}>
+          <AwardIconSet icon={<AntDesign name="heart" size={48} color="#F58E7D" />} progress={1} />
+          <AwardIconSet icon={<AntDesign name="heart" size={48} color="#F58E7D" />} progress={1} />
+          <AwardIconSet icon={<AntDesign name="heart" size={48} color="rgba(200,200,200,0.3)" />} progress={0.4} />
+          <AwardIconSet icon={<AntDesign name="heart" size={48} color="rgba(200,200,200,0.3)" />} progress={0.2} />
+        </View>
+
+        <View style={styles.awardsRowView}>
+          <AwardIconSet icon={<Icon name="eggplant" size={48} color="#7C2E69" />} progress={1} />
+          <AwardIconSet icon={<Icon name="eggplant" size={48} color="#7C2E69" />} progress={1} />
+          <AwardIconSet icon={<Icon name="eggplant" size={48} color="rgba(200,200,200,0.3)" />} progress={0.8} />
+          <AwardIconSet icon={<Icon name="eggplant" size={48} color="rgba(200,200,200,0.3)" />} progress={0.4} />
         </View>
 
       </LinearGradient>

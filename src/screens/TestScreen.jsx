@@ -2,11 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Platform, Text, View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import * as Location from 'expo-location';
 import * as SQLite from 'expo-sqlite';
-import Icon from '../components/Icon';
-
-import SVG, { SvgXml, G, Path } from 'react-native-svg';
-
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Icon from '../components/Icon';
 
 const AnimatedIcon = Animated.createAnimatedComponent(MaterialCommunityIcons);
 
@@ -51,7 +48,7 @@ export default function TestScreen() {
     <View>
 
       <Text>{text}</Text>
-      <Icon name='eggplant' size={50} color='#123456' />
+      <Icon name="sunflower" size={50} color="yellow" />
       <TouchableOpacity onPress={() => {
         Animated.timing(animatedValue, {
           toValue: 150,

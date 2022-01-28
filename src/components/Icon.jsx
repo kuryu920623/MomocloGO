@@ -1,6 +1,7 @@
 import React from 'react';
 import { createIconSetFromIcoMoon } from '@expo/vector-icons';
 import { useFonts } from '@use-expo/font';
+import { number, string } from 'prop-types';
 
 import icomoon from '../../assets/svg/icomoon.ttf';
 import selection from '../../assets/svg/selection.json';
@@ -14,3 +15,14 @@ export default function Icon(props) {
   }
   return <CustomIcon name={name} size={size} color={color} />;
 }
+
+Icon.propTypes = {
+  name: string.isRequired,
+  size: number,
+  color: string,
+};
+
+Icon.defaultProps = {
+  size: 18,
+  color: 'black',
+};

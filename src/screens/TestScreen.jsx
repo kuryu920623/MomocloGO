@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Platform, Text, View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import * as Location from 'expo-location';
 import * as SQLite from 'expo-sqlite';
+import Icon from '../components/Icon';
+
+import SVG, { SvgXml, G, Path } from 'react-native-svg';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -46,7 +49,9 @@ export default function TestScreen() {
 
   return (
     <View>
+
       <Text>{text}</Text>
+      <Icon name='eggplant' size={50} color='#123456' />
       <TouchableOpacity onPress={() => {
         Animated.timing(animatedValue, {
           toValue: 150,
@@ -58,6 +63,7 @@ export default function TestScreen() {
           <AnimatedIcon name="medal-outline" size={32} style={{fontSize: interPolateSize}} />
         </Animated.Text>
       </TouchableOpacity>
+
 
     </View>
   );

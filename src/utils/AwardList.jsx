@@ -15,19 +15,29 @@ export default async function GetAwardList() {
       title: 'タイトル',
       description: '説明文',
       targetCount: 10,
-      getCount: await GetSqlResult('SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;'),
+      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       icon: 'wer',
     },
     {
       title: 'タイトル',
       description: '説明文',
       targetCount: 50,
-      getCount: await GetSqlResult('SELECT COUNT(1) AS count FROM place_master;'),
+      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master;',
       icon: 'ert',
     },
   ];
 
-  return awardList;
+  const promises = [];
+  awardList.forEach((award) => {
+    promises.push(GetSqlResult(award.getCountSQL));
+  });
+  const p = Promise.all(promises).then((values) => {
+    values.forEach((value, index) => {
+      awardList[index].getCount = value;
+    });
+    return awardList;
+  });
+  return p;
 }
 
 async function GetSqlResult(sql, params = []) {

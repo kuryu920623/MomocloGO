@@ -16,6 +16,7 @@ import ModalBase from '../components/ModalBase';
 import AwardModal from '../components/AwardModal';
 
 import GetAwardList from '../utils/AwardList';
+import { FlatList } from 'react-native-gesture-handler';
 
 async function PlayAudio() {
   const modalOpenAudio = require('../../assets/sounds/modal_open.mp3');
@@ -30,21 +31,21 @@ let modalBlock;
 let setModalBlock;
 
 function AwardIconSet(props) {
-  const { icon, progress } = props;
+  const { obj } = props;
   return (
     <View style={iconSetStyles.awardsColView}>
       <TouchableOpacity
         style={iconSetStyles.iconView}
         onPress={() => {
           PlayAudio();
-          setModalBlock(AwardModal);
+          setModalBlock(<AwardModal obj={obj} />);
           setModalVisible(true);
         }}
       >
-        {icon}
+        {obj.icon}
       </TouchableOpacity>
       <View style={iconSetStyles.progressView}>
-        <ProgressMeter persentage={progress} />
+        <ProgressMeter persentage={obj.getCount / obj.targetCount} />
       </View>
     </View>
   );
@@ -72,10 +73,11 @@ const iconSetStyles = {
 export default function AwardsScreen() {
   [modalVisible, setModalVisible] = useState(false);
   [modalBlock, setModalBlock] = useState(<Text>test</Text>);
+  const [awardList, setAwardList] = useState([]);
 
   useEffect(async () => {
-    console.log(await GetAwardList());
-  });
+    setAwardList(await GetAwardList());
+  }, []);
 
   return (
     <>
@@ -111,6 +113,10 @@ export default function AwardsScreen() {
               <Text style={styles.rankText}> 234</Text>
               <Text style={styles.rankLabelText}> / 2345</Text>
             </View>
+          </View>
+
+          <View style={styles.awardsRowView}>
+            {awardList.map((obj) => <AwardIconSet obj={obj} />)}
           </View>
 
           <View style={styles.awardsRowView}>
@@ -151,7 +157,7 @@ export default function AwardsScreen() {
             </View>
           </View>
 
-          <View style={styles.awardsRowView}>
+          {/* <View style={styles.awardsRowView}>
             <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />
             <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />
             <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />
@@ -177,7 +183,7 @@ export default function AwardsScreen() {
             <AwardIconSet icon={<Icon name="eggplant" size={48} color="#7C2E69" />} progress={1} />
             <AwardIconSet icon={<Icon name="eggplant" size={48} color="rgba(200,200,200,0.3)" />} progress={0.8} />
             <AwardIconSet icon={<Icon name="eggplant" size={48} color="rgba(200,200,200,0.3)" />} progress={0.4} />
-          </View>
+          </View> */}
 
         </LinearGradient>
       </ScrollView>

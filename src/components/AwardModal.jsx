@@ -20,15 +20,16 @@ async function PlayAudio(file) {
   await soundObj.playAsync();
 }
 
-export default function AwardModal() {
+export default function AwardModal(props) {
+  const { obj } = props;
   return (
     <ScrollView style={styles.container}>
       <View style={[styles.views]}>
-        <Text style={styles.titleText}>称号の名前</Text>
+        <Text style={styles.titleText}>{obj.title}</Text>
       </View>
       {/* 取得済みの場合ツイッター連携アイコン出したい */}
       <View style={[styles.views]}>
-        <Text>称号の取得条件とか進捗状況とか</Text>
+        <Text>{obj.description}</Text>
       </View>
     </ScrollView>
   );

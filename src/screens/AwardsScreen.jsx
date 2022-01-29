@@ -12,9 +12,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Icon from '../components/Icon';
 import Button from '../components/Button';
 import ProgressMeter from '../components/PogressMeter';
-import iconSet from '@expo/vector-icons/build/Fontisto';
 import ModalBase from '../components/ModalBase';
 import AwardModal from '../components/AwardModal';
+
+import GetAwardList from '../utils/AwardList';
 
 async function PlayAudio() {
   const modalOpenAudio = require('../../assets/sounds/modal_open.mp3');
@@ -62,9 +63,20 @@ const iconSetStyles = {
   },
 };
 
+// タイトル
+// 説明文
+// 上限数
+// 取得数function(SQL)
+// アイコン
+
 export default function AwardsScreen() {
   [modalVisible, setModalVisible] = useState(false);
   [modalBlock, setModalBlock] = useState(<Text>test</Text>);
+
+  useEffect(async () => {
+    console.log(await GetAwardList());
+  });
+
   return (
     <>
       <ModalBase onPress={setModalVisible} modalVisible={modalVisible}>

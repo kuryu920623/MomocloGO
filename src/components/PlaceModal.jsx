@@ -164,7 +164,7 @@ PlaceModal.propTypes = {
   placeObj: shape({
     latitude: number,
     longitude: number,
-    get_flg: bool,
+    // get_flg: bool,
     name: string,
     detail: string,
   }).isRequired,

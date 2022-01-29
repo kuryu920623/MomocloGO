@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, Text, View, ScrollView,
 } from 'react-native';
-import * as Location from 'expo-location';
 import {
   bool, number, shape, string,
 } from 'prop-types';
@@ -34,16 +33,6 @@ export default function AwardModal() {
     </ScrollView>
   );
 }
-
-AwardModal.propTypes = {
-  placeObj: shape({
-    latitude: number,
-    longitude: number,
-    get_flg: bool,
-    name: string,
-    detail: string,
-  }).isRequired,
-};
 
 const styles = StyleSheet.create({
   container: {

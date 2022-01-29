@@ -46,6 +46,8 @@ async function UpdateGotPlaceList(name) {
 
 export default async function CopyDefaultDatabase(name = 'test.db') {
   // 初期DBコピー
+  // console.log(`${FileSystem.documentDirectory}SQLite/${name}`);
+
   const fileExists = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}SQLite/${name}`);
   if (!fileExists.exists) {
     if (!(await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}SQLite`)).exists) {

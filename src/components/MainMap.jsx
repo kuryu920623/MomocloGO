@@ -5,8 +5,10 @@ import * as Location from 'expo-location';
 import { func } from 'prop-types';
 import * as SQLite from 'expo-sqlite';
 import { Audio } from 'expo-av';
-
 import PlaceModal from './PlaceModal';
+
+let setModalBlock;
+let setModalVisible;
 
 async function PlayAudio() {
   const soundObj = new Audio.Sound();
@@ -14,20 +16,9 @@ async function PlayAudio() {
   await soundObj.playAsync();
 }
 
-const MainMap = memo((props) => {
-  const { setModalBlock, setModalVisible } = props;
-  const [currentLocation, setCurrentLocation] = useState({
-    latitude: 35.665755,
-    longitude: 139.698257,
-  });
-  const [places, setPlaces] = useState([]);
-
-  // 聖地リスト, 現在地
-  // 現在地,
-
-  // Marker コンポーネントを生成する関数
-  function GenMarkerComponent(obj) {
-    return (<Marker
+function GenMarkerComponent(obj) {
+  return (
+    <Marker
       key={obj.place_seq}
       coordinate={{
         latitude: obj.latitude,
@@ -38,10 +29,21 @@ const MainMap = memo((props) => {
         setModalVisible(true);
         PlayAudio();
       }}
-      pinColor={obj.get_flg ? 'blue': 'red'}
-      opacity={obj.get_flg ? 0.7: 1}
-    />);
-  }
+      pinColor={obj.get_flg ? 'blue' : 'red'}
+      opacity={obj.get_flg ? 0.7 : 1}
+    />
+  );
+}
+
+const MainMap = memo((props) => {
+  setModalBlock = props.setModalBlock;
+  setModalVisible = props.setModalVisible;
+
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: 35.665755,
+    longitude: 139.698257,
+  });
+  const [places, setPlaces] = useState([]);
 
   useEffect(() => {
     const db = SQLite.openDatabase('test.db');

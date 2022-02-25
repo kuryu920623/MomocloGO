@@ -16,7 +16,12 @@ import ModalBase from '../components/ModalBase';
 import AwardModal from '../components/AwardModal';
 
 import GetAwardList from '../utils/AwardList';
-import { FlatList } from 'react-native-gesture-handler';
+import { shape } from 'prop-types';
+
+let modalVisible;
+let setModalVisible;
+let modalBlock;
+let setModalBlock;
 
 async function PlayAudio() {
   const modalOpenAudio = require('../../assets/sounds/modal_open.mp3');
@@ -25,13 +30,21 @@ async function PlayAudio() {
   await soundObj.playAsync();
 }
 
-let modalVisible;
-let setModalVisible;
-let modalBlock;
-let setModalBlock;
-
 function AwardIconSet(props) {
   const { obj } = props;
+  const [getCount, setGetCount] = useState(0);
+  useEffect(async () => {
+    const db = SQLite.openDatabase('test.db');
+    db.transaction((tx) => {
+      tx.executeSql(
+        obj.getCountSQL,
+        [],
+        (_, res) => { setGetCount(res.rows._array[0].count); },
+      );
+    });
+    setGetCount(0);
+  }, []);
+
   return (
     <View style={iconSetStyles.awardsColView}>
       <TouchableOpacity
@@ -42,13 +55,33 @@ function AwardIconSet(props) {
           setModalVisible(true);
         }}
       >
-        {obj.icon}
+        <Icon provider={obj.iconProvider} name={obj.iconName} color={obj.iconColor} size={48} />
       </TouchableOpacity>
       <View style={iconSetStyles.progressView}>
-        <ProgressMeter persentage={obj.getCount / obj.targetCount} />
+        <ProgressMeter persentage={getCount / obj.targetCount} />
       </View>
     </View>
   );
+}
+
+AwardIconSet.propTypes = {
+  obj: shape().isRequired,
+};
+
+function renderIcons(awardList) {
+  let row = 0;
+  const rowList = [];
+  while (true) {
+    const awards = awardList.slice(row * 4, row * 4 + 4);
+    if (awards.length === 0) { break; }
+    rowList.push(
+      <View style={styles.awardsRowView} key={row}>
+        {awards.map((obj) => <AwardIconSet obj={obj} />)}
+      </View>,
+    );
+    row += 1;
+  }
+  return rowList;
 }
 
 const iconSetStyles = {
@@ -63,12 +96,6 @@ const iconSetStyles = {
     height: 10,
   },
 };
-
-// タイトル
-// 説明文
-// 上限数
-// 取得数function(SQL)
-// アイコン
 
 export default function AwardsScreen() {
   [modalVisible, setModalVisible] = useState(false);
@@ -115,9 +142,7 @@ export default function AwardsScreen() {
             </View>
           </View>
 
-          <View style={styles.awardsRowView}>
-            {awardList.map((obj) => <AwardIconSet obj={obj} />)}
-          </View>
+          {renderIcons(awardList).map((obj) => obj)}
 
           <View style={styles.awardsRowView}>
             <View style={styles.awardsColView}>

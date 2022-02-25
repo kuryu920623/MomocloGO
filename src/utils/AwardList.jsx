@@ -1,13 +1,4 @@
-import React from 'react';
-import {
-  StyleSheet, Text,
-} from 'react-native';
 import * as SQLite from 'expo-sqlite';
-// タイトル
-// 説明文
-// 上限数
-// 取得数function(SQL)
-// アイコン
 
 export default async function GetAwardList() {
   // iconSizeのデフォルトは48
@@ -191,6 +182,25 @@ export default async function GetAwardList() {
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
       iconName: 'sunflower',
       iconColor: '#ffcc66',
+    },
+
+    {
+      title: 'プニノフ Lv.1',
+      description: 'タグ「佐々木彩夏」のメダルを 3 個獲得する。',
+      targetCount: 3,
+      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
+      iconProvider: 'AntDesign',
+      iconName: 'heart',
+      iconColor: '#F58E7D',
+    },
+
+    {
+      title: 'タカノフ Lv.1',
+      description: 'タグ「高城れに」のメダルを 3 個獲得する。',
+      targetCount: 3,
+      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
+      iconName: 'eggplant',
+      iconColor: '#7C2E69',
     },
 
   ];

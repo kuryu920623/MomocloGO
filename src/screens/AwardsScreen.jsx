@@ -8,15 +8,14 @@ import {
 } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
+import { shape } from 'prop-types';
 
 import Icon from '../components/Icon';
-import Button from '../components/Button';
 import ProgressMeter from '../components/PogressMeter';
 import ModalBase from '../components/ModalBase';
 import AwardModal from '../components/AwardModal';
 
 import GetAwardList from '../utils/AwardList';
-import { shape } from 'prop-types';
 
 let modalVisible;
 let setModalVisible;
@@ -57,7 +56,7 @@ function AwardIconSet(props) {
         style={iconSetStyles.iconView}
         onPress={() => {
           PlayAudio();
-          setModalBlock(<AwardModal obj={obj} />);
+          setModalBlock(<AwardModal obj={obj} getCount={getCount} targetCount={obj.targetCount} />);
           setModalVisible(true);
         }}
       >
@@ -156,40 +155,12 @@ export default function AwardsScreen() {
               <Text style={styles.rankLabelText}> Medals</Text>
             </View>
             <View style={styles.rightLabelView}>
-              <Text style={styles.rankText}> {getMedalCount}</Text>
-              <Text style={styles.rankLabelText}> / {allMedalCount}</Text>
+              <Text style={styles.rankText}>{` ${getMedalCount}`}</Text>
+              <Text style={styles.rankLabelText}>{` / ${allMedalCount}`}</Text>
             </View>
           </View>
 
           {renderIcons(awardList).map((obj) => obj)}
-
-          {/* <View style={styles.awardsRowView}>
-            <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />
-            <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />
-            <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />
-            <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />
-          </View>
-
-          <View style={styles.awardsRowView}>
-            <AwardIconSet icon={<Icon name="sunflower" size={48} color="#ffcc66" />} progress={1} />
-            <AwardIconSet icon={<Icon name="sunflower" size={48} color="rgba(200,200,200,0.3)" />} progress={0.7} />
-            <AwardIconSet icon={<Icon name="sunflower" size={48} color="rgba(200,200,200,0.3)" />} progress={0.5} />
-            <AwardIconSet icon={<Icon name="sunflower" size={48} color="rgba(200,200,200,0.3)" />} progress={0.3} />
-          </View>
-
-          <View style={styles.awardsRowView}>
-            <AwardIconSet icon={<AntDesign name="heart" size={48} color="#F58E7D" />} progress={1} />
-            <AwardIconSet icon={<AntDesign name="heart" size={48} color="#F58E7D" />} progress={1} />
-            <AwardIconSet icon={<AntDesign name="heart" size={48} color="rgba(200,200,200,0.3)" />} progress={0.4} />
-            <AwardIconSet icon={<AntDesign name="heart" size={48} color="rgba(200,200,200,0.3)" />} progress={0.2} />
-          </View>
-
-          <View style={styles.awardsRowView}>
-            <AwardIconSet icon={<Icon name="eggplant" size={48} color="#7C2E69" />} progress={1} />
-            <AwardIconSet icon={<Icon name="eggplant" size={48} color="#7C2E69" />} progress={1} />
-            <AwardIconSet icon={<Icon name="eggplant" size={48} color="rgba(200,200,200,0.3)" />} progress={0.8} />
-            <AwardIconSet icon={<Icon name="eggplant" size={48} color="rgba(200,200,200,0.3)" />} progress={0.4} />
-          </View> */}
 
         </LinearGradient>
       </ScrollView>

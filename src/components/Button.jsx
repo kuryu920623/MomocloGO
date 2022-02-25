@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StyleSheet, Text, TouchableOpacity,
 } from 'react-native';
-import { string, func, shape } from 'prop-types';
+import { func, shape } from 'prop-types';
 
 export default function Button(props) {
   const {
@@ -16,7 +16,6 @@ export default function Button(props) {
 }
 
 Button.propTypes = {
-  label: shape().isRequired,
   onPress: func,
   containerStyle: shape(),
   labelStyle: shape(),

@@ -33,8 +33,14 @@ export default function ModalBase(props) {
         />
         <View style={styles.modalView}>
           {children}
-          <Pressable onPress={() => { onPress(false); PlayAudio(); }}>
-            <AntDesign name="closecircleo" size={32} color="black" />
+          <Pressable style={styles.closeButtonView}>
+            <AntDesign
+              name="closecircleo"
+              size={32}
+              color="black"
+              style={styles.closeButton}
+              onPress={() => { onPress(false); PlayAudio(); }}
+            />
           </Pressable>
         </View>
 
@@ -73,7 +79,17 @@ const styles = StyleSheet.create({
     width: '80%',
     alignSelf: 'center',
     backgroundColor: 'white',
-    borderRadius: 5,
+    borderRadius: 7,
     alignItems: 'center',
+  },
+  closeButtonView: {
+    alignItems: 'center',
+    borderBottomLeftRadius: 7,
+    borderBottomRightRadius: 7,
+    backgroundColor: '#e5efff',
+    width: '100%',
+  },
+  closeButton: {
+    padding: 8,
   },
 });

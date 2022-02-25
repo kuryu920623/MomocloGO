@@ -3,9 +3,6 @@ import {
   StyleSheet, Text,
 } from 'react-native';
 import * as SQLite from 'expo-sqlite';
-import {
-  FontAwesome5, MaterialCommunityIcons, Ionicons, MaterialIcons, AntDesign,
-} from '@expo/vector-icons';
 // タイトル
 // 説明文
 // 上限数
@@ -23,8 +20,6 @@ export default async function GetAwardList() {
       iconProvider: 'FontAwesome5',
       iconName: 'award',
       iconColor: '#C47222',
-
-      icon: <FontAwesome5 name="award" size={48} color="#C47222" />,
     },
     {
       title: '壱桃兵',
@@ -130,8 +125,8 @@ export default async function GetAwardList() {
 
     {
       title: 'デコノフ Lv.1',
-      description: 'タグ「百田夏菜子」のメダルを 5 個獲得する。',
-      targetCount: 5,
+      description: 'タグ「百田夏菜子」のメダルを 3 個獲得する。',
+      targetCount: 3,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "百田夏菜子";',
       iconProvider: 'MaterialIcons',
       iconName: 'wb-sunny',
@@ -145,6 +140,57 @@ export default async function GetAwardList() {
       iconProvider: 'MaterialIcons',
       iconName: 'wb-sunny',
       iconColor: 'red',
+    },
+    {
+      title: 'デコノフ Lv.3',
+      description: 'タグ「百田夏菜子」のメダルを 30 個獲得する。',
+      targetCount: 30,
+      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "百田夏菜子";',
+      iconProvider: 'MaterialIcons',
+      iconName: 'wb-sunny',
+      iconColor: 'red',
+    },
+    {
+      title: 'デコノフ Lv.4',
+      description: 'タグ「百田夏菜子」のメダルを 50 個獲得する。',
+      targetCount: 50,
+      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "百田夏菜子";',
+      iconProvider: 'MaterialIcons',
+      iconName: 'wb-sunny',
+      iconColor: 'red',
+    },
+
+    {
+      title: 'タマノフ Lv.1',
+      description: 'タグ「玉井詩織」のメダルを 3 個獲得する。',
+      targetCount: 3,
+      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
+      iconName: 'sunflower',
+      iconColor: '#ffcc66',
+    },
+    {
+      title: 'タマノフ Lv.2',
+      description: 'タグ「玉井詩織」のメダルを 10 個獲得する。',
+      targetCount: 10,
+      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
+      iconName: 'sunflower',
+      iconColor: '#ffcc66',
+    },
+    {
+      title: 'タマノフ Lv.3',
+      description: 'タグ「玉井詩織」のメダルを 30 個獲得する。',
+      targetCount: 30,
+      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
+      iconName: 'sunflower',
+      iconColor: '#ffcc66',
+    },
+    {
+      title: 'タマノフ Lv.4',
+      description: 'タグ「玉井詩織」のメダルを 50 個獲得する。',
+      targetCount: 50,
+      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
+      iconName: 'sunflower',
+      iconColor: '#ffcc66',
     },
 
   ];

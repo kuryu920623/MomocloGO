@@ -106,10 +106,23 @@ const iconSetStyles = {
 export default function AwardsScreen() {
   [modalVisible, setModalVisible] = useState(false);
   [modalBlock, setModalBlock] = useState(<Text>test</Text>);
+  const [getMedalCount, setGetMedalCount] = useState(0);
+  const [allMedalCount, setAllMedalCount] = useState(0);
   const [awardList, setAwardList] = useState([]);
 
   useEffect(async () => {
     setAwardList(await GetAwardList());
+    const db = SQLite.openDatabase('test.db');
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT COUNT(get_flg = 1) AS getCount, COUNT(1) AS allCount FROM place_master;',
+        [],
+        (_, res) => {
+          setGetMedalCount(res.rows._array[0].getCount);
+          setAllMedalCount(res.rows._array[0].allCount);
+        },
+      );
+    });
   }, []);
 
   return (
@@ -143,8 +156,8 @@ export default function AwardsScreen() {
               <Text style={styles.rankLabelText}> Medals</Text>
             </View>
             <View style={styles.rightLabelView}>
-              <Text style={styles.rankText}> 234</Text>
-              <Text style={styles.rankLabelText}> / 2345</Text>
+              <Text style={styles.rankText}> {getMedalCount}</Text>
+              <Text style={styles.rankLabelText}> / {allMedalCount}</Text>
             </View>
           </View>
 

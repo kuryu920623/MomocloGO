@@ -33,13 +33,19 @@ async function PlayAudio() {
 function AwardIconSet(props) {
   const { obj } = props;
   const [getCount, setGetCount] = useState(0);
+  const [iconColor, setIconColor] = useState('rgba(200,200,200,0.3)');
   useEffect(async () => {
     const db = SQLite.openDatabase('test.db');
     db.transaction((tx) => {
       tx.executeSql(
         obj.getCountSQL,
         [],
-        (_, res) => { setGetCount(res.rows._array[0].count); },
+        (_, res) => {
+          setGetCount(res.rows._array[0].count);
+          if (res.rows._array[0].count >= obj.targetCount) {
+            setIconColor(obj.iconColor);
+          }
+        },
       );
     });
     setGetCount(0);
@@ -55,7 +61,7 @@ function AwardIconSet(props) {
           setModalVisible(true);
         }}
       >
-        <Icon provider={obj.iconProvider} name={obj.iconName} color={obj.iconColor} size={48} />
+        <Icon provider={obj.iconProvider} name={obj.iconName} color={iconColor} size={48} />
       </TouchableOpacity>
       <View style={iconSetStyles.progressView}>
         <ProgressMeter persentage={getCount / obj.targetCount} />

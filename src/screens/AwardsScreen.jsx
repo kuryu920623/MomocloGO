@@ -150,44 +150,6 @@ export default function AwardsScreen() {
 
           {renderIcons(awardList).map((obj) => obj)}
 
-          <View style={styles.awardsRowView}>
-            <View style={styles.awardsColView}>
-              <FontAwesome5 name="award" size={48} color="#C47222" />
-              <ProgressMeter persentage={1} />
-            </View>
-            <View style={styles.awardsColView}>
-              <FontAwesome5 name="award" size={48} color="rgba(200,200,200,0.3)" />
-              <ProgressMeter persentage={0.6} />
-            </View>
-            <View style={styles.awardsColView}>
-              <FontAwesome5 name="award" size={48} color="rgba(200,200,200,0.3)" />
-              <ProgressMeter persentage={0.3} />
-            </View>
-            <View style={styles.awardsColView}>
-              <FontAwesome5 name="award" size={48} color="rgba(200,200,200,0.3)" />
-              <ProgressMeter persentage={0.1} />
-            </View>
-          </View>
-
-          <View style={styles.awardsRowView}>
-            <View style={styles.awardsColView}>
-              <Ionicons name="restaurant" size={48} color="#C47222" />
-              <ProgressMeter persentage={1} />
-            </View>
-            <View style={styles.awardsColView}>
-              <Ionicons name="restaurant" size={48} color="#A0A0A0" />
-              <ProgressMeter persentage={1} />
-            </View>
-            <View style={styles.awardsColView}>
-              <Ionicons name="restaurant" size={48} color="rgba(200,200,200,0.3)" />
-              <ProgressMeter persentage={0.6} />
-            </View>
-            <View style={styles.awardsColView}>
-              <Ionicons name="restaurant" size={48} color="rgba(200,200,200,0.3)" />
-              <ProgressMeter persentage={0.3} />
-            </View>
-          </View>
-
           {/* <View style={styles.awardsRowView}>
             <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />
             <AwardIconSet icon={<MaterialIcons name="wb-sunny" size={48} color="red" />} progress={1} />

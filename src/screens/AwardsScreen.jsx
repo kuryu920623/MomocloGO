@@ -73,26 +73,11 @@ AwardIconSet.propTypes = {
   obj: shape().isRequired,
 };
 
-function renderIcons(awardList) {
-  let row = 0;
-  const rowList = [];
-  while (true) {
-    const awards = awardList.slice(row * 4, row * 4 + 4);
-    if (awards.length === 0) { break; }
-    rowList.push(
-      <View style={styles.awardsRowView} key={row}>
-        {awards.map((obj) => <AwardIconSet obj={obj} />)}
-      </View>,
-    );
-    row += 1;
-  }
-  return rowList;
-}
-
 const iconSetStyles = {
   awardsColView: {
     width: '25%',
     alignItems: 'center',
+    marginTop: 20,
   },
   iconView: {
     height: 50,
@@ -160,16 +145,15 @@ export default function AwardsScreen() {
             </View>
           </View>
 
-          {renderIcons(awardList).map((obj) => obj)}
+          <View style={styles.awardsRowView}>
+            {awardList.map((obj, index) => <AwardIconSet obj={obj} key={index} />)}
+          </View>
 
         </LinearGradient>
       </ScrollView>
     </>
   );
 }
-
-AwardsScreen.propTypes = {
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -204,16 +188,9 @@ const styles = StyleSheet.create({
     fontSize: 40,
   },
 
-  awardsContainer: {
-    marginTop: 15,
-  },
   awardsRowView: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    marginTop: 15,
-  },
-  awardsColView: {
-    width: '25%',
-    alignItems: 'center',
+    flexWrap: 'wrap',
   },
 });

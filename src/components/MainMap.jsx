@@ -46,17 +46,6 @@ const MainMap = memo((props) => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
-    const db = SQLite.openDatabase('test.db');
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT * FROM place_master WHERE longitude IS NOT NULL LIMIT 300;',
-        [],
-        (_, res) => { setPlaces(res.rows._array); },
-      );
-    });
-  }, []);
-
-  useEffect(() => {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') { return; }
@@ -66,8 +55,22 @@ const MainMap = memo((props) => {
       location.latitude = tmp.coords.latitude;
       location.longitude = tmp.coords.longitude;
       setCurrentLocation(location);
+
+      const db = SQLite.openDatabase('test.db');
+      db.transaction((tx) => {
+        tx.executeSql(
+          [
+            'SELECT * FROM place_master WHERE longitude IS NOT NULL',
+            'ORDER BY ABS(longitude - ?) + ABS(latitude - ?) ASC LIMIT 200;',
+          ].join(' '),
+          [location.longitude, location.latitude],
+          (_, res) => { setPlaces(res.rows._array); },
+        );
+      });
     })();
   }, []);
+
+  console.log('render Map');
 
   return (
     <MapView

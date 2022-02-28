@@ -92,6 +92,8 @@ export default function AwardsScreen() {
   [modalBlock, setModalBlock] = useState(<Text>test</Text>);
   const [getMedalCount, setGetMedalCount] = useState(0);
   const [allMedalCount, setAllMedalCount] = useState(0);
+  const [userRanking, setUserRanking] = useState(0);
+  const [allUserCount, setAllUserCount] = useState(0);
   const [awardList, setAwardList] = useState([]);
 
   useEffect(async () => {
@@ -107,6 +109,10 @@ export default function AwardsScreen() {
         },
       );
     });
+
+    // firebaseからユーザーランキング取得する処理
+    // setUserRanking(123)
+    // setAllUserCount(456)
   }, []);
 
   return (
@@ -129,8 +135,8 @@ export default function AwardsScreen() {
               <Text style={styles.rankLabelText}> Ranking</Text>
             </View>
             <View style={styles.rightLabelView}>
-              <Text style={styles.rankText}> 123</Text>
-              <Text style={styles.rankLabelText}> / 1234</Text>
+              <Text style={styles.rankText}>{userRanking}</Text>
+              <Text style={styles.rankLabelText}>{` / ${allUserCount}`}</Text>
             </View>
           </View>
 

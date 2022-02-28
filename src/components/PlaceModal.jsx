@@ -23,12 +23,13 @@ async function PlayAudio(file) {
 
 function CulcDistanceMeter(lat1, lng1, lat2, lng2) {
   const R = Math.PI / 180;
-  lat1 *= R;
-  lng1 *= R;
-  lat2 *= R;
-  lng2 *= R;
-  const distance = 6371 * Math.acos(Math.cos(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1)
-    + Math.sin(lat1) * Math.sin(lat2)) * 1000;
+  const lat1rad = lat1 * R;
+  const lng1rad = lng1 * R;
+  const lat2rad = lat2 * R;
+  const lng2rad = lng2 * R;
+  const distance = 6371 * Math.acos(Math.cos(lat1rad)
+    * Math.cos(lat2rad) * Math.cos(lng2rad - lng1rad)
+    + Math.sin(lat1rad) * Math.sin(lat2rad)) * 1000;
   return distance;
 }
 
@@ -69,8 +70,6 @@ function GetButton(placeSeq, setButtonComponent) {
 
 function UpdateGetPlace(placeSeq) {
   const _sqlUpdate = 'UPDATE place_master SET get_flg = 1, got_at = ? WHERE place_seq = ?';
-  // 更新はいったん止めておく
-  const sqlUpdate = 'UPDATE place_master SET get_flg = 1, got_at = ? WHERE place_seq = 12456';
   const db = SQLite.openDatabase('test.db');
   db.transaction((tx) => {
     tx.executeSql(
@@ -78,6 +77,7 @@ function UpdateGetPlace(placeSeq) {
       [Date.now(), placeSeq],
       (_, res) => {
         // firebaseに連携
+        // ピンを再描画する処理
       },
     );
   });

@@ -1,4 +1,6 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, {
+  useState, useEffect, useMemo,
+} from 'react';
 import { StyleSheet } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -7,35 +9,39 @@ import * as SQLite from 'expo-sqlite';
 import { Audio } from 'expo-av';
 import PlaceModal from './PlaceModal';
 
+const flagRed = require('../../assets/images/flag_red.png');
+const flagBlack = require('../../assets/images/flag_black.png');
+const modaOprn = require('../../assets/sounds/modal_open.mp3');
+
 let setModalBlock;
 let setModalVisible;
 
 async function PlayAudio() {
   const soundObj = new Audio.Sound();
-  await soundObj.loadAsync(require('../../assets/sounds/modal_open.mp3'));
+  await soundObj.loadAsync(modaOprn);
   await soundObj.playAsync();
 }
 
-function GenMarkerComponent(obj) {
+function GenMarkerComponent(obj, resetMap) {
+  const {
+    get_flg, place_seq, latitude, longitude,
+  } = obj;
+  const flag = get_flg ? flagRed : flagBlack;
   return (
     <Marker
-      key={obj.place_seq}
-      coordinate={{
-        latitude: obj.latitude,
-        longitude: obj.longitude,
-      }}
+      key={place_seq}
+      coordinate={{ latitude, longitude }}
       onPress={() => {
-        setModalBlock(<PlaceModal placeObj={obj} />);
+        setModalBlock(<PlaceModal placeObj={obj} resetMap={resetMap} />);
         setModalVisible(true);
         PlayAudio();
       }}
-      pinColor={obj.get_flg ? 'blue' : 'red'}
-      opacity={obj.get_flg ? 0.7 : 1}
+      image={flag}
     />
   );
 }
 
-const MainMap = memo((props) => {
+function MainMap(props) {
   setModalBlock = props.setModalBlock;
   setModalVisible = props.setModalVisible;
 
@@ -44,6 +50,7 @@ const MainMap = memo((props) => {
     longitude: 139.698257,
   });
   const [places, setPlaces] = useState([]);
+  const [map, setMap] = useState(0);
 
   useEffect(() => {
     (async () => {
@@ -68,11 +75,9 @@ const MainMap = memo((props) => {
         );
       });
     })();
-  }, []);
+  }, [map]);
 
-  console.log('render Map');
-
-  return (
+  const baseMap = useMemo(() => (
     <MapView
       provider={PROVIDER_GOOGLE}
       style={styles.map}
@@ -91,10 +96,12 @@ const MainMap = memo((props) => {
       toolbarEnabled={false}
       moveOnMarkerPress={false}
     >
-      {places.map((obj) => GenMarkerComponent(obj))}
+      {places.map((obj) => GenMarkerComponent(obj, setMap))}
     </MapView>
-  );
-});
+  ), [map, places]);
+
+  return baseMap;
+}
 
 MainMap.propTypes = {
   setModalBlock: func.isRequired,

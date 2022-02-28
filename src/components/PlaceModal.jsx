@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import * as Location from 'expo-location';
 import {
-  bool, number, shape, string,
+  number, shape, string, func,
 } from 'prop-types';
 import * as SQLite from 'expo-sqlite';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -48,7 +48,7 @@ function AlreadyGotButton() {
   );
 }
 
-function GetButton(placeSeq, setButtonComponent) {
+function GetButton(placeSeq, setButtonComponent, resetMap) {
   return (
     <Button
       label={<MaterialCommunityIcons name="medal-outline" size={32} color="black" />}
@@ -60,26 +60,20 @@ function GetButton(placeSeq, setButtonComponent) {
         backgroundColor: '#ffbc38',
       }}
       onPress={() => {
-        UpdateGetPlace(placeSeq);
+        UpdateGetPlace(placeSeq, resetMap);
         PlayAudio(medalGetAudio);
         setButtonComponent(AlreadyGotButton());
+        resetMap(Math.random());
       }}
     />
   );
 }
 
 function UpdateGetPlace(placeSeq) {
-  const _sqlUpdate = 'UPDATE place_master SET get_flg = 1, got_at = ? WHERE place_seq = ?';
+  const sqlUpdate = 'UPDATE place_master SET get_flg = 1, got_at = ? WHERE place_seq = ?';
   const db = SQLite.openDatabase('test.db');
   db.transaction((tx) => {
-    tx.executeSql(
-      _sqlUpdate,
-      [Date.now(), placeSeq],
-      (_, res) => {
-        // firebaseに連携
-        // ピンを再描画する処理
-      },
-    );
+    tx.executeSql(sqlUpdate, [Date.now(), placeSeq]);
   });
 }
 
@@ -100,7 +94,7 @@ function farFromPlaceButton() {
 }
 
 export default function PlaceModal(props) {
-  const { placeObj } = props;
+  const { placeObj, resetMap } = props;
   const [distance, setDistance] = useState('');
   const [buttonComponent, setButtonComponent] = useState(null);
 
@@ -130,8 +124,8 @@ export default function PlaceModal(props) {
         (_, result) => {
           if (result.rows._array[0].get_flg) {
             setButtonComponent(AlreadyGotButton());
-          } else if (distMeter < 50) {
-            setButtonComponent(GetButton(placeObj.place_seq, setButtonComponent));
+          } else if (distMeter < 5000) {
+            setButtonComponent(GetButton(placeObj.place_seq, setButtonComponent, resetMap));
           } else {
             setButtonComponent(farFromPlaceButton());
           }
@@ -151,7 +145,7 @@ export default function PlaceModal(props) {
         <Text>{placeObj.detail}</Text>
       </View>
       <View style={[styles.views, styles.distanceView]}>
-        <Text>約 {distance}</Text>
+        <Text>{`約 ${distance}`}</Text>
       </View>
       <View style={[styles.views, styles.getButtonComponent]}>
         {buttonComponent}
@@ -161,10 +155,10 @@ export default function PlaceModal(props) {
 }
 
 PlaceModal.propTypes = {
+  resetMap: func.isRequired,
   placeObj: shape({
     latitude: number,
     longitude: number,
-    // get_flg: bool,
     name: string,
     detail: string,
   }).isRequired,

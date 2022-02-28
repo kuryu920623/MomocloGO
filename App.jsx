@@ -27,7 +27,7 @@ if (firebase.apps.length === 0) {
 function TabScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="Awards"
+      initialRouteName="Map"
       screenOptions={{
         tabBarActiveTintColor: 'black',
         tabBarActiveBackgroundColor: 'gray',

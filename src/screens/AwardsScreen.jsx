@@ -61,7 +61,7 @@ function AwardIconSet(props) {
           setModalVisible(true);
         }}
       >
-        <Icon provider={obj.iconProvider} name={obj.iconName} color={iconColor} size={48} />
+        <Icon provider={obj.iconProvider} name={obj.iconName} color={iconColor} size={36} />
       </TouchableOpacity>
       <View style={iconSetStyles.progressView}>
         <ProgressMeter persentage={getCount / obj.targetCount} />
@@ -81,7 +81,21 @@ const iconSetStyles = {
     marginTop: 20,
   },
   iconView: {
+    width: 50,
     height: 50,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 2,
+      height: 0,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 1,
+
   },
   progressView: {
     height: 10,
@@ -125,14 +139,14 @@ export default function AwardsScreen() {
       <ScrollView>
         <LinearGradient
           style={styles.container}
-          colors={['rgba(234,246,255,0.6)', 'rgba(183,225,254,0.4)']}
+          colors={['rgba(234,246,255,1)', 'rgba(183,225,255,0.5)']}
           start={{ x: 0.7, y: 0.7 }}
           end={{ x: 0.3, y: 0.3 }}
         >
 
           <View style={[styles.views, styles.rankingView]}>
             <View style={styles.leftLabelView}>
-              <FontAwesome5 name="crown" size={48} color="#ffcc66" />
+              <FontAwesome5 name="crown" size={48} color="#ffcc66" style={styles.test} />
               <Text style={styles.rankLabelText}> Ranking</Text>
             </View>
             <View style={styles.rightLabelView}>

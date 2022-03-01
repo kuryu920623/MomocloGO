@@ -9,7 +9,7 @@ import * as SQLite from 'expo-sqlite';
 import { Audio } from 'expo-av';
 import PlaceModal from './PlaceModal';
 
-const flagRed = require('../../assets/images/flag_red.png');
+const flagOrange = require('../../assets/images/flag_orange.png');
 const flagBlack = require('../../assets/images/flag_black.png');
 const modaOprn = require('../../assets/sounds/modal_open.mp3');
 
@@ -26,7 +26,7 @@ function GenMarkerComponent(obj, resetMap) {
   const {
     get_flg, place_seq, latitude, longitude,
   } = obj;
-  const flag = get_flg ? flagRed : flagBlack;
+  const flag = get_flg ? flagOrange : flagBlack;
   return (
     <Marker
       key={place_seq}

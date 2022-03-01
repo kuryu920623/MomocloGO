@@ -75,7 +75,7 @@ const renderTable = (region) => {
   const db = SQLite.openDatabase('test.db');
   db.transaction((tx) => {
     tx.executeSql(
-      `SELECT * FROM place_master WHERE ${regions[region]} ORDER BY place_seq ASC LIMIT 100;`,
+      `SELECT * FROM place_master WHERE ${regions[region]} ORDER BY place_seq ASC;`,
       [],
       (_, res) => { setPlaceObjects(res.rows._array); },
       (_, err) => { console.log(err); },
@@ -109,7 +109,9 @@ const linkIDStyles = StyleSheet.create({
 function placeObjectToData(row) {
   const data = [];
   if (row.get_flg) {
-    data.push(<FontAwesome name="flag" size={18} color="red" style={{}} />);
+    data.push(
+      <FontAwesome name="flag" size={18} color="rgb(255, 133, 133)" style={{ alignSelf: 'center' }} />
+    );
   } else {
     data.push('');
   }
@@ -119,14 +121,13 @@ function placeObjectToData(row) {
   data.push(row.name.substr(0, 10));
   data.push(row.tag);
   data.push(row.address);
-  data.push(row.detail.substr(0, 15));
   return data;
 }
 
 export default function ListScreen() {
   const state = {
-    tableHead: ['取得', 'ID', '都道府県', '名称', 'タグ', '住所', '詳細'],
-    widthArr: [40, 60, 80, 100, 100, 140, 160],
+    tableHead: ['取得', 'ID', '都道府県', '名称', 'タグ', '住所'],
+    widthArr: [40, 60, 80, 100, 100, 140],
   };
 
   [placeObjects, setPlaceObjects] = useState([]);

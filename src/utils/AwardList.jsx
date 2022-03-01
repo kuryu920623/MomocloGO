@@ -5,7 +5,7 @@ export default async function GetAwardList() {
   const awardList = [
     {
       title: '弐桃兵',
-      description: '聖地のメダルを 1 個獲得する。',
+      description: '聖地のフラグを 1 個獲得する。',
       targetCount: 1,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       iconProvider: 'FontAwesome5',
@@ -14,7 +14,7 @@ export default async function GetAwardList() {
     },
     {
       title: '壱桃兵',
-      description: '聖地のメダルを 5 個獲得する。',
+      description: '聖地のフラグを 5 個獲得する。',
       targetCount: 5,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       iconProvider: 'FontAwesome5',
@@ -23,7 +23,7 @@ export default async function GetAwardList() {
     },
     {
       title: '上桃兵',
-      description: '聖地のメダルを 10 個獲得する。',
+      description: '聖地のフラグを 10 個獲得する。',
       targetCount: 10,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       iconProvider: 'FontAwesome5',
@@ -32,7 +32,7 @@ export default async function GetAwardList() {
     },
     {
       title: '桃伍長',
-      description: '聖地のメダルを 30 個獲得する。',
+      description: '聖地のフラグを 30 個獲得する。',
       targetCount: 30,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       iconProvider: 'FontAwesome5',
@@ -42,7 +42,7 @@ export default async function GetAwardList() {
 
     {
       title: '桃軍曹',
-      description: '聖地のメダルを 50 個獲得する。',
+      description: '聖地のフラグを 50 個獲得する。',
       targetCount: 50,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       iconProvider: 'FontAwesome5',
@@ -51,7 +51,7 @@ export default async function GetAwardList() {
     },
     {
       title: '桃曹長',
-      description: '聖地のメダルを 200 個獲得する。',
+      description: '聖地のフラグを 200 個獲得する。',
       targetCount: 200,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       iconProvider: 'FontAwesome5',
@@ -60,7 +60,7 @@ export default async function GetAwardList() {
     },
     {
       title: '桃少尉',
-      description: '聖地のメダルを 300 個獲得する。',
+      description: '聖地のフラグを 300 個獲得する。',
       targetCount: 300,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       iconProvider: 'FontAwesome5',
@@ -69,7 +69,7 @@ export default async function GetAwardList() {
     },
     {
       title: '桃大尉',
-      description: '聖地のメダルを 500 個獲得する。',
+      description: '聖地のフラグを 500 個獲得する。',
       targetCount: 500,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       iconProvider: 'FontAwesome5',
@@ -79,7 +79,7 @@ export default async function GetAwardList() {
 
     {
       title: 'こってりパトロール見習い隊員',
-      description: 'こってりパトロールで紹介されたお店のメダルを 1 個獲得する。',
+      description: 'こってりパトロールで紹介されたお店のフラグを 1 個獲得する。',
       targetCount: 1,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       iconProvider: 'Ionicons',
@@ -88,7 +88,7 @@ export default async function GetAwardList() {
     },
     {
       title: 'こってりパトロール正隊員',
-      description: 'こってりパトロールで紹介されたお店のメダルを 5 個獲得する。',
+      description: 'こってりパトロールで紹介されたお店のフラグを 5 個獲得する。',
       targetCount: 5,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       iconProvider: 'Ionicons',
@@ -97,7 +97,7 @@ export default async function GetAwardList() {
     },
     {
       title: 'こってりパトロール司令官',
-      description: 'こってりパトロールで紹介されたお店のメダルを 10 個獲得する。',
+      description: 'こってりパトロールで紹介されたお店のフラグを 10 個獲得する。',
       targetCount: 10,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       iconProvider: 'Ionicons',
@@ -106,7 +106,7 @@ export default async function GetAwardList() {
     },
     {
       title: 'こってりパトロール総監',
-      description: 'こってりパトロールで紹介されたお店のメダルを 20 個獲得する。',
+      description: 'こってりパトロールで紹介されたお店のフラグを 20 個獲得する。',
       targetCount: 20,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
       iconProvider: 'Ionicons',
@@ -116,7 +116,7 @@ export default async function GetAwardList() {
 
     {
       title: 'デコノフ Lv.1',
-      description: 'タグ「百田夏菜子」のメダルを 3 個獲得する。',
+      description: 'タグ「百田夏菜子」のフラグを 3 個獲得する。',
       targetCount: 3,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "百田夏菜子";',
       iconProvider: 'MaterialIcons',
@@ -125,7 +125,7 @@ export default async function GetAwardList() {
     },
     {
       title: 'デコノフ Lv.2',
-      description: 'タグ「百田夏菜子」のメダルを 10 個獲得する。',
+      description: 'タグ「百田夏菜子」のフラグを 10 個獲得する。',
       targetCount: 10,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "百田夏菜子";',
       iconProvider: 'MaterialIcons',
@@ -134,7 +134,7 @@ export default async function GetAwardList() {
     },
     {
       title: 'デコノフ Lv.3',
-      description: 'タグ「百田夏菜子」のメダルを 30 個獲得する。',
+      description: 'タグ「百田夏菜子」のフラグを 30 個獲得する。',
       targetCount: 30,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "百田夏菜子";',
       iconProvider: 'MaterialIcons',
@@ -143,7 +143,7 @@ export default async function GetAwardList() {
     },
     {
       title: 'デコノフ Lv.4',
-      description: 'タグ「百田夏菜子」のメダルを 50 個獲得する。',
+      description: 'タグ「百田夏菜子」のフラグを 50 個獲得する。',
       targetCount: 50,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "百田夏菜子";',
       iconProvider: 'MaterialIcons',
@@ -153,7 +153,7 @@ export default async function GetAwardList() {
 
     {
       title: 'タマノフ Lv.1',
-      description: 'タグ「玉井詩織」のメダルを 3 個獲得する。',
+      description: 'タグ「玉井詩織」のフラグを 3 個獲得する。',
       targetCount: 3,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
       iconName: 'sunflower',
@@ -161,7 +161,7 @@ export default async function GetAwardList() {
     },
     {
       title: 'タマノフ Lv.2',
-      description: 'タグ「玉井詩織」のメダルを 10 個獲得する。',
+      description: 'タグ「玉井詩織」のフラグを 10 個獲得する。',
       targetCount: 10,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
       iconName: 'sunflower',
@@ -169,7 +169,7 @@ export default async function GetAwardList() {
     },
     {
       title: 'タマノフ Lv.3',
-      description: 'タグ「玉井詩織」のメダルを 30 個獲得する。',
+      description: 'タグ「玉井詩織」のフラグを 30 個獲得する。',
       targetCount: 30,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
       iconName: 'sunflower',
@@ -177,7 +177,7 @@ export default async function GetAwardList() {
     },
     {
       title: 'タマノフ Lv.4',
-      description: 'タグ「玉井詩織」のメダルを 50 個獲得する。',
+      description: 'タグ「玉井詩織」のフラグを 50 個獲得する。',
       targetCount: 50,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
       iconName: 'sunflower',
@@ -186,7 +186,7 @@ export default async function GetAwardList() {
 
     {
       title: 'プニノフ Lv.1',
-      description: 'タグ「佐々木彩夏」のメダルを 3 個獲得する。',
+      description: 'タグ「佐々木彩夏」のフラグを 3 個獲得する。',
       targetCount: 3,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
       iconProvider: 'AntDesign',
@@ -196,7 +196,7 @@ export default async function GetAwardList() {
 
     {
       title: 'タカノフ Lv.1',
-      description: 'タグ「高城れに」のメダルを 3 個獲得する。',
+      description: 'タグ「高城れに」のフラグを 3 個獲得する。',
       targetCount: 3,
       getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND tag = "玉井詩織";',
       iconName: 'eggplant',

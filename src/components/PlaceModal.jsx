@@ -60,10 +60,12 @@ function GetButton(placeSeq, setButtonComponent, resetMap) {
         backgroundColor: '#ffbc38',
       }}
       onPress={() => {
-        UpdateGetPlace(placeSeq, resetMap);
+        UpdateGetPlace(placeSeq);
         PlayAudio(medalGetAudio);
         setButtonComponent(AlreadyGotButton());
-        resetMap(Math.random());
+        if (resetMap !== null) {
+          resetMap(Math.random());
+        }
       }}
     />
   );
@@ -155,13 +157,17 @@ export default function PlaceModal(props) {
 }
 
 PlaceModal.propTypes = {
-  resetMap: func.isRequired,
+  resetMap: func,
   placeObj: shape({
     latitude: number,
     longitude: number,
     name: string,
     detail: string,
   }).isRequired,
+};
+
+PlaceModal.defaultProps = {
+  resetMap: null,
 };
 
 const styles = StyleSheet.create({

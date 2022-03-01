@@ -157,8 +157,8 @@ export default function AwardsScreen() {
 
           <View style={[styles.views, styles.rankingView]}>
             <View style={styles.leftLabelView}>
-              <MaterialCommunityIcons name="medal-outline" size={48} color="#ffcc66" />
-              <Text style={styles.rankLabelText}> Medals</Text>
+              <Icon name="flag" size={48} color="rgb(255, 133, 133)" />
+              <Text style={styles.rankLabelText}> Flags</Text>
             </View>
             <View style={styles.rightLabelView}>
               <Text style={styles.rankText}>{` ${getMedalCount}`}</Text>

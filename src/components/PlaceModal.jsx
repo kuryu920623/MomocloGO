@@ -43,7 +43,7 @@ function AlreadyGotButton() {
       containerStyle={{
         backgroundColor: 'gray',
       }}
-      onPress={() => { PlayAudio(medalCantGetAudio); }}
+      // onPress={() => { PlayAudio(medalCantGetAudio); }}
     />
   );
 }

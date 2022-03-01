@@ -17,13 +17,14 @@ import AwardModal from '../components/AwardModal';
 
 import GetAwardList from '../utils/AwardList';
 
+const modalOpenAudio = require('../../assets/sounds/modal_open.mp3');
+
 let modalVisible;
 let setModalVisible;
 let modalBlock;
 let setModalBlock;
 
 async function PlayAudio() {
-  const modalOpenAudio = require('../../assets/sounds/modal_open.mp3');
   const soundObj = new Audio.Sound();
   await soundObj.loadAsync(modalOpenAudio);
   await soundObj.playAsync();

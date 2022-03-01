@@ -27,7 +27,7 @@ if (firebase.apps.length === 0) {
 function TabScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="Map"
+      initialRouteName="List"
       screenOptions={{
         tabBarActiveTintColor: 'black',
         tabBarActiveBackgroundColor: 'gray',
@@ -36,7 +36,7 @@ function TabScreen() {
       <Tab.Screen
         name="Awards"
         component={AwardsScreen}
-        options={{ tabBarIcon: () => <FontAwesome5 name="award" size={28}/> }}
+        options={{ tabBarIcon: () => <FontAwesome5 name="award" size={28}/>, unmountOnBlur: true }}
       />
       <Tab.Screen
         name="Map"
@@ -46,12 +46,12 @@ function TabScreen() {
       <Tab.Screen
         name="List"
         component={TestScreen}
-        options={{ tabBarIcon: () => <AntDesign  name="table" size={28}/> }}
+        options={{ tabBarIcon: () => <AntDesign  name="table" size={28}/>, unmountOnBlur: true }}
       />
       <Tab.Screen
         name="Friends"
         component={TestScreen}
-        options={{ tabBarIcon: () => <FontAwesome5  name="user-friends" size={28}/> }}
+        options={{ tabBarIcon: () => <FontAwesome5  name="user-friends" size={28}/>, unmountOnBlur: true }}
       />
     </Tab.Navigator>
   );

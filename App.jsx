@@ -12,6 +12,7 @@ import SignUpScreen from './src/screens/SignUpScreen';
 import LogInScreen from './src/screens/LogInScreen';
 import MapScreen from './src/screens/MapScreen';
 import AwardsScreen from './src/screens/AwardsScreen';
+import ListScreen from './src/screens/ListScreen';
 import TestScreen from './src/screens/TestScreen';
 import CopyDefaultDatabase from './src/utils/InitDataBase';
 
@@ -45,7 +46,7 @@ function TabScreen() {
       />
       <Tab.Screen
         name="List"
-        component={TestScreen}
+        component={ListScreen}
         options={{ tabBarIcon: () => <AntDesign  name="table" size={28}/>, unmountOnBlur: true }}
       />
       <Tab.Screen

@@ -1,16 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Platform, Text, View, StyleSheet, TouchableOpacity, Animated } from 'react-native';
-import * as Location from 'expo-location';
-import * as SQLite from 'expo-sqlite';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {
+  Platform, Text, View, StyleSheet, TouchableOpacity, Animated, Button,
+} from 'react-native';
+import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import Icon from '../components/Icon';
 
 const AnimatedIcon = Animated.createAnimatedComponent(MaterialCommunityIcons);
+const AnimIconCustom = Animated.createAnimatedComponent(FontAwesome5);
 
 export default function TestScreen() {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
   const animatedValue = useRef(new Animated.Value(0)).current;
+
+  const animValCustom = useRef(new Animated.Value(1)).current;
+  const customFadeIn = () => {
+    Animated.timing(animValCustom, { toValue: 1, duration: 500, useNativeDriver: false }).start();
+  };
+  const customFadeOut = () => {
+    Animated.timing(animValCustom, { toValue: 0, duration: 500, useNativeDriver: false }).start();
+  };
 
   const interPolateColor = animatedValue.interpolate({
     inputRange: [0, 150],
@@ -22,46 +29,78 @@ export default function TestScreen() {
     outputRange: [28, 38, 34, 28],
   });
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
+  // fadeAnim will be used as the value for opacity. Initial Value: 0
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);
+  const fadeIn = () => {
+    // Will change fadeAnim value to 1 in 5 seconds
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: false,
+    }).start();
+  };
 
-  let text = 'Waiting..';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
+  const fadeOut = () => {
+    // Will change fadeAnim value to 0 in 3 seconds
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 1000,
+      useNativeDriver: false,
+    }).start();
+  };
 
-  const db = SQLite.openDatabase('test.db');
 
   return (
     <View>
+      <TouchableOpacity onPress={customFadeOut}>
+        <AnimIconCustom style={{ opacity: animValCustom }} name="crown" size={32} />
+      </TouchableOpacity>
 
-      <Text>{text}</Text>
-      <Icon name="sunflower" size={50} color="yellow" />
-      <TouchableOpacity onPress={() => {
-        Animated.timing(animatedValue, {
-          toValue: 150,
-          duration: 200,
-          useNativeDriver: false,
-        }).start();
-      }}>
+
+      <TouchableOpacity
+        onPress={() => {
+          Animated.timing(animatedValue, {
+            toValue: 150,
+            duration: 200,
+            useNativeDriver: false,
+          }).start();
+        }}
+      >
         <Animated.Text style={{color: interPolateColor}}>
           <AnimatedIcon name="medal-outline" size={32} style={{fontSize: interPolateSize}} />
         </Animated.Text>
       </TouchableOpacity>
 
 
+      <Animated.View
+        style={[styles.fadingContainer, { opacity: fadeAnim }]}
+      >
+        <Text style={[styles.fadingText]}>Fading View!</Text>
+      </Animated.View>
+      <View style={styles.buttonRow}>
+        <Button title="Fade In View" onPress={fadeIn} />
+        <Button title="Fade Out View" onPress={fadeOut} />
+      </View>
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  fadingContainer: {
+    padding: 20,
+    backgroundColor: 'powderblue',
+  },
+  fadingText: {
+    fontSize: 28,
+  },
+  buttonRow: {
+    flexBasis: 100,
+    justifyContent: 'space-evenly',
+    marginVertical: 16,
+  },
+});

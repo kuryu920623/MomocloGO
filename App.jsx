@@ -47,7 +47,7 @@ function TabScreen() {
       <Tab.Screen
         name="List"
         component={ListScreen}
-        options={{ tabBarIcon: () => <AntDesign  name="table" size={28}/>, unmountOnBlur: true }}
+        options={{ tabBarIcon: () => <AntDesign  name="table" size={28}/> }}
       />
       <Tab.Screen
         name="Friends"

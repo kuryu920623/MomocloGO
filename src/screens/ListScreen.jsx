@@ -2,36 +2,69 @@ import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, Text, View, ScrollView, TouchableOpacity,
 } from 'react-native';
-import { Table, Row, Rows } from 'react-native-table-component';
+import { Table, Row } from 'react-native-table-component';
 import * as SQLite from 'expo-sqlite';
 import {
-  FontAwesome5, MaterialCommunityIcons, Ionicons, MaterialIcons, AntDesign,
+  FontAwesome, MaterialCommunityIcons, Ionicons, MaterialIcons, AntDesign,
 } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
-import { shape } from 'prop-types';
 
 import Icon from '../components/Icon';
+import { string } from 'prop-types';
 
+const flagRed = require('../../assets/images/flag_red.png');
 let placeObjects;
 let setPlaceObjects;
+let displayRegion;
 
 const regions = {
   '北海道・東北': "region = '北海道・東北'",
-  '関東(東京以外)': "region = '関東' AND prefecture <> '東京'",
+  '関東(東京以外)': "region = '関東' AND prefecture != '東京都'",
   '東京': '`prefecture` = "東京都"',
+  '中部': '`region` = "中部"',
+  '近畿': '`region` = "近畿"',
+  '中国・四国': '`region` = "中国・四国"',
+  '九州・沖縄': '`region` = "九州・沖縄"',
+  '外国': '`region` = "海外"',
 };
 
-function regionButton(region) {
-
+function RegionButton(props) {
+  const { region } = props;
   return (
-    <TouchableOpacity>
-      <></>
+    <TouchableOpacity
+      onPress={() => renderTable(region)}
+      style={regionStyles.button}
+    >
+      <Text style={regionStyles.text}>
+        {region}
+      </Text>
     </TouchableOpacity>
-  )
+  );
 }
 
-function renderTable(region) {
+const regionStyles = StyleSheet.create({
+  button: {
+    margin: 5,
+    marginBottom: 9,
+    backgroundColor: '#F9C7D1',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#000000',
+  },
+  text: {
+    fontSize: 18,
+    marginHorizontal: 10,
+    marginVertical: 5,
+  },
+});
+
+RegionButton.propTypes = {
+  region: string.isRequired,
+};
+
+const renderTable = (region) => {
+  displayRegion = region;
   const db = SQLite.openDatabase('test.db');
   db.transaction((tx) => {
     tx.executeSql(
@@ -41,12 +74,12 @@ function renderTable(region) {
       (_, err) => { console.log(err); },
     );
   });
-}
+};
 
 function placeObjectToData(row) {
   const data = [];
   if (row.get_flg) {
-    data.push(<FontAwesome5 name="flag" />);
+    data.push(<FontAwesome name="flag" size={18} color="red" style={{}} />);
   } else {
     data.push('');
   }
@@ -63,63 +96,85 @@ function placeObjectToData(row) {
 export default function ListScreen() {
   const state = {
     tableHead: ['取得', 'ID', '都道府県', '名称', 'タグ', '住所', '詳細'],
-    widthArr: [40, 60, 80, 100, 120, 140, 160],
+    widthArr: [40, 60, 80, 100, 100, 140, 160],
   };
 
   [placeObjects, setPlaceObjects] = useState([]);
 
   useEffect(async () => {
-    renderTable('関東(東京以外)');
+    renderTable('東京');
   }, []);
 
   return (
     <>
+      <ModalBase onPress={setModalVisible} modalVisible={modalVisible}>
+        {modalBlock}
+      </ModalBase>
+
       <View style={styles.regionView}>
-        <ScrollView horizontal>
-          <Text>45</Text>
+        <ScrollView horizontal showsVerticalScrollIndicator>
+          {Object.keys(regions).map(
+            (region, index) => <RegionButton region={region} key={index} />,
+          )}
         </ScrollView>
       </View>
 
-      <View style={styles.container}>
-        <ScrollView horizontal>
-          <View>
-            <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
-              <Row
-                data={state.tableHead}
-                widthArr={state.widthArr}
-                style={styles.header}
-                textStyle={styles.text}
-              />
-            </Table>
-            <ScrollView style={styles.dataWrapper}>
-              <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
-                {
-                  placeObjects.map((rowData, index) => (
-                    <Row
-                      key={index}
-                      data={placeObjectToData(rowData)}
-                      widthArr={state.widthArr}
-                      style={[styles.row, index % 2 && { backgroundColor: '#F7F6E7' }]}
-                      textStyle={styles.text}
-                    />
-                  ))
-                }
-              </Table>
-            </ScrollView>
-          </View>
-        </ScrollView>
+      <View style={styles.titleView}>
+        <Text style={styles.titleText}>{`表示地域: ${displayRegion}`}</Text>
       </View>
+
+      <ScrollView horizontal style={styles.tableContainer}>
+        <View>
+          <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
+            <Row
+              data={state.tableHead}
+              widthArr={state.widthArr}
+              style={styles.header}
+              textStyle={styles.text}
+            />
+          </Table>
+          <ScrollView style={styles.dataWrapper}>
+            <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
+              {
+                placeObjects.map((rowData, index) => (
+                  <Row
+                    key={index}
+                    data={placeObjectToData(rowData)}
+                    widthArr={state.widthArr}
+                    style={[styles.row, index % 2 && { backgroundColor: '#F7F6E7' }]}
+                    textStyle={styles.text}
+                  />
+                ))
+              }
+            </Table>
+          </ScrollView>
+        </View>
+      </ScrollView>
     </>
   );
 }
 const styles = StyleSheet.create({
   regionView: {
-    height: 40,
+    marginTop: 10,
     backgroundColor: 'white',
   },
-  container: { padding: 16, paddingTop: 30 },
-  header: { height: 50, backgroundColor: '#537791' },
+  titleView: {
+    alignItems: 'center',
+    margin: 10,
+  },
+  titleText: {
+    fontSize: 20,
+  },
+  tableContainer: {
+    marginHorizontal: 10,
+    marginBottom: 3,
+  },
+  header: { height: 50, backgroundColor: '#F9C7D1' },
   text: { textAlign: 'center', fontWeight: '100' },
   dataWrapper: { marginTop: -1 },
-  row: { height: 40, backgroundColor: '#E7E6E1' },
+  row: {
+    height: 40,
+    backgroundColor: '#E7E6E1',
+    justifyContent: 'center',
+  },
 });

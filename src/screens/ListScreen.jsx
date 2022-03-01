@@ -1,22 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   StyleSheet, Text, View, ScrollView, TouchableOpacity,
 } from 'react-native';
 import { Table, Row } from 'react-native-table-component';
 import * as SQLite from 'expo-sqlite';
-import {
-  FontAwesome, MaterialCommunityIcons, Ionicons, MaterialIcons, AntDesign,
-} from '@expo/vector-icons';
-import { Audio } from 'expo-av';
-import { LinearGradient } from 'expo-linear-gradient';
-
-import Icon from '../components/Icon';
+import { FontAwesome } from '@expo/vector-icons';
 import { string } from 'prop-types';
+import { Audio } from 'expo-av';
+import ModalBase from '../components/ModalBase';
+import PlaceModal from '../components/PlaceModal';
 
-const flagRed = require('../../assets/images/flag_red.png');
 let placeObjects;
 let setPlaceObjects;
 let displayRegion;
+let modalBlock;
+let modalVisible;
+let setModalVisible;
+
+const modaOprn = require('../../assets/sounds/modal_open.mp3');
+
+async function PlayAudio() {
+  const soundObj = new Audio.Sound();
+  await soundObj.loadAsync(modaOprn);
+  await soundObj.playAsync();
+}
 
 const regions = {
   '北海道・東北': "region = '北海道・東北'",
@@ -76,6 +83,29 @@ const renderTable = (region) => {
   });
 };
 
+function LinkID(props) {
+  const { row } = props;
+  return (
+    <TouchableOpacity
+      style={linkIDStyles.button}
+      onPress={() => {
+        PlayAudio();
+        modalBlock = <PlaceModal placeObj={row} setModalVisible={setModalVisible} />;
+        setModalVisible(true);
+      }}
+    >
+      <Text style={linkIDStyles.text}>
+        {row.place_seq}
+      </Text>
+    </TouchableOpacity>
+  );
+}
+
+const linkIDStyles = StyleSheet.create({
+  button: { alignSelf: 'center' },
+  text: { color: '#1a73e8', fontSize: 15, textDecorationLine: 'underline' },
+});
+
 function placeObjectToData(row) {
   const data = [];
   if (row.get_flg) {
@@ -84,7 +114,7 @@ function placeObjectToData(row) {
     data.push('');
   }
   // ホントはモーダル開く処理
-  data.push(row.place_seq);
+  data.push(<LinkID row={row} />);
   data.push(row.prefecture);
   data.push(row.name.substr(0, 10));
   data.push(row.tag);
@@ -100,10 +130,41 @@ export default function ListScreen() {
   };
 
   [placeObjects, setPlaceObjects] = useState([]);
+  [modalVisible, setModalVisible] = useState(false);
 
   useEffect(async () => {
     renderTable('東京');
   }, []);
+
+  const tableMemo = useMemo(() => (
+    <ScrollView horizontal style={styles.tableContainer}>
+      <View>
+        <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
+          <Row
+            data={state.tableHead}
+            widthArr={state.widthArr}
+            style={styles.header}
+            textStyle={styles.text}
+          />
+        </Table>
+        <ScrollView style={styles.dataWrapper}>
+          <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
+            {
+              placeObjects.map((rowData, index) => (
+                <Row
+                  key={index}
+                  data={placeObjectToData(rowData)}
+                  widthArr={state.widthArr}
+                  style={[styles.row, index % 2 && { backgroundColor: '#F7F6E7' }]}
+                  textStyle={styles.text}
+                />
+              ))
+            }
+          </Table>
+        </ScrollView>
+      </View>
+    </ScrollView>
+  ), [placeObjects]);
 
   return (
     <>
@@ -123,33 +184,7 @@ export default function ListScreen() {
         <Text style={styles.titleText}>{`表示地域: ${displayRegion}`}</Text>
       </View>
 
-      <ScrollView horizontal style={styles.tableContainer}>
-        <View>
-          <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
-            <Row
-              data={state.tableHead}
-              widthArr={state.widthArr}
-              style={styles.header}
-              textStyle={styles.text}
-            />
-          </Table>
-          <ScrollView style={styles.dataWrapper}>
-            <Table borderStyle={{ borderWidth: 1, borderColor: '#C1C0B9' }}>
-              {
-                placeObjects.map((rowData, index) => (
-                  <Row
-                    key={index}
-                    data={placeObjectToData(rowData)}
-                    widthArr={state.widthArr}
-                    style={[styles.row, index % 2 && { backgroundColor: '#F7F6E7' }]}
-                    textStyle={styles.text}
-                  />
-                ))
-              }
-            </Table>
-          </ScrollView>
-        </View>
-      </ScrollView>
+      {tableMemo}
     </>
   );
 }

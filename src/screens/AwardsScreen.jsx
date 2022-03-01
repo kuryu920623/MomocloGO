@@ -3,9 +3,7 @@ import {
   StyleSheet, Text, View, ScrollView, TouchableOpacity,
 } from 'react-native';
 import * as SQLite from 'expo-sqlite';
-import {
-  FontAwesome5, MaterialCommunityIcons, Ionicons, MaterialIcons, AntDesign,
-} from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
 import { shape } from 'prop-types';
@@ -95,7 +93,6 @@ const iconSetStyles = {
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 1,
-
   },
   progressView: {
     height: 10,

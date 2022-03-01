@@ -39,6 +39,7 @@
     "react-native-screens": "~3.10.1",
     "react-native-svg": "12.1.1",
     "react-native-table-component": "^1.2.2",
+    "react-native-table-component-2": "^2.0.0",
     "react-native-web": "0.17.1"
   },
   "devDependencies": {

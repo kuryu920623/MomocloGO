@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {
   StyleSheet, Text, View, ScrollView, TouchableOpacity,
 } from 'react-native';
-import { Table, Row } from 'react-native-table-component';
+import { Table, Row } from 'react-native-table-component-2';
 import * as SQLite from 'expo-sqlite';
 import { FontAwesome } from '@expo/vector-icons';
 import { string } from 'prop-types';
@@ -12,8 +12,8 @@ import PlaceModal from '../components/PlaceModal';
 
 let placeObjects;
 let setPlaceObjects;
-let displayRegion;
-let modalBlock;
+let displayRegion = '';
+let modalBlock = <Text>dummy</Text>;
 let modalVisible;
 let setModalVisible;
 
@@ -110,7 +110,7 @@ function placeObjectToData(row) {
   const data = [];
   if (row.get_flg) {
     data.push(
-      <FontAwesome name="flag" size={18} color="rgb(255, 133, 133)" style={{ alignSelf: 'center' }} />
+      <FontAwesome name="flag" size={18} color="rgb(255, 133, 133)" style={{ alignSelf: 'center' }} />,
     );
   } else {
     data.push('');

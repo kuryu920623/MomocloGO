@@ -7,7 +7,7 @@ import {
   number, shape, string, func,
 } from 'prop-types';
 import * as SQLite from 'expo-sqlite';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Icon from './Icon';
 import { Audio } from 'expo-av';
 
 import Button from './Button';
@@ -51,13 +51,21 @@ function AlreadyGotButton() {
 function GetButton(placeSeq, setButtonComponent, resetMap) {
   return (
     <Button
-      label={<MaterialCommunityIcons name="medal-outline" size={32} color="black" />}
+      label={<Icon name="flag" size={32} color="black" />}
       labelStyle={{
         fontSize: 24,
         height: null,
       }}
       containerStyle={{
         backgroundColor: '#ffbc38',
+        shadowColor: '#000000',
+        shadowOffset: {
+          width: 4,
+          height: 0,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 8,
+        elevation: 12,
       }}
       onPress={() => {
         UpdateGetPlace(placeSeq);
@@ -82,7 +90,7 @@ function UpdateGetPlace(placeSeq) {
 function farFromPlaceButton() {
   return (
     <Button
-      label={<MaterialCommunityIcons name="medal-outline" size={32} color="black" />}
+      label={<Icon name="flag" size={32} color="black" />}
       labelStyle={{
         fontSize: 18,
         height: null,

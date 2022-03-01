@@ -2,6 +2,13 @@ import * as SQLite from 'expo-sqlite';
 
 export default async function GetAwardList() {
   // iconSizeのデフォルトは48
+  const kotteriIds = [
+    1477, 1478, 1260, 840, 1261, 3268, 3153, 3152, 559, 560,
+    561, 1841, 839, 843, 632, 639, 640, 1160, 1164, 1165,
+    1166, 699, 703, 708, 1476,
+  ];
+  const kotteriSql = `SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1 AND place_seq IN (${kotteriIds.join(',')});`;
+
   const awardList = [
     {
       title: '弐桃兵',
@@ -81,7 +88,7 @@ export default async function GetAwardList() {
       title: 'こってりパトロール見習い隊員',
       description: 'こってりパトロールで紹介されたお店のフラグを 1 個獲得する。',
       targetCount: 1,
-      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
+      getCountSQL: kotteriSql,
       iconProvider: 'Ionicons',
       iconName: 'restaurant',
       iconColor: '#C47222',
@@ -90,7 +97,7 @@ export default async function GetAwardList() {
       title: 'こってりパトロール正隊員',
       description: 'こってりパトロールで紹介されたお店のフラグを 5 個獲得する。',
       targetCount: 5,
-      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
+      getCountSQL: kotteriSql,
       iconProvider: 'Ionicons',
       iconName: 'restaurant',
       iconColor: '#A0A0A0',
@@ -99,7 +106,7 @@ export default async function GetAwardList() {
       title: 'こってりパトロール司令官',
       description: 'こってりパトロールで紹介されたお店のフラグを 10 個獲得する。',
       targetCount: 10,
-      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
+      getCountSQL: kotteriSql,
       iconProvider: 'Ionicons',
       iconName: 'restaurant',
       iconColor: '#E8DC00',
@@ -108,7 +115,7 @@ export default async function GetAwardList() {
       title: 'こってりパトロール総監',
       description: 'こってりパトロールで紹介されたお店のフラグを 20 個獲得する。',
       targetCount: 20,
-      getCountSQL: 'SELECT COUNT(1) AS count FROM place_master WHERE get_flg = 1;',
+      getCountSQL: kotteriSql,
       iconProvider: 'Ionicons',
       iconName: 'restaurant',
       iconColor: '#444444',

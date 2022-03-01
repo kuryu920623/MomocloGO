@@ -16,7 +16,9 @@ import ListScreen from './src/screens/ListScreen';
 import TestScreen from './src/screens/TestScreen';
 import CopyDefaultDatabase from './src/utils/InitDataBase';
 
-LogBox.ignoreLogs(['AsyncStorage has been extracted']);
+LogBox.ignoreLogs([
+  'AsyncStorage has been extracted',
+]);
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,7 +30,7 @@ if (firebase.apps.length === 0) {
 function TabScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="List"
+      initialRouteName="Awards"
       screenOptions={{
         tabBarActiveTintColor: 'black',
         tabBarActiveBackgroundColor: 'gray',

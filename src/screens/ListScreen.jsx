@@ -9,11 +9,14 @@ import { string } from 'prop-types';
 import { Audio } from 'expo-av';
 import ModalBase from '../components/ModalBase';
 import PlaceModal from '../components/PlaceModal';
+import Loading from '../components/Loading';
 
 let placeObjects;
 let setPlaceObjects;
 let displayRegion = '';
 let modalBlock = <Text>dummy</Text>;
+let isLoading;
+let setIsLoading;
 let modalVisible;
 let setModalVisible;
 
@@ -71,13 +74,14 @@ RegionButton.propTypes = {
 };
 
 const renderTable = (region) => {
+  setIsLoading(true);
   displayRegion = region;
   const db = SQLite.openDatabase('test.db');
   db.transaction((tx) => {
     tx.executeSql(
       `SELECT * FROM place_master WHERE ${regions[region]} ORDER BY place_seq ASC;`,
       [],
-      (_, res) => { setPlaceObjects(res.rows._array); },
+      (_, res) => { setPlaceObjects(res.rows._array); setIsLoading(false); },
       (_, err) => { console.log(err); },
     );
   });
@@ -132,6 +136,7 @@ export default function ListScreen() {
 
   [placeObjects, setPlaceObjects] = useState([]);
   [modalVisible, setModalVisible] = useState(false);
+  [isLoading, setIsLoading] = useState(true);
 
   useEffect(async () => {
     renderTable('東京');
@@ -169,6 +174,7 @@ export default function ListScreen() {
 
   return (
     <>
+      <Loading isLoading={isLoading} />
       <ModalBase onPress={setModalVisible} modalVisible={modalVisible}>
         {modalBlock}
       </ModalBase>

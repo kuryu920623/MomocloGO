@@ -2,41 +2,52 @@ import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
 import { Asset } from 'expo-asset';
 
-async function UpdateMedalMasterTable(name) {
-  const db = SQLite.openDatabase(name);
-  // メダルマスタから最新の updateAt 取得
-  // firebaseからリスト取得
-  // 追加情報 insert
-}
-
-async function UpdateMedalIdTable(name) {
-  const db = SQLite.openDatabase(name);
-}
-
 async function UpdatePlaceList(name) {
   const db = SQLite.openDatabase(name);
   db.transaction((tx) => {
     tx.executeSql(
       'SELECT updated_at FROM place_master ORDER BY updated_at DESC LIMIT 1;',
       [],
-      (_, res) => { GetUpdatedPlacesFromAPI(tx, res.rows._array[0].updated_at); },
+      (_, resSql) => {
+        console.log(resSql.rows._array[0].updated_at);
+        const lastUpdate = resSql.rows._array[0].updated_at.substring(0, 10);
+        fetch(`https://momoclomap.com/momoclogo/placeapi?last_update=${lastUpdate}`)
+          .then((res) => res.json())
+          .then((json) => { InsertUpdatedPlaces(json); })
+          .catch((error) => { console.log('GetUpdatedPlacesFromAPI', error); });
+      },
     );
   });
 }
 
-function GetUpdatedPlacesFromAPI(tx, updateAt) {
-  const url = 'https://momoclomap.com/momoclogo/placeapi?last_update=2022-01-01';
-  fetch(url)
-    .then((res) => res.json())
-    .then((json) => { InsertUpdatedPlaces(tx, json); })
-    .catch((error) => { console.log('GetUpdatedPlacesFromAPI', error); });
-}
-
-function InsertUpdatedPlaces(tx, places) {
-  const cols = ['place_seq', 'region'].join(',');
-  const sqlInsert = `INSERT INTO placeMaster ( ${cols} ) VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT DO UPDATE`;
+function InsertUpdatedPlaces(places) {
+  const cols = [
+    'place_seq', 'region', 'prefecture', 'name', 'detail',
+    'longitude', 'latitude', 'tag', 'address', 'updated_at',
+  ];
+  places.updated_at = places._updated_at;
+  const updates = cols.slice(1, 10).map((col) => `${col} = excluded.${col}`).join(', ');
+  const sqlInsert = `
+    INSERT OR REPLACE INTO place_master ( ${cols.join(', ')} )
+    VALUES (?,?,?,?,?,?,?,?,?,?)
+  `;
+  const sqlUpdate = `
+    UPDATE place_master ( ${cols.slice(1, 10).join(', ')} )
+    SET
+  `
+  console.log(sqlInsert);
   places.forEach((place) => {
-
+    const db = SQLite.openDatabase('test.db');
+    place.updated_at = place._updated_at;
+    place.region = place.resion;
+    db.transaction((tx) => {
+      tx.executeSql(
+        sqlInsert,
+        cols.map((col) => place[col]),
+        (_, res) => { console.log(res); },
+        (_, err) => { console.log(err); },
+      );
+    })
   });
 }
 
@@ -46,25 +57,25 @@ async function UpdateGotPlaceList(name) {
 
 export default async function CopyDefaultDatabase(name = 'test.db') {
   // 初期DBコピー
-  // console.log(`${FileSystem.documentDirectory}SQLite/${name}`);
+  const fileDir = FileSystem.documentDirectory;
+  // console.log(`${fileDir}SQLite/${name}`);
 
-  const fileExists = await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}SQLite/${name}`);
+  const fileExists = await FileSystem.getInfoAsync(`${fileDir}SQLite/${name}`);
   if (!fileExists.exists) {
-    if (!(await FileSystem.getInfoAsync(`${FileSystem.documentDirectory}SQLite`)).exists) {
-      await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}SQLite`);
+    if (!(await FileSystem.getInfoAsync(`${fileDir}SQLite`)).exists) {
+      await FileSystem.makeDirectoryAsync(`${fileDir}SQLite`);
     }
     await FileSystem.downloadAsync(
       Asset.fromModule(require('./test.db')).uri,
-      `${FileSystem.documentDirectory}SQLite/${name}`,
+      `${fileDir}SQLite/${name}`,
     );
   }
-
-  // firebase のメダルマスタテーブル反映
-  UpdateMedalMasterTable(name);
-
-  // firebase のメダルIDテーブル取得 & 反映
-  UpdateMedalIdTable(name);
-
+  const memoPath = `${fileDir}flags.txt`;
+  const flagsMemo = await FileSystem.getInfoAsync(memoPath);
+  if (!flagsMemo.exists) {
+    FileSystem.writeAsStringAsync(memoPath, '');
+  }
+  console.log(456);
   // 聖地情報更新
   await UpdatePlaceList(name);
 

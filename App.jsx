@@ -8,6 +8,7 @@ import { LogBox } from 'react-native';
 
 import { firebaseConfig } from './env';
 
+import Loading from './src/components/Loading';
 import SignUpScreen from './src/screens/SignUpScreen';
 import LogInScreen from './src/screens/LogInScreen';
 import MapScreen from './src/screens/MapScreen';
@@ -28,35 +29,39 @@ if (firebase.apps.length === 0) {
 }
 
 function TabScreen() {
+  // 聖地更新中ならローディング画面を返却する処理
   return (
-    <Tab.Navigator
-      initialRouteName="Awards"
-      screenOptions={{
-        tabBarActiveTintColor: 'black',
-        tabBarActiveBackgroundColor: 'gray',
-      }}
-    >
-      <Tab.Screen
-        name="Awards"
-        component={AwardsScreen}
-        options={{ tabBarIcon: () => <FontAwesome5 name="award" size={28}/>, unmountOnBlur: true }}
-      />
-      <Tab.Screen
-        name="Map"
-        component={MapScreen}
-        options={{ tabBarIcon: () => <FontAwesome5 name="map" size={28}/> }}
-      />
-      <Tab.Screen
-        name="List"
-        component={ListScreen}
-        options={{ tabBarIcon: () => <AntDesign  name="table" size={28}/> }}
-      />
-      <Tab.Screen
-        name="Friends"
-        component={TestScreen}
-        options={{ tabBarIcon: () => <FontAwesome5  name="user-friends" size={28}/>, unmountOnBlur: true }}
-      />
-    </Tab.Navigator>
+    <>
+      <Loading isLoading={false} />
+      <Tab.Navigator
+        initialRouteName="Friends"
+        screenOptions={{
+          tabBarActiveTintColor: 'black',
+          tabBarActiveBackgroundColor: 'gray',
+        }}
+      >
+        <Tab.Screen
+          name="Awards"
+          component={AwardsScreen}
+          options={{ tabBarIcon: () => <FontAwesome5 name="award" size={28}/>, unmountOnBlur: true }}
+        />
+        <Tab.Screen
+          name="Map"
+          component={MapScreen}
+          options={{ tabBarIcon: () => <FontAwesome5 name="map" size={28}/> }}
+        />
+        <Tab.Screen
+          name="List"
+          component={ListScreen}
+          options={{ tabBarIcon: () => <AntDesign  name="table" size={28}/> }}
+        />
+        <Tab.Screen
+          name="Friends"
+          component={TestScreen}
+          options={{ tabBarIcon: () => <FontAwesome5  name="user-friends" size={28}/>, unmountOnBlur: true }}
+        />
+      </Tab.Navigator>
+    </>
   );
 }
 

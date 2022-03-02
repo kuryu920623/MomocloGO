@@ -7,8 +7,9 @@ import {
   number, shape, string, func,
 } from 'prop-types';
 import * as SQLite from 'expo-sqlite';
-import Icon from './Icon';
+import * as FileSystem from 'expo-file-system';
 import { Audio } from 'expo-av';
+import Icon from './Icon';
 
 import Button from './Button';
 
@@ -68,6 +69,7 @@ function GetButton(placeSeq, setButtonComponent, resetMap) {
         elevation: 12,
       }}
       onPress={() => {
+        UpdateFlagsMemo(placeSeq);
         UpdateGetPlace(placeSeq);
         PlayAudio(medalGetAudio);
         setButtonComponent(AlreadyGotButton());
@@ -77,6 +79,29 @@ function GetButton(placeSeq, setButtonComponent, resetMap) {
       }}
     />
   );
+}
+
+async function UpdateFlagsMemo(placeSeq) {
+  const db = SQLite.openDatabase('test.db');
+  db.transaction((tx) => {
+    tx.executeSql(
+      'SELECT place_seq FROM place_master WHERE get_flg = 1;',
+      [],
+      async (_, res) => {
+        const placeListOld = res.rows._array.map((place) => place.place_seq);
+        placeListOld.push(placeSeq);
+        const placeListNew = Array.from(new Set(placeListOld));
+
+        const memoPath = `${FileSystem.documentDirectory}flags.txt`;
+        const memo = placeListNew.join(',');
+        if (memo) {
+          FileSystem.writeAsStringAsync(memoPath, placeListNew.join(','));
+        }
+        console.log(await FileSystem.readAsStringAsync(memoPath));
+        // firebaseを更新する処理
+      },
+    );
+  });
 }
 
 function UpdateGetPlace(placeSeq) {

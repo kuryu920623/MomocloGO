@@ -25,17 +25,11 @@ function InsertUpdatedPlaces(places) {
     'place_seq', 'region', 'prefecture', 'name', 'detail',
     'longitude', 'latitude', 'tag', 'address', 'updated_at',
   ];
-  places.updated_at = places._updated_at;
   const updates = cols.slice(1, 10).map((col) => `${col} = excluded.${col}`).join(', ');
   const sqlInsert = `
     INSERT OR REPLACE INTO place_master ( ${cols.join(', ')} )
     VALUES (?,?,?,?,?,?,?,?,?,?)
   `;
-  const sqlUpdate = `
-    UPDATE place_master ( ${cols.slice(1, 10).join(', ')} )
-    SET
-  `
-  console.log(sqlInsert);
   places.forEach((place) => {
     const db = SQLite.openDatabase('test.db');
     place.updated_at = place._updated_at;
@@ -44,10 +38,8 @@ function InsertUpdatedPlaces(places) {
       tx.executeSql(
         sqlInsert,
         cols.map((col) => place[col]),
-        (_, res) => { console.log(res); },
-        (_, err) => { console.log(err); },
       );
-    })
+    });
   });
 }
 
@@ -56,10 +48,7 @@ async function UpdateGotPlaceList(name) {
 }
 
 export default async function CopyDefaultDatabase(name = 'test.db') {
-  // 初期DBコピー
   const fileDir = FileSystem.documentDirectory;
-  // console.log(`${fileDir}SQLite/${name}`);
-
   const fileExists = await FileSystem.getInfoAsync(`${fileDir}SQLite/${name}`);
   if (!fileExists.exists) {
     if (!(await FileSystem.getInfoAsync(`${fileDir}SQLite`)).exists) {

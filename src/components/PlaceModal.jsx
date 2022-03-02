@@ -7,6 +7,7 @@ import {
   number, shape, string, func,
 } from 'prop-types';
 import * as SQLite from 'expo-sqlite';
+import firebase from 'firebase';
 import * as FileSystem from 'expo-file-system';
 import { Audio } from 'expo-av';
 import Icon from './Icon';
@@ -96,11 +97,20 @@ async function UpdateFlagsMemo(placeSeq) {
         const memo = placeListNew.join(',');
         if (memo) {
           FileSystem.writeAsStringAsync(memoPath, placeListNew.join(','));
+          updateFirebaseFlags(memo);
+          console.log(await FileSystem.readAsStringAsync(memoPath));
         }
-        console.log(await FileSystem.readAsStringAsync(memoPath));
-        // firebaseを更新する処理
       },
     );
+  });
+}
+
+function updateFirebaseFlags(memo) {
+  const { currentUser } = firebase.auth();
+  const db = firebase.firestore();
+  db.collection('flags').doc(currentUser.uid).set({
+    flags: memo,
+    updateAt: new Date(),
   });
 }
 

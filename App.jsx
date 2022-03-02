@@ -19,6 +19,7 @@ import CopyDefaultDatabase from './src/utils/InitDataBase';
 
 LogBox.ignoreLogs([
   'AsyncStorage has been extracted',
+  'Setting a timer for a long period of time',
 ]);
 
 const Stack = createStackNavigator();
@@ -71,7 +72,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Main"
+        initialRouteName="LogIn"
         screenOptions={{
           headerStyle: { backgroundColor: '#467FD3' },
           headerTitleStyle: { color: '#FFFFFF' },

@@ -12,18 +12,21 @@ export default function LogInScreen(props) {
   const [password, setPassword] = useState('');
 
   function submit() {
-    firebase.auth().signInWithEmailAndPassword(`${userId}@dummy_1234321.com`, password)
+    firebase.auth().signInWithEmailAndPassword(`${userId}@dummy1234321.com`, password)
       .then((userCredential) => {
         const { user } = userCredential;
         console.log(user.uid);
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'MemoList' }],
-        });
+        navigation.navigate('Main');
+        downloadFlags();
       })
       .catch((error) => {
         console.log(error.code, error.message);
       });
+  }
+
+  function downloadFlags() {
+    const { currentUser } = firebase.auth();
+    const db = firebase.firestore();
   }
 
   return (

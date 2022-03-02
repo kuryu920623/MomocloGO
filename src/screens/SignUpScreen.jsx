@@ -19,7 +19,7 @@ export default function SignUpScreen(props) {
       setIdCheck('✗ NG');
       checkLabelStyle('red');
     } else {
-      const mail = userId + '@dummy_1234321.com';
+      const mail = `${userId}@dummy1234321.com`;
       if (true) {
         setIdCheck('✔ OK');
       } else {
@@ -29,13 +29,6 @@ export default function SignUpScreen(props) {
   }
 
   function submit() {
-    // とりあえず
-    navigation.navigate('Main');
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Main' }],
-    });
-
     if (password !== fixPassword) {
       Alert.alert('確認用パスワードが異なります。');
       return;
@@ -45,14 +38,11 @@ export default function SignUpScreen(props) {
     }
     // 英数字のみか確認
     // アラートは面倒なので、ポップアップにしたい。
-    firebase.auth().createUserWithEmailAndPassword(userId + '@dummy_1234321.com', password)
+    firebase.auth().createUserWithEmailAndPassword(`${userId}@dummy1234321.com`, password)
       .then((userCredential) => {
         const { user } = userCredential;
         console.log(user.uid);
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'MemoList' }],
-        });
+        navigation.navigate('Main');
       })
       .catch((error) => {
         console.log(error.code, error.message);

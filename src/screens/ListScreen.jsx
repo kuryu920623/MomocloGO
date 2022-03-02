@@ -79,7 +79,8 @@ const renderTable = (region) => {
   const db = SQLite.openDatabase('test.db');
   db.transaction((tx) => {
     tx.executeSql(
-      `SELECT * FROM place_master WHERE ${regions[region]} ORDER BY place_seq ASC;`,
+      // ページング系の処理追加必要
+      `SELECT * FROM place_master WHERE ${regions[region]} ORDER BY place_seq ASC LIMIT 100 OFFSET 100;`,
       [],
       (_, res) => { setPlaceObjects(res.rows._array); setIsLoading(false); },
       (_, err) => { console.log(err); },
@@ -119,7 +120,6 @@ function placeObjectToData(row) {
   } else {
     data.push('');
   }
-  // ホントはモーダル開く処理
   data.push(<LinkID row={row} />);
   data.push(row.prefecture);
   data.push(row.name.substr(0, 10));

@@ -21,5 +21,8 @@
         "no-use-before-define": 0,
         "react/prop-types": ["error", { "ignore": ["navigation"] }],
         "no-underscore-dangle": "off"
+    },
+    "globals": {
+        "fetch": false
     }
 }

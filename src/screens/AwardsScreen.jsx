@@ -25,7 +25,8 @@ let setModalBlock;
 
 function getTweetText() {
   const { currentUser } = firebase.auth();
-  return currentUser.email.replace('@dummy1234321.com', '');
+  const userId = currentUser.email.replace('@dummy1234321.com', '');
+  return `ユーザーID: ${userId}`;
 }
 
 async function PlayAudio() {
@@ -173,13 +174,11 @@ export default function AwardsScreen() {
             {awardList.map((obj, index) => <AwardIconSet obj={obj} key={index} />)}
           </View>
 
-          <TweetButton
-            tweetText={getTweetText()}
-            width={150}
-          />
+          <View style={{ alignItems: 'center' }}>
+            <TweetButton tweetText={getTweetText()} width={150} />
+          </View>
+
         </LinearGradient>
-
-
       </ScrollView>
     </>
   );

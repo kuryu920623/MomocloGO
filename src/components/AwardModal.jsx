@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   StyleSheet, Text, View, ScrollView,
 } from 'react-native';
-import {number, shape} from 'prop-types';
-import * as SQLite from 'expo-sqlite';
+import { number, shape } from 'prop-types';
 import { Audio } from 'expo-av';
+import TweetButton from './TweetButton';
 
 async function PlayAudio(file) {
   const soundObj = new Audio.Sound();
@@ -14,17 +14,29 @@ async function PlayAudio(file) {
 
 export default function AwardModal(props) {
   const { obj, getCount, targetCount } = props;
+  let button;
+  if (getCount >= targetCount) {
+    button = (
+      <TweetButton
+        tweetText={`ももクロGOで「${obj.description}」を達成し、【${obj.title}】メダルを獲得しました!`}
+        size={20}
+        width={120}
+      />
+    );
+  }
   return (
     <ScrollView style={styles.container}>
       <View style={[styles.views]}>
         <Text style={styles.titleText}>{obj.title}</Text>
       </View>
-      {/* 取得済みの場合ツイッター連携アイコン出したい */}
       <View style={[styles.views]}>
         <Text>{obj.description}</Text>
       </View>
       <View style={styles.progressView}>
         <Text style={styles.progressText}>{`${Math.min(getCount, targetCount)} / ${targetCount}`}</Text>
+      </View>
+      <View style={{ alignItems: 'center' }}>
+        {button}
       </View>
     </ScrollView>
   );
@@ -54,6 +66,7 @@ const styles = StyleSheet.create({
   },
   progressView: {
     alignItems: 'flex-end',
+    marginBottom: 12,
   },
   progressText: {
     fontSize: 25,

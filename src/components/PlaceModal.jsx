@@ -13,6 +13,7 @@ import { Audio } from 'expo-av';
 import Icon from './Icon';
 
 import Button from './Button';
+import TweetButton from './TweetButton';
 
 const medalGetAudio = require('../../assets/sounds/medal_get.mp3');
 const medalCantGetAudio = require('../../assets/sounds/medal_cannot_get.mp3');
@@ -35,22 +36,31 @@ function CulcDistanceMeter(lat1, lng1, lat2, lng2) {
   return distance;
 }
 
-function AlreadyGotButton() {
+function AlreadyGotButton(placeObj) {
+  const { prefecture, name } = placeObj;
+  const chareText = `${prefecture}「${name}」のフラグを獲得しました!`;
   return (
-    <Button
-      label="取得済み"
-      labelStyle={{
-        fontSize: 24,
-      }}
-      containerStyle={{
-        backgroundColor: 'gray',
-      }}
-      // onPress={() => { PlayAudio(medalCantGetAudio); }}
-    />
+    <>
+      <Button
+        label="取得済み"
+        labelStyle={{
+          fontSize: 24,
+        }}
+        containerStyle={{
+          backgroundColor: 'gray',
+        }}
+      />
+      <TweetButton
+        tweetText={chareText}
+        displayText="share"
+        size={18}
+        width={100}
+      />
+    </>
   );
 }
 
-function GetButton(placeSeq, setButtonComponent, resetMap) {
+function GetButton(placeObj, setButtonComponent, resetMap) {
   return (
     <Button
       label={<Icon name="flag" size={32} color="black" />}
@@ -70,10 +80,10 @@ function GetButton(placeSeq, setButtonComponent, resetMap) {
         elevation: 12,
       }}
       onPress={() => {
-        UpdateFlagsMemo(placeSeq);
-        UpdateGetPlace(placeSeq);
+        UpdateFlagsMemo(placeObj.place_seq);
+        UpdateGetPlace(placeObj.place_seq);
         PlayAudio(medalGetAudio);
-        setButtonComponent(AlreadyGotButton());
+        setButtonComponent(AlreadyGotButton(placeObj));
         if (resetMap !== null) {
           resetMap(Math.random());
         }
@@ -170,9 +180,9 @@ export default function PlaceModal(props) {
         [placeObj.place_seq],
         (_, result) => {
           if (result.rows._array[0].get_flg) {
-            setButtonComponent(AlreadyGotButton());
+            setButtonComponent(AlreadyGotButton(placeObj));
           } else if (distMeter < 5000) {
-            setButtonComponent(GetButton(placeObj.place_seq, setButtonComponent, resetMap));
+            setButtonComponent(GetButton(placeObj, setButtonComponent, resetMap));
           } else {
             setButtonComponent(farFromPlaceButton());
           }

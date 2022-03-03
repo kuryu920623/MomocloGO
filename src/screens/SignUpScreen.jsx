@@ -19,6 +19,9 @@ export default function SignUpScreen(props) {
     if (userId.length <= 5) {
       setIdTextColor('#F15B55');
       setIdCheck('IDは6文字以上です。');
+    } else if (userId.length >= 16) {
+      setIdTextColor('#F15B55');
+      setIdCheck('IDは15文字以下です。');
     } else {
       const email = `${userId}@dummy1234321.com`;
       firebase.auth().fetchSignInMethodsForEmail(email).then((method) => {
@@ -40,6 +43,8 @@ export default function SignUpScreen(props) {
     }
     if (userId.length < 5) {
       Alert.alert('ユーザーIDは6文字以上です。');
+    } else if (userId.length > 16) {
+      Alert.alert('ユーザーIDは15文字以下です。');
     }
     // 英数字のみか確認
     // アラートは面倒なので、ポップアップにしたい。
@@ -65,7 +70,7 @@ export default function SignUpScreen(props) {
         <View>
           <Text style={styles.label}>
             <Text style={styles.textRequire}>* </Text>
-            ユーザーID (半角英数字6文字以上)
+            ユーザーID (半角英数字6文字以上15文字以下)
           </Text>
           <TextInput
             value={userId}

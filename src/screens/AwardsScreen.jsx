@@ -115,6 +115,9 @@ export default function AwardsScreen() {
   const [allUserCount, setAllUserCount] = useState(0);
   const [awardList, setAwardList] = useState([]);
 
+  const { currentUser } = firebase.auth();
+  const userId = currentUser.email.replace('@dummy1234321.com', '');
+
   useEffect(async () => {
     setAwardList(await GetAwardList());
     const db = SQLite.openDatabase('test.db');
@@ -147,6 +150,9 @@ export default function AwardsScreen() {
           start={{ x: 0.7, y: 0.7 }}
           end={{ x: 0.3, y: 0.3 }}
         >
+          <View style={styles.userIdView}>
+            <Text style={styles.userIdText}>{`ID: ${userId}`}</Text>
+          </View>
 
           <View style={[styles.views, styles.rankingView]}>
             <View style={styles.leftLabelView}>
@@ -192,6 +198,13 @@ const styles = StyleSheet.create({
   views: {
     marginBottom: 20,
     alignItems: 'center',
+  },
+  userIdView: {
+    alignItems: 'center',
+    marginBottom: 18,
+  },
+  userIdText: {
+    fontSize: 30,
   },
   rankingView: {
     flexDirection: 'row',

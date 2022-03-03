@@ -52,7 +52,10 @@ export default function SignUpScreen(props) {
       .then((userCredential) => {
         const { user } = userCredential;
         console.log(user.email);
-        navigation.navigate('Main');
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Main' }],
+        });
       })
       .catch((error) => {
         console.log(error.code, error.message);

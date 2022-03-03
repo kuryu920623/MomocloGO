@@ -30,7 +30,10 @@ export default function LogInScreen(props) {
       .then((userCredential) => {
         const { user } = userCredential;
         console.log(user.email);
-        navigation.navigate('Main');
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Main' }],
+        });
         downloadFlags();
       })
       .catch((error) => {

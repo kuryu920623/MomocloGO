@@ -24,9 +24,28 @@ LogBox.ignoreLogs([
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const StackFriends = createStackNavigator();
 
 if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
+}
+
+function FriendsScreen() {
+  return (
+    <StackFriends.Navigator
+      initialRouteName="Search"
+      screenOptions={{
+        headerStyle: { backgroundColor: '#467FD3' },
+        headerTitleStyle: { color: '#FFFFFF' },
+        headerTintColor: '#FFFFFF',
+        headerBackTitle: 'Back',
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}
+    >
+      <StackFriends.Screen name="FriendsSearch" component={TestScreen} options={{ title: 'Search Friends' }} />
+      <StackFriends.Screen name="FriendsAwards" component={TestScreen} options={{ title: 'Awards Friends' }} />
+    </StackFriends.Navigator>
+  );
 }
 
 function TabScreen() {
@@ -35,7 +54,7 @@ function TabScreen() {
     <>
       <Loading isLoading={false} />
       <Tab.Navigator
-        initialRouteName="Friends"
+        initialRouteName="Map"
         screenOptions={{
           tabBarActiveTintColor: 'black',
           tabBarActiveBackgroundColor: 'gray',
@@ -58,8 +77,8 @@ function TabScreen() {
         />
         <Tab.Screen
           name="Friends"
-          component={TestScreen}
-          options={{ tabBarIcon: () => <FontAwesome5  name="user-friends" size={28}/>, unmountOnBlur: true }}
+          component={FriendsScreen}
+          options={{ tabBarIcon: () => <FontAwesome5  name="user-friends" size={28}/>, unmountOnBlur: true, headerShown: false }}
         />
       </Tab.Navigator>
     </>

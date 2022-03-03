@@ -30,8 +30,8 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
     },
     {
       title: '上桃兵',
-      description: '聖地のフラグを 10 個獲得する。',
-      targetCount: 10,
+      description: '聖地のフラグを 20 個獲得する。',
+      targetCount: 20,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
       iconProvider: 'FontAwesome5',
       iconName: 'award',
@@ -39,8 +39,8 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
     },
     {
       title: '桃伍長',
-      description: '聖地のフラグを 30 個獲得する。',
-      targetCount: 30,
+      description: '聖地のフラグを 50 個獲得する。',
+      targetCount: 50,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
       iconProvider: 'FontAwesome5',
       iconName: 'award',
@@ -49,8 +49,8 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
 
     {
       title: '桃軍曹',
-      description: '聖地のフラグを 50 個獲得する。',
-      targetCount: 50,
+      description: '聖地のフラグを 100 個獲得する。',
+      targetCount: 100,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
       iconProvider: 'FontAwesome5',
       iconName: 'award',

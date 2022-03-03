@@ -14,8 +14,8 @@ function restoreFlags(flags) {
     tx.executeSql(
       `UPDATE place_master SET get_flg = 1 WHERE place_seq IN (${flags});`,
       [],
-      (_, res) => { console.log(res); },
-      (_, err) => { console.log(err); },
+      () => { console.log('restoreFlags'); },
+      (_, err) => { console.log('restoreFlags', err); },
     );
   });
 }
@@ -38,17 +38,18 @@ export default function LogInScreen(props) {
       });
   }
 
-  function downloadFlags() {
+  async function downloadFlags() {
     const { currentUser } = firebase.auth();
-    const db = firebase.firestore();
-    const ref = db.collection('flags').doc(currentUser.uid);
-    ref.onSnapshot((flags) => {
-      const data = flags.data().flags;
 
+    const db = firebase.firestore();
+    const docRef = db.collection('flags').doc(currentUser.uid);
+    docRef.get().then((doc) => {
+      const { flags } = doc.data();
+      if (!flags) return;
       const memoPath = `${FileSystem.documentDirectory}flags.txt`;
-      if (!data) return;
-      FileSystem.writeAsStringAsync(memoPath, data);
-      restoreFlags(data);
+      FileSystem.writeAsStringAsync(memoPath, flags);
+      restoreFlags(flags);
+      console.log('downloadFlags', flags);
     });
   }
 

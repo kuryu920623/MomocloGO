@@ -2,6 +2,8 @@ import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
 import { Asset } from 'expo-asset';
 
+const initialDatabase = require('./InitialDatabase.db');
+
 async function UpdatePlaceList(name) {
   const db = SQLite.openDatabase(name);
   db.transaction((tx) => {
@@ -9,7 +11,7 @@ async function UpdatePlaceList(name) {
       'SELECT updated_at FROM place_master ORDER BY updated_at DESC LIMIT 1;',
       [],
       (_, resSql) => {
-        console.log(resSql.rows._array[0].updated_at);
+        console.log('UpdatePlaceList', resSql.rows._array[0].updated_at);
         const lastUpdate = resSql.rows._array[0].updated_at.substring(0, 10);
         fetch(`https://momoclomap.com/momoclogo/placeapi?last_update=${lastUpdate}`)
           .then((res) => res.json())
@@ -43,10 +45,6 @@ function InsertUpdatedPlaces(places) {
   });
 }
 
-async function UpdateGotPlaceList(name) {
-  const db = SQLite.openDatabase(name);
-}
-
 export default async function CopyDefaultDatabase(name = 'test.db') {
   const fileDir = FileSystem.documentDirectory;
   const fileExists = await FileSystem.getInfoAsync(`${fileDir}SQLite/${name}`);
@@ -55,7 +53,7 @@ export default async function CopyDefaultDatabase(name = 'test.db') {
       await FileSystem.makeDirectoryAsync(`${fileDir}SQLite`);
     }
     await FileSystem.downloadAsync(
-      Asset.fromModule(require('./test.db')).uri,
+      Asset.fromModule(initialDatabase).uri,
       `${fileDir}SQLite/${name}`,
     );
   }
@@ -64,10 +62,6 @@ export default async function CopyDefaultDatabase(name = 'test.db') {
   if (!flagsMemo.exists) {
     FileSystem.writeAsStringAsync(memoPath, '');
   }
-  console.log(456);
   // 聖地情報更新
   await UpdatePlaceList(name);
-
-  // firebase のメダル獲得情報取得 & 反映
-  await UpdateGotPlaceList(name);
 }

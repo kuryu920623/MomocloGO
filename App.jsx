@@ -30,7 +30,7 @@ if (firebase.apps.length === 0) {
 }
 
 function TabScreen() {
-  // 聖地更新中ならローディング画面を返却する処理
+  // 聖地更新中ならローディング画面を返却する処理必要
   return (
     <>
       <Loading isLoading={false} />
@@ -67,6 +67,7 @@ function TabScreen() {
 }
 
 export default function App() {
+  console.log('Load App');
   CopyDefaultDatabase();
 
   return (

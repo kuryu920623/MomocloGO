@@ -98,7 +98,7 @@ async function UpdateFlagsMemo(placeSeq) {
         if (memo) {
           FileSystem.writeAsStringAsync(memoPath, placeListNew.join(','));
           updateFirebaseFlags(memo);
-          console.log(await FileSystem.readAsStringAsync(memoPath));
+          console.log('UpdateFlagsMemo', await FileSystem.readAsStringAsync(memoPath));
         }
       },
     );

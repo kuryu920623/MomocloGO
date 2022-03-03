@@ -53,6 +53,9 @@ export default function SignUpScreen(props) {
     <View style={styles.container}>
       <View style={styles.inner}>
         <Text style={styles.title}>新規登録</Text>
+        <Text style={styles.attention}>
+          Friends機能を使用する場合、ユーザーIDを公開する必要があります。ユーザーIDとパスワードは一致させないことを推奨いたします。
+        </Text>
 
         <View>
           <Text style={styles.label}>
@@ -141,6 +144,12 @@ const styles = StyleSheet.create({
     lineHeight: 32,
     fontWeight: 'bold',
     marginBottom: 24,
+  },
+  attention: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#F15B55',
+    marginBottom: 10,
   },
   textRequire: {
     color: 'red',

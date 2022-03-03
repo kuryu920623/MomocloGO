@@ -121,6 +121,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: '#444444',
     },
 
+    // 太陽とえくぼ、茶畑のシンデレラ、wikipedia探す
     {
       title: 'デコノフ Lv.1',
       description: 'タグ「百田夏菜子」のフラグを 3 個獲得する。',
@@ -158,6 +159,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: 'red',
     },
 
+    // 涙目のアリス、若大将
     {
       title: 'タマノフ Lv.1',
       description: 'タグ「玉井詩織」のフラグを 3 個獲得する。',

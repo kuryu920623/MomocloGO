@@ -108,9 +108,11 @@ async function UpdateFlagsMemo(placeSeq) {
 function updateFirebaseFlags(memo) {
   const { currentUser } = firebase.auth();
   const db = firebase.firestore();
-  db.collection('flags').doc(currentUser.uid).set({
+  const fullUserId = currentUser.email.replace('@dummy1234321.com', '');
+  db.collection('flags').doc(fullUserId).set({
     flags: memo,
     updateAt: new Date(),
+    count: (memo.match(/,/g) || []).length + 1,
   });
 }
 

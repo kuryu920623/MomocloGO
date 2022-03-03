@@ -7,13 +7,14 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
 import { shape } from 'prop-types';
+import firebase from 'firebase';
 
 import Icon from '../components/Icon';
 import ProgressMeter from '../components/PogressMeter';
 import ModalBase from '../components/ModalBase';
 import AwardModal from '../components/AwardModal';
-
 import GetAwardList from '../utils/AwardList';
+import TweetButton from '../components/TweetButton';
 
 const modalOpenAudio = require('../../assets/sounds/modal_open.mp3');
 
@@ -21,6 +22,11 @@ let modalVisible;
 let setModalVisible;
 let modalBlock;
 let setModalBlock;
+
+function getTweetText() {
+  const { currentUser } = firebase.auth();
+  return currentUser.email.replace('@dummy1234321.com', '');
+}
 
 async function PlayAudio() {
   const soundObj = new Audio.Sound();
@@ -167,7 +173,13 @@ export default function AwardsScreen() {
             {awardList.map((obj, index) => <AwardIconSet obj={obj} key={index} />)}
           </View>
 
+          <TweetButton
+            tweetText={getTweetText()}
+            width={150}
+          />
         </LinearGradient>
+
+
       </ScrollView>
     </>
   );
@@ -210,5 +222,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
+    marginBottom: 20,
   },
 });

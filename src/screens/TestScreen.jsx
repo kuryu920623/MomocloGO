@@ -64,11 +64,6 @@ export default function TestScreen() {
 
   return (
     <View>
-
-      <TweetButton
-        tweetText="日本語 https://www.google.com/webhp"
-        size={16}
-      />
       <Button title="#test" onPress={handlePress} />
 
       <TouchableOpacity onPress={customFadeOut}>

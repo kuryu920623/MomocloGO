@@ -5,6 +5,7 @@ import {
 import firebase from 'firebase';
 
 import Button from '../components/Button';
+import { color } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 
 export default function SignUpScreen(props) {
   const { navigation } = props;
@@ -12,19 +13,23 @@ export default function SignUpScreen(props) {
   const [password, setPassword] = useState('');
   const [fixPassword, setFixPassword] = useState('');
   const [idCheck, setIdCheck] = useState('');
+  const [idTextColor, setIdTextColor] = useState('black');
 
   function checkIdDuplication() {
-    if (userId.length < 5) {
-      Alert.alert('ユーザーIDは6文字以上です。');
-      setIdCheck('✗ NG');
-      checkLabelStyle('red');
+    if (userId.length <= 5) {
+      setIdTextColor('#F15B55');
+      setIdCheck('IDは6文字以上です。');
     } else {
-      const mail = `${userId}@dummy1234321.com`;
-      if (true) {
-        setIdCheck('✔ OK');
-      } else {
-        setIdCheck('✔ OK');
-      }
+      const email = `${userId}@dummy1234321.com`;
+      firebase.auth().fetchSignInMethodsForEmail(email).then((method) => {
+        if (method.indexOf(firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
+          setIdTextColor('#F15B55');
+          setIdCheck('既に取得されています。');
+        } else {
+          setIdTextColor('green');
+          setIdCheck('✔ OK');
+        }
+      });
     }
   }
 
@@ -41,7 +46,7 @@ export default function SignUpScreen(props) {
     firebase.auth().createUserWithEmailAndPassword(`${userId}@dummy1234321.com`, password)
       .then((userCredential) => {
         const { user } = userCredential;
-        console.log(user.uid);
+        console.log(user.email);
         navigation.navigate('Main');
       })
       .catch((error) => {
@@ -73,11 +78,12 @@ export default function SignUpScreen(props) {
         </View>
 
         <View style={styles.buttonLine}>
-          <View style={{ width: 45 }}>
-            <Text style={checkLabelStyle()}>{idCheck}</Text>
-          </View>
-          <Button onPress={() => checkIdDuplication()} label="取得可能か確認" />
-
+          <Text style={[styles.idCheck, { color: idTextColor }]}>{idCheck}</Text>
+          <Button
+            onPress={() => checkIdDuplication()}
+            containerStyle={{ marginBottom: null }}
+            label="取得可能か確認"
+          />
         </View>
 
         <View>
@@ -126,10 +132,6 @@ export default function SignUpScreen(props) {
   );
 }
 
-function checkLabelStyle(color) {
-  return { color };
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -164,14 +166,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: '#FFFFFF',
     paddingHorizontal: 8,
-    marginBottom: 16,
+    marginBottom: 8,
   },
   buttonLine: {
+    marginBottom: 16,
     alignSelf: 'flex-end',
     flexDirection: 'row',
+    alignItems: 'center',
   },
-  checkMark: {
-    fontSize: 16,
+  idCheck: {
+    fontWeight: 'bold',
+    marginRight: 10,
   },
   signUpLink: {
     alignSelf: 'flex-start',

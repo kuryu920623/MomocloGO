@@ -29,7 +29,7 @@ export default function LogInScreen(props) {
     firebase.auth().signInWithEmailAndPassword(`${userId}@dummy1234321.com`, password)
       .then((userCredential) => {
         const { user } = userCredential;
-        console.log(user.uid);
+        console.log(user.email);
         navigation.navigate('Main');
         downloadFlags();
       })
@@ -42,7 +42,8 @@ export default function LogInScreen(props) {
     const { currentUser } = firebase.auth();
 
     const db = firebase.firestore();
-    const docRef = db.collection('flags').doc(currentUser.uid);
+    const fullUserId = currentUser.email.replace('@dummy1234321.com', '');
+    const docRef = db.collection('flags').doc(fullUserId);
     docRef.get().then((doc) => {
       const { flags } = doc.data();
       if (!flags) return;

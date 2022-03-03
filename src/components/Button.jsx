@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     backgroundColor: '#467FE3',
     borderRadius: 4,
-    // alignSelf: 'flex-start',
     marginBottom: 24,
   },
   buttonLabel: {

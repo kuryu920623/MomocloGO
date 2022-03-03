@@ -2,7 +2,7 @@ import { number } from 'prop-types';
 import { string } from 'prop-types';
 import React from 'react';
 import {
-  Linking, Text, View, StyleSheet, TouchableOpacity, Animated, Button,
+  Linking, Text, View, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -17,11 +17,12 @@ async function handlePress(tweetText) {
 }
 
 export default function TweetButton(props) {
-  const { tweetText, displayText, size } = props;
-
+  const {
+    tweetText, displayText, size, width,
+  } = props;
   return (
     <TouchableOpacity
-      style={styles.button}
+      style={[styles.button, { width }]}
       onPress={() => { handlePress(tweetText); }}
     >
       <AntDesign name="twitter" size={size} color="white" />
@@ -34,10 +35,12 @@ TweetButton.propTypes = {
   tweetText: string.isRequired,
   displayText: string,
   size: number,
+  width: number,
 };
 TweetButton.defaultProps = {
-  displayText: 'ツイート',
+  displayText: 'Tweet',
   size: 24,
+  width: null,
 };
 
 const styles = StyleSheet.create({

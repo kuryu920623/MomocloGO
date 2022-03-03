@@ -3,8 +3,22 @@ import {
   View, StyleSheet, TextInput, Text, TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase';
+import * as FileSystem from 'expo-file-system';
+import * as SQLite from 'expo-sqlite';
 
 import Button from '../components/Button';
+
+function restoreFlags(flags) {
+  const db = SQLite.openDatabase('test.db');
+  db.transaction((tx) => {
+    tx.executeSql(
+      `UPDATE place_master SET get_flg = 1 WHERE place_seq IN (${flags});`,
+      [],
+      (_, res) => { console.log(res); },
+      (_, err) => { console.log(err); },
+    );
+  });
+}
 
 export default function LogInScreen(props) {
   const { navigation } = props;
@@ -27,6 +41,15 @@ export default function LogInScreen(props) {
   function downloadFlags() {
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
+    const ref = db.collection('flags').doc(currentUser.uid);
+    ref.onSnapshot((flags) => {
+      const data = flags.data().flags;
+
+      const memoPath = `${FileSystem.documentDirectory}flags.txt`;
+      if (!data) return;
+      FileSystem.writeAsStringAsync(memoPath, data);
+      restoreFlags(data);
+    });
   }
 
   return (

@@ -8,10 +8,8 @@ import { AntDesign } from '@expo/vector-icons';
 
 async function handlePress(tweetText) {
   const supported = await Linking.canOpenURL('https://twitter.com/home');
-  const text = `${encodeURI(tweetText)}%0D%0A%23${encodeURI('ももクロGO')}`;
+  const text = `${encodeURI(tweetText)}%0D%0A%23${encodeURI('ももクロGO\nアプリはこちら→ https://momoclomap.com/appsLink')}`;
   if (supported) {
-    // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-    // by some browser in the mobile
     await Linking.openURL(`https://twitter.com/intent/tweet?text=${text}`);
   }
 }

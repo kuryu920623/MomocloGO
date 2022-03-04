@@ -80,7 +80,7 @@ function TabScreen() {
         <Tab.Screen
           name="Friends"
           component={FriendsScreen}
-          options={{ tabBarIcon: () => <FontAwesome5  name="user-friends" size={28}/>, headerShown: false }}
+          options={{ tabBarIcon: () => <FontAwesome5  name="user-friends" size={28}/>, headerShown: false, unmountOnBlur: true }}
         />
       </Tab.Navigator>
     </>

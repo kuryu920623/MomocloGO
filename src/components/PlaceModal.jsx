@@ -194,6 +194,7 @@ export default function PlaceModal(props) {
 
   return (
     <ScrollView style={styles.container}>
+      <View style={{ margin: 20 }} />
       <View style={[styles.views]}>
         <Text style={styles.titleText}>{placeObj.name}</Text>
       </View>
@@ -227,7 +228,7 @@ PlaceModal.defaultProps = {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 35,
+    paddingHorizontal: 35,
   },
   views: {
     marginBottom: 15,

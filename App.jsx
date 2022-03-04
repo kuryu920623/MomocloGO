@@ -15,6 +15,7 @@ import MapScreen from './src/screens/MapScreen';
 import AwardsScreen from './src/screens/AwardsScreen';
 import ListScreen from './src/screens/ListScreen';
 import TestScreen from './src/screens/TestScreen';
+import FriendsSearchScreen from './src/screens/FriendSearchScreen';
 import CopyDefaultDatabase from './src/utils/InitDataBase';
 
 LogBox.ignoreLogs([
@@ -42,7 +43,7 @@ function FriendsScreen() {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
-      <StackFriends.Screen name="FriendsSearch" component={TestScreen} options={{ title: 'Search Friends' }} />
+      <StackFriends.Screen name="FriendsSearch" component={FriendsSearchScreen} options={{ title: 'Search Friends' }} />
       <StackFriends.Screen name="FriendsAwards" component={TestScreen} options={{ title: 'Awards Friends' }} />
     </StackFriends.Navigator>
   );

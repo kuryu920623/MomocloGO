@@ -5,7 +5,6 @@ import {
 import firebase from 'firebase';
 
 import Button from '../components/Button';
-import { color } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
 
 export default function SignUpScreen(props) {
   const { navigation } = props;

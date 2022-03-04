@@ -13,9 +13,9 @@ async function PlayAudio(file) {
 }
 
 export default function AwardModal(props) {
-  const { obj, getCount, targetCount } = props;
+  const { obj, isFriend, getCount, targetCount } = props;
   let button;
-  if (getCount >= targetCount) {
+  if (getCount >= targetCount && !isFriend) {
     button = (
       <TweetButton
         tweetText={`ももクロGOで「${obj.description}」を達成し、【${obj.title}】メダルを獲得しました!`}

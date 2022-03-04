@@ -36,7 +36,7 @@ async function PlayAudio() {
 }
 
 function AwardIconSet(props) {
-  const { obj } = props;
+  const { obj, isFriend } = props;
   const [getCount, setGetCount] = useState(0);
   const [iconColor, setIconColor] = useState('rgba(200,200,200,0.3)');
   useEffect(async () => {
@@ -62,7 +62,14 @@ function AwardIconSet(props) {
         style={iconSetStyles.iconView}
         onPress={() => {
           PlayAudio();
-          setModalBlock(<AwardModal obj={obj} getCount={getCount} targetCount={obj.targetCount} />);
+          setModalBlock(
+            <AwardModal
+              obj={obj}
+              isFriend={isFriend}
+              getCount={getCount}
+              targetCount={obj.targetCount}
+            />
+          );
           setModalVisible(true);
         }}
       >
@@ -109,14 +116,23 @@ const iconSetStyles = {
 export default function AwardsScreen(props) {
   let awardParams;
   let friendsFlags, friendsId, whereCond;
+  let isFriend;
+  let tweetButton = null;
   awardParams = props.route.params || awardParams;
   if (awardParams) {
+    isFriend = true;
     friendsFlags = awardParams.flags;
     friendsId = awardParams.userId;
     whereCond = `place_seq IN (${friendsFlags})`;
     console.log(friendsFlags, friendsId);
   } else {
+    isFriend = false;
     whereCond = 'get_flg = 1';
+    const tweetButton = (
+      <View style={{ alignItems: 'center' }}>
+        <TweetButton tweetText={getTweetText()} width={150} />
+      </View>
+    );
   }
 
   console.log(awardParams, whereCond);
@@ -194,13 +210,11 @@ export default function AwardsScreen(props) {
           </View>
 
           <View style={styles.awardsRowView}>
-            {awardList.map((obj, index) => <AwardIconSet obj={obj} key={index} />)}
+            {awardList.map(
+              (obj, index) => <AwardIconSet obj={obj} isFriend={isFriend} key={index} />
+            )}
           </View>
-
-          <View style={{ alignItems: 'center' }}>
-            <TweetButton tweetText={getTweetText()} width={150} />
-          </View>
-
+          {tweetButton}
         </LinearGradient>
       </ScrollView>
     </>

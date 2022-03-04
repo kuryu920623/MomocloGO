@@ -44,7 +44,7 @@ function FriendsScreen() {
       }}
     >
       <StackFriends.Screen name="FriendsSearch" component={FriendsSearchScreen} options={{ title: 'Search Friends' }} />
-      <StackFriends.Screen name="FriendsAwards" component={TestScreen} options={{ title: 'Awards Friends' }} />
+      <StackFriends.Screen name="FriendsAwards" component={AwardsScreen} options={{ title: 'Awards Friends' }} />
     </StackFriends.Navigator>
   );
 }
@@ -79,7 +79,7 @@ function TabScreen() {
         <Tab.Screen
           name="Friends"
           component={FriendsScreen}
-          options={{ tabBarIcon: () => <FontAwesome5  name="user-friends" size={28}/>, unmountOnBlur: true, headerShown: false }}
+          options={{ tabBarIcon: () => <FontAwesome5  name="user-friends" size={28}/>, headerShown: false }}
         />
       </Tab.Navigator>
     </>

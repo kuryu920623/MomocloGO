@@ -5,12 +5,15 @@ import {
 import { Table, Row } from 'react-native-table-component-2';
 import * as SQLite from 'expo-sqlite';
 import { FontAwesome } from '@expo/vector-icons';
-import { string } from 'prop-types';
+import { number, string } from 'prop-types';
 import { Audio } from 'expo-av';
 import ModalBase from '../components/ModalBase';
 import PlaceModal from '../components/PlaceModal';
 import Loading from '../components/Loading';
 
+let curretRegion = '東京';
+let currentPage = 0;
+let maxPage = 0;
 let placeObjects;
 let setPlaceObjects;
 let displayRegion = '';
@@ -43,7 +46,12 @@ function RegionButton(props) {
   const { region } = props;
   return (
     <TouchableOpacity
-      onPress={() => renderTable(region)}
+      onPress={() => {
+        curretRegion = region;
+        setMaxPage();
+        renderTable(curretRegion, 0);
+        // ページャーの数字変更
+      }}
       style={regionStyles.button}
     >
       <Text style={regionStyles.text}>
@@ -51,6 +59,17 @@ function RegionButton(props) {
       </Text>
     </TouchableOpacity>
   );
+}
+
+function setMaxPage() {
+  const db = SQLite.openDatabase('test.db');
+  db.transaction((tx) => {
+    tx.executeSql(
+      `SELECT COUNT(1) AS cnt FROM place_master WHERE ${regions[curretRegion]};`,
+      [],
+      (_, res) => { maxPage = Math.ceil(res.rows._array[0].cnt / 100); },
+    );
+  });
 }
 
 const regionStyles = StyleSheet.create({
@@ -68,20 +87,18 @@ const regionStyles = StyleSheet.create({
     marginVertical: 5,
   },
 });
+RegionButton.propTypes = { region: string.isRequired };
 
-RegionButton.propTypes = {
-  region: string.isRequired,
-};
-
-const renderTable = (region) => {
+const renderTable = (region, page = 0) => {
   setIsLoading(true);
   displayRegion = region;
   const db = SQLite.openDatabase('test.db');
+  console.log('renderTable', page);
   db.transaction((tx) => {
     tx.executeSql(
       // ページング系の処理追加必要
-      `SELECT * FROM place_master WHERE ${regions[region]} ORDER BY place_seq ASC LIMIT 100 OFFSET 100;`,
-      [],
+      `SELECT * FROM place_master WHERE ${regions[region]} ORDER BY place_seq ASC LIMIT 100 OFFSET ?;`,
+      [page * 100],
       (_, res) => { setPlaceObjects(res.rows._array); setIsLoading(false); },
       (_, err) => { console.log(err); },
     );
@@ -111,6 +128,24 @@ const linkIDStyles = StyleSheet.create({
   text: { color: '#1a73e8', fontSize: 15, textDecorationLine: 'underline' },
 });
 
+function LinkPager(props) {
+  const { page } = props;
+  return (
+    <TouchableOpacity onPress={() => { renderTable(curretRegion, page); }}>
+      <Text style={linkPagerStyles.pagerText}>{page + 1}</Text>
+    </TouchableOpacity>
+  );
+}
+
+const linkPagerStyles = StyleSheet.create({
+  pagerText: {
+    paddingHorizontal: 8,
+    fontSize: 18,
+    color: '#1a73e8',
+    textDecorationLine: 'underline',
+  },
+});
+
 function placeObjectToData(row) {
   const data = [];
   if (row.get_flg) {
@@ -136,10 +171,12 @@ export default function ListScreen() {
 
   [placeObjects, setPlaceObjects] = useState([]);
   [modalVisible, setModalVisible] = useState(false);
+  // const [maxPage, setMaxPage] = useState(7);
   [isLoading, setIsLoading] = useState(true);
 
   useEffect(async () => {
-    renderTable('東京');
+    setMaxPage();
+    renderTable(curretRegion, 0);
   }, []);
 
   const tableMemo = useMemo(() => (
@@ -182,13 +219,17 @@ export default function ListScreen() {
       <View style={styles.regionView}>
         <ScrollView horizontal showsVerticalScrollIndicator>
           {Object.keys(regions).map(
-            (region, index) => <RegionButton region={region} key={index} />,
+            (region, index) => <RegionButton region={region} page={currentPage} key={index} />,
           )}
         </ScrollView>
       </View>
 
       <View style={styles.titleView}>
         <Text style={styles.titleText}>{`表示地域: ${displayRegion}`}</Text>
+      </View>
+
+      <View style={styles.pagerView}>
+        {[...Array(maxPage)].map((_, index) => <LinkPager page={index} key={index} />)}
       </View>
 
       {tableMemo}
@@ -206,6 +247,11 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 20,
+  },
+  pagerView: {
+    marginBottom: 8,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   tableContainer: {
     marginHorizontal: 10,

@@ -1,9 +1,8 @@
-import { number } from 'prop-types';
-import { string } from 'prop-types';
 import React from 'react';
 import {
   Linking, Text, View, StyleSheet, TouchableOpacity,
 } from 'react-native';
+import { string, number } from 'prop-types';
 import { AntDesign } from '@expo/vector-icons';
 
 async function handlePress(tweetText) {

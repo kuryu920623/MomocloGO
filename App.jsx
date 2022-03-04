@@ -16,6 +16,7 @@ import AwardsScreen from './src/screens/AwardsScreen';
 import ListScreen from './src/screens/ListScreen';
 import TestScreen from './src/screens/TestScreen';
 import FriendsSearchScreen from './src/screens/FriendSearchScreen';
+import FriendAwardScreen from './src/screens/FriendAwandsScreen';
 import CopyDefaultDatabase from './src/utils/InitDataBase';
 
 LogBox.ignoreLogs([
@@ -44,7 +45,7 @@ function FriendsScreen() {
       }}
     >
       <StackFriends.Screen name="FriendsSearch" component={FriendsSearchScreen} options={{ title: 'Search Friends' }} />
-      <StackFriends.Screen name="FriendsAwards" component={AwardsScreen} options={{ title: 'Awards Friends' }} />
+      <StackFriends.Screen name="FriendsAwards" component={FriendAwardScreen} options={{ title: 'Awards Friends' }} />
     </StackFriends.Navigator>
   );
 }

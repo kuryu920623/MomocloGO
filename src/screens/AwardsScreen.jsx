@@ -6,7 +6,7 @@ import * as SQLite from 'expo-sqlite';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 import { LinearGradient } from 'expo-linear-gradient';
-import { shape } from 'prop-types';
+import { shape, string } from 'prop-types';
 import firebase from 'firebase';
 
 import Icon from '../components/Icon';
@@ -68,7 +68,7 @@ function AwardIconSet(props) {
               isFriend={isFriend}
               getCount={getCount}
               targetCount={obj.targetCount}
-            />
+            />,
           );
           setModalVisible(true);
         }}
@@ -114,28 +114,20 @@ const iconSetStyles = {
 };
 
 export default function AwardsScreen(props) {
-  let awardParams;
-  let friendsFlags, friendsId, whereCond;
-  let isFriend;
-  let tweetButton = null;
-  awardParams = props.route.params || awardParams;
-  if (awardParams) {
-    isFriend = true;
-    friendsFlags = awardParams.flags;
-    friendsId = awardParams.userId;
+  const { friendsFlags, friendsId } = props;
+  let isFriend = false;
+  let tweetButton = (
+    <View style={{ alignItems: 'center' }}>
+      <TweetButton tweetText={getTweetText()} width={150} />
+    </View>
+  );
+  let whereCond = 'get_flg = 1';
+  if (friendsId) {
     whereCond = `place_seq IN (${friendsFlags})`;
-    console.log(friendsFlags, friendsId);
-  } else {
-    isFriend = false;
-    whereCond = 'get_flg = 1';
-    const tweetButton = (
-      <View style={{ alignItems: 'center' }}>
-        <TweetButton tweetText={getTweetText()} width={150} />
-      </View>
-    );
+    isFriend = true;
+    tweetButton = null;
   }
 
-  console.log(awardParams, whereCond);
   [modalVisible, setModalVisible] = useState(false);
   [modalBlock, setModalBlock] = useState(<Text>test</Text>);
   const [getMedalCount, setGetMedalCount] = useState(0);
@@ -211,7 +203,7 @@ export default function AwardsScreen(props) {
 
           <View style={styles.awardsRowView}>
             {awardList.map(
-              (obj, index) => <AwardIconSet obj={obj} isFriend={isFriend} key={index} />
+              (obj, index) => <AwardIconSet obj={obj} isFriend={isFriend} key={index} />,
             )}
           </View>
           {tweetButton}
@@ -220,6 +212,15 @@ export default function AwardsScreen(props) {
     </>
   );
 }
+
+AwardsScreen.propTypes = {
+  friendsFlags: string,
+  friendsId: string,
+};
+AwardsScreen.defaultProps = {
+  friendsFlags: null,
+  friendsId: null,
+};
 
 const styles = StyleSheet.create({
   container: {

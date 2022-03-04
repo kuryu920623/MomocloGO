@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StyleSheet, Text, View, ScrollView,
 } from 'react-native';
-import { number, shape } from 'prop-types';
+import { bool, number, shape } from 'prop-types';
 import { Audio } from 'expo-av';
 import TweetButton from './TweetButton';
 
@@ -44,6 +44,7 @@ export default function AwardModal(props) {
 
 AwardModal.propTypes = {
   obj: shape().isRequired,
+  isFriend: bool.isRequired,
   getCount: number.isRequired,
   targetCount: number.isRequired,
 };

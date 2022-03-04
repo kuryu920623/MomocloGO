@@ -106,7 +106,20 @@ const iconSetStyles = {
   },
 };
 
-export default function AwardsScreen() {
+export default function AwardsScreen(props) {
+  let awardParams;
+  let friendsFlags, friendsId, whereCond;
+  awardParams = props.route.params || awardParams;
+  if (awardParams) {
+    friendsFlags = awardParams.flags;
+    friendsId = awardParams.userId;
+    whereCond = `place_seq IN (${friendsFlags})`;
+    console.log(friendsFlags, friendsId);
+  } else {
+    whereCond = 'get_flg = 1';
+  }
+
+  console.log(awardParams, whereCond);
   [modalVisible, setModalVisible] = useState(false);
   [modalBlock, setModalBlock] = useState(<Text>test</Text>);
   const [getMedalCount, setGetMedalCount] = useState(0);
@@ -119,14 +132,18 @@ export default function AwardsScreen() {
   const userId = currentUser.email.replace('@dummy1234321.com', '');
 
   useEffect(async () => {
-    setAwardList(await GetAwardList());
+    setAwardList(await GetAwardList(whereCond));
     const db = SQLite.openDatabase('test.db');
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT COUNT(get_flg = 1) AS getCount, COUNT(1) AS allCount FROM place_master;',
         [],
         (_, res) => {
-          setGetMedalCount(res.rows._array[0].getCount);
+          if (friendsFlags) {
+            setGetMedalCount(friendsFlags.split(',').length);
+          } else {
+            setGetMedalCount(res.rows._array[0].getCount);
+          }
           setAllMedalCount(res.rows._array[0].allCount);
         },
       );
@@ -151,7 +168,7 @@ export default function AwardsScreen() {
           end={{ x: 0.3, y: 0.3 }}
         >
           <View style={styles.userIdView}>
-            <Text style={styles.userIdText}>{`ID: ${userId}`}</Text>
+            <Text style={styles.userIdText}>{`ID: ${friendsId || userId}`}</Text>
           </View>
 
           <View style={[styles.views, styles.rankingView]}>

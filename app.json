@@ -18,12 +18,33 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "jp.kuryu.MomocloGO",
+      "buildNumber": "1.0.0",
+      "infoPlist": {
+        "NSLocationAlwaysUsageDescription": "地図上で現在位置を表示するために位置情報を利用します",
+        "NSLocationWhenInUseUsageDescription": "地図上で現在位置を表示するために位置情報を利用します",
+        "NSLocationUsageDescription": "地図上で現在位置を表示するために位置情報を利用します"
+      },
+      "config": {
+        "googleMapsApiKey": "dummy"
+      }
     },
     "android": {
+      "package": "jp.kuryu.MomocloGO",
+      "permissions": ["ACCESS_FINE_LOCATION"],
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "config": {
+        "googleSignIn": {
+          "apiKey": "dummy"
+        },
+        "googleMaps": {
+          "apiKey": "dummy"
+        }
       }
     },
     "web": {

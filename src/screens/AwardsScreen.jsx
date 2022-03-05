@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 15,
     paddingVertical: 35,
+    flex: 1,
   },
   views: {
     marginBottom: 20,

@@ -13,7 +13,9 @@ async function PlayAudio(file) {
 }
 
 export default function AwardModal(props) {
-  const { obj, isFriend, getCount, targetCount } = props;
+  const {
+    obj, isFriend, getCount, targetCount,
+  } = props;
   let button;
   if (getCount >= targetCount && !isFriend) {
     button = (

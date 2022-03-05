@@ -114,6 +114,7 @@ const iconSetStyles = {
 };
 
 export default function AwardsScreen(props) {
+  console.log('award screen');
   const { friendsFlags, friendsId } = props;
   let isFriend = false;
   let tweetButton = (

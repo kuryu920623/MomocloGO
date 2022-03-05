@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import {
-  View, StyleSheet, TextInput, Text, Dimensions, TouchableOpacity, Alert,
+  View, StyleSheet, TextInput, Text, Dimensions, TouchableOpacity, Alert, ScrollView,
 } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import firebase from 'firebase';
 import { Ionicons } from '@expo/vector-icons';
-import Button from '../components/Button';
+
+import FriendListComponent from '../components/FriendListComponent';
 
 const friendsPath = `${FileSystem.documentDirectory}friends.txt`;
 let friendsList;
@@ -17,30 +18,29 @@ async function initFriendsFile() {
   } else {
     friendsList = (await FileSystem.readAsStringAsync(friendsPath)).split(',');
   }
-  console.log('friends', friendsList.join(','));
 }
 initFriendsFile();
+
+function getFlagsAndMove(userId, navigation) {
+  if (!userId) return;
+  const db = firebase.firestore();
+  const docRef = db.collection('flags').doc(userId);
+  docRef.get()
+    .then(async (doc) => {
+      const { flags } = doc.data();
+      friendsList.push(userId);
+      friendsList = Array.from(new Set(friendsList));
+      FileSystem.writeAsStringAsync(friendsPath, friendsList.join(','));
+      navigation.navigate('FriendsAwards', { flags, userId });
+    })
+    .catch(() => {
+      Alert.alert('ユーザーが存在しません。');
+    });
+}
 
 export default function FriendsSearchScreen(props) {
   const { navigation } = props;
   const [userId, setUserid] = useState('');
-
-  function search() {
-    if (!userId) return;
-    const db = firebase.firestore();
-    const docRef = db.collection('flags').doc(userId);
-    docRef.get()
-      .then(async (doc) => {
-        const { flags } = doc.data();
-        friendsList.push(userId);
-        friendsList = Array.from(new Set(friendsList));
-        FileSystem.writeAsStringAsync(friendsPath, friendsList.join(','));
-        navigation.navigate('FriendsAwards', { flags, userId });
-      })
-      .catch(() => {
-        Alert.alert('ユーザーが存在しません。');
-      });
-  }
 
   return (
     <View style={styles.container}>
@@ -57,16 +57,23 @@ export default function FriendsSearchScreen(props) {
           />
           <TouchableOpacity
             style={styles.searchIconBox}
-            onPress={() => search()}
+            onPress={() => getFlagsAndMove(userId, navigation)}
           >
             <Ionicons name="search" size={24} color="white" />
           </TouchableOpacity>
         </View>
-        <View>
-          <Text>
-            test
-          </Text>
-        </View>
+        <ScrollView style={styles.friendsListView}>
+          {friendsList.map(
+            (friend, index) => (
+              <FriendListComponent
+                id={friend}
+                navigation={navigation}
+                move={getFlagsAndMove}
+                key={index}
+              />
+            ),
+          )}
+        </ScrollView>
       </View>
     </View>
   );
@@ -127,5 +134,10 @@ const styles = StyleSheet.create({
   },
   signUpLinkText: {
     color: '#467FD3',
+  },
+  friendsListView: {
+    borderWidth: 1,
+    borderColor: '#AAAAAA',
+    marginBottom: 150,
   },
 });

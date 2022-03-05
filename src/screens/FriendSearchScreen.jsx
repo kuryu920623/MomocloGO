@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, StyleSheet, TextInput, Text, Dimensions, TouchableOpacity, Alert, ScrollView,
 } from 'react-native';
@@ -8,18 +8,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 import FriendListComponent from '../components/FriendListComponent';
 
+let friendsList, setFriendList;
 const friendsPath = `${FileSystem.documentDirectory}friends.txt`;
-let friendsList;
-async function initFriendsFile() {
-  const fileExists = await FileSystem.getInfoAsync(friendsPath);
-  if (!fileExists.exists) {
-    FileSystem.writeAsStringAsync(friendsPath, '');
-    friendsList = [];
-  } else {
-    friendsList = (await FileSystem.readAsStringAsync(friendsPath)).split(',');
-  }
-}
-initFriendsFile();
 
 function getFlagsAndMove(userId, navigation) {
   if (!userId) return;
@@ -28,9 +18,10 @@ function getFlagsAndMove(userId, navigation) {
   docRef.get()
     .then(async (doc) => {
       const { flags } = doc.data();
-      friendsList.push(userId);
-      friendsList = Array.from(new Set(friendsList));
-      FileSystem.writeAsStringAsync(friendsPath, friendsList.join(','));
+      let li = friendsList.concat([userId]);
+      li = Array.from(new Set(li));
+      setFriendList(li);
+      FileSystem.writeAsStringAsync(friendsPath, li.join(','));
       navigation.navigate('FriendsAwards', { flags, userId });
     })
     .catch(() => {
@@ -41,6 +32,17 @@ function getFlagsAndMove(userId, navigation) {
 export default function FriendsSearchScreen(props) {
   const { navigation } = props;
   const [userId, setUserid] = useState('');
+  [friendsList, setFriendList] = useState([]);
+
+  useEffect(async () => {
+    const fileExists = await FileSystem.getInfoAsync(friendsPath);
+    if (!fileExists.exists) {
+      FileSystem.writeAsStringAsync(friendsPath, '');
+      setFriendList([]);
+    } else {
+      setFriendList((await FileSystem.readAsStringAsync(friendsPath)).split(','));
+    }
+  }, []);
 
   return (
     <View style={styles.container}>

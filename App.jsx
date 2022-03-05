@@ -4,7 +4,7 @@ import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import firebase from 'firebase';
 import { FontAwesome5, AntDesign } from '@expo/vector-icons';
-import { LogBox } from 'react-native';
+import { LogBox, Text } from 'react-native';
 
 import { firebaseConfig } from './env';
 
@@ -18,6 +18,7 @@ import TestScreen from './src/screens/TestScreen';
 import FriendsSearchScreen from './src/screens/FriendSearchScreen';
 import FriendAwardScreen from './src/screens/FriendAwandsScreen';
 import CopyDefaultDatabase from './src/utils/InitDataBase';
+import LogOutButton from './src/components/LogOutButton';
 
 LogBox.ignoreLogs([
   'AsyncStorage has been extracted',
@@ -60,12 +61,20 @@ function TabScreen() {
         screenOptions={{
           tabBarActiveTintColor: 'black',
           tabBarActiveBackgroundColor: 'gray',
+          headerStyle: { backgroundColor: '#467FD3' },
+          headerTitleStyle: { color: '#FFFFFF' },
+          headerTintColor: '#FFFFFF',
+          headerBackTitle: 'Back',
         }}
       >
         <Tab.Screen
           name="Awards"
           component={AwardsScreen}
-          options={{ tabBarIcon: () => <FontAwesome5 name="award" size={28}/>, unmountOnBlur: true }}
+          options={{
+            tabBarIcon: () => <FontAwesome5 name="award" size={28}/>,
+            headerRight: () => <LogOutButton />,
+            unmountOnBlur: true,
+          }}
         />
         <Tab.Screen
           name="Map"

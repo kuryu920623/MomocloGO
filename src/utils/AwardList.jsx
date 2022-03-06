@@ -125,6 +125,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
 
     // 太陽とえくぼ、茶畑のシンデレラ、ビタミンB、べっぴんさん
     {
+      // ガラスの靴アイコン
       title: '茶畑のシンデレラ',
       description: 'タグ「百田夏菜子」のフラグを 3 個獲得する。',
       targetCount: 3,
@@ -163,6 +164,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
 
     // 涙目のアリス、若大将、
     {
+      // 和食の大将 アイコン
       title: '若大将',
       description: 'タグ「玉井詩織」のフラグを 3 個獲得する。',
       targetCount: 3,
@@ -179,7 +181,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: '#ffcc66',
     },
     {
-      title: '涙目のアリス',
+      title: 'Lv.3',
       description: 'タグ「玉井詩織」のフラグを 30 個獲得する。',
       targetCount: 30,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "玉井詩織";`,
@@ -197,6 +199,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
 
     // ももクロのアイドル、反抗期、あーりんロボ、シュークリーム
     {
+      // ハートアイコン
       title: 'ももクロのアイドル',
       description: 'タグ「佐々木彩夏」のフラグを 3 個獲得する。',
       targetCount: 3,
@@ -206,6 +209,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: '#F58E7D',
     },
     {
+      // 青筋アイコン
       title: '反抗期',
       description: 'タグ「佐々木彩夏」のフラグを 10 個獲得する。',
       targetCount: 10,
@@ -214,8 +218,8 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconName: 'heart',
       iconColor: '#F58E7D',
     },
-    // angry アイコン
     {
+      // robot
       title: 'あーりんロボ',
       description: 'タグ「佐々木彩夏」のフラグを 30 個獲得する。',
       targetCount: 30,
@@ -224,8 +228,8 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconName: 'heart',
       iconColor: '#F58E7D',
     },
-    // アイコンはケーキかな
     {
+      // <Feather name="layers" size={24} color="black" /> ?
       title: '角煮',
       description: 'タグ「佐々木彩夏」のフラグを 50 個獲得する。',
       targetCount: 50,

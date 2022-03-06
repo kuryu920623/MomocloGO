@@ -121,9 +121,11 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: '#444444',
     },
 
-    // 太陽とえくぼ、茶畑のシンデレラ、wikipedia探す
+    // 海外
+
+    // 太陽とえくぼ、茶畑のシンデレラ、ビタミンB、べっぴんさん
     {
-      title: 'デコノフ Lv.1',
+      title: '茶畑のシンデレラ',
       description: 'タグ「百田夏菜子」のフラグを 3 個獲得する。',
       targetCount: 3,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "百田夏菜子";`,
@@ -132,7 +134,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: 'red',
     },
     {
-      title: 'デコノフ Lv.2',
+      title: '太陽とえくぼ',
       description: 'タグ「百田夏菜子」のフラグを 10 個獲得する。',
       targetCount: 10,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "百田夏菜子";`,
@@ -141,7 +143,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: 'red',
     },
     {
-      title: 'デコノフ Lv.3',
+      title: 'すっくてごらん',
       description: 'タグ「百田夏菜子」のフラグを 30 個獲得する。',
       targetCount: 30,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "百田夏菜子";`,
@@ -150,7 +152,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: 'red',
     },
     {
-      title: 'デコノフ Lv.4',
+      title: 'ビタミンB',
       description: 'タグ「百田夏菜子」のフラグを 50 個獲得する。',
       targetCount: 50,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "百田夏菜子";`,
@@ -159,9 +161,9 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: 'red',
     },
 
-    // 涙目のアリス、若大将
+    // 涙目のアリス、若大将、
     {
-      title: 'タマノフ Lv.1',
+      title: '若大将',
       description: 'タグ「玉井詩織」のフラグを 3 個獲得する。',
       targetCount: 3,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "玉井詩織";`,
@@ -169,7 +171,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: '#ffcc66',
     },
     {
-      title: 'タマノフ Lv.2',
+      title: '涙目のアリス',
       description: 'タグ「玉井詩織」のフラグを 10 個獲得する。',
       targetCount: 10,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "玉井詩織";`,
@@ -177,7 +179,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: '#ffcc66',
     },
     {
-      title: 'タマノフ Lv.3',
+      title: '涙目のアリス',
       description: 'タグ「玉井詩織」のフラグを 30 個獲得する。',
       targetCount: 30,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "玉井詩織";`,
@@ -185,7 +187,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: '#ffcc66',
     },
     {
-      title: 'タマノフ Lv.4',
+      title: 'Lv.4',
       description: 'タグ「玉井詩織」のフラグを 50 個獲得する。',
       targetCount: 50,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "玉井詩織";`,
@@ -193,25 +195,79 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: '#ffcc66',
     },
 
+    // ももクロのアイドル、反抗期、あーりんロボ、シュークリーム
     {
-      title: 'プニノフ Lv.1',
+      title: 'ももクロのアイドル',
       description: 'タグ「佐々木彩夏」のフラグを 3 個獲得する。',
       targetCount: 3,
-      getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "玉井詩織";`,
+      getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "佐々木彩夏";`,
+      iconProvider: 'AntDesign',
+      iconName: 'heart',
+      iconColor: '#F58E7D',
+    },
+    {
+      title: '反抗期',
+      description: 'タグ「佐々木彩夏」のフラグを 10 個獲得する。',
+      targetCount: 10,
+      getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "佐々木彩夏";`,
+      iconProvider: 'AntDesign',
+      iconName: 'heart',
+      iconColor: '#F58E7D',
+    },
+    // angry アイコン
+    {
+      title: 'あーりんロボ',
+      description: 'タグ「佐々木彩夏」のフラグを 30 個獲得する。',
+      targetCount: 30,
+      getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "佐々木彩夏";`,
+      iconProvider: 'AntDesign',
+      iconName: 'heart',
+      iconColor: '#F58E7D',
+    },
+    // アイコンはケーキかな
+    {
+      title: '角煮',
+      description: 'タグ「佐々木彩夏」のフラグを 50 個獲得する。',
+      targetCount: 50,
+      getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "佐々木彩夏";`,
       iconProvider: 'AntDesign',
       iconName: 'heart',
       iconColor: '#F58E7D',
     },
 
+    // 鋼少女、しょこららいおん、ウマ娘、幽体離脱
     {
-      title: 'タカノフ Lv.1',
+      title: '鋼少女',
       description: 'タグ「高城れに」のフラグを 3 個獲得する。',
       targetCount: 3,
-      getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "玉井詩織";`,
+      getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "高城れに";`,
       iconName: 'eggplant',
       iconColor: '#7C2E69',
     },
-
+    {
+      title: 'まるごとれにちゃん',
+      description: 'タグ「高城れに」のフラグを 10 個獲得する。',
+      targetCount: 10,
+      getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "高城れに";`,
+      iconName: 'eggplant',
+      iconColor: '#7C2E69',
+    },
+    {
+      title: 'ウマ娘',
+      description: 'タグ「高城れに」のフラグを 30 個獲得する。',
+      targetCount: 30,
+      getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "高城れに";`,
+      iconName: 'eggplant',
+      iconColor: '#7C2E69',
+    },
+    {
+      title: 'Lv.4',
+      description: 'タグ「高城れに」のフラグを 50 個獲得する。',
+      targetCount: 50,
+      getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "高城れに";`,
+      iconName: 'eggplant',
+      iconColor: '#7C2E69',
+    },
   ];
 
   const promises = [];

@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "jp.kuryu.MomocloGO",
+      "bundleIdentifier": "com.momoclomap.MomocloGOtest1",
       "buildNumber": "1.0.0",
       "infoPlist": {
         "NSLocationAlwaysUsageDescription": "地図上で現在位置を表示するために位置情報を利用します",
@@ -31,7 +31,7 @@
       }
     },
     "android": {
-      "package": "jp.kuryu.MomocloGO",
+      "package": "com.momoclomap.MomocloGOtest1",
       "permissions": ["ACCESS_FINE_LOCATION"],
       "versionCode": 1,
       "adaptiveIcon": {

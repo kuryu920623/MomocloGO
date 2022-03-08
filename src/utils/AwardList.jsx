@@ -37,6 +37,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconName: 'award',
       iconColor: '#A0A0A0',
     },
+
     {
       title: '桃伍長',
       description: '聖地のフラグを 50 個獲得する。',
@@ -52,8 +53,8 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       description: '聖地のフラグを 100 個獲得する。',
       targetCount: 100,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
-      iconProvider: 'FontAwesome5',
-      iconName: 'award',
+      iconProvider: 'Ionicons',
+      iconName: 'trophy',
       iconColor: '#E8DC00',
     },
     {
@@ -61,8 +62,8 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       description: '聖地のフラグを 200 個獲得する。',
       targetCount: 200,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
-      iconProvider: 'FontAwesome5',
-      iconName: 'award',
+      iconProvider: 'Ionicons',
+      iconName: 'trophy',
       iconColor: '#E8DC00',
     },
     {
@@ -70,8 +71,8 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       description: '聖地のフラグを 300 個獲得する。',
       targetCount: 300,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
-      iconProvider: 'FontAwesome5',
-      iconName: 'award',
+      iconProvider: 'Ionicons',
+      iconName: 'trophy',
       iconColor: '#444444',
     },
     {
@@ -79,8 +80,8 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       description: '聖地のフラグを 500 個獲得する。',
       targetCount: 500,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
-      iconProvider: 'FontAwesome5',
-      iconName: 'award',
+      iconProvider: 'Ionicons',
+      iconName: 'trophy',
       iconColor: '#444444',
     },
 
@@ -130,8 +131,8 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       description: 'タグ「百田夏菜子」のフラグを 3 個獲得する。',
       targetCount: 3,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "百田夏菜子";`,
-      iconProvider: 'MaterialIcons',
-      iconName: 'wb-sunny',
+      iconProvider: 'MaterialCommunityIcons',
+      iconName: 'shoe-heel',
       iconColor: 'red',
     },
     {
@@ -148,8 +149,8 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       description: 'タグ「百田夏菜子」のフラグを 30 個獲得する。',
       targetCount: 30,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "百田夏菜子";`,
-      iconProvider: 'MaterialIcons',
-      iconName: 'wb-sunny',
+      iconProvider: 'MaterialCommunityIcons',
+      iconName: 'fishbowl-outline',
       iconColor: 'red',
     },
     {
@@ -224,23 +225,23 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       description: 'タグ「佐々木彩夏」のフラグを 30 個獲得する。',
       targetCount: 30,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "佐々木彩夏";`,
-      iconProvider: 'AntDesign',
-      iconName: 'heart',
+      iconProvider: 'MaterialCommunityIcons',
+      iconName: 'robot',
       iconColor: '#F58E7D',
     },
     {
-      // <Feather name="layers" size={24} color="black" /> ?
       title: '角煮',
       description: 'タグ「佐々木彩夏」のフラグを 50 個獲得する。',
       targetCount: 50,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "佐々木彩夏";`,
-      iconProvider: 'AntDesign',
-      iconName: 'heart',
+      iconProvider: 'Feather',
+      iconName: 'layers',
       iconColor: '#F58E7D',
     },
 
     // 鋼少女、しょこららいおん、ウマ娘、幽体離脱
     {
+      // 騎士アイコン1
       title: '鋼少女',
       description: 'タグ「高城れに」のフラグを 3 個獲得する。',
       targetCount: 3,
@@ -249,6 +250,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: '#7C2E69',
     },
     {
+      // ナス
       title: 'まるごとれにちゃん',
       description: 'タグ「高城れに」のフラグを 10 個獲得する。',
       targetCount: 10,
@@ -261,8 +263,10 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       description: 'タグ「高城れに」のフラグを 30 個獲得する。',
       targetCount: 30,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "高城れに";`,
-      iconName: 'eggplant',
+      iconProvider: 'FontAwesome5',
+      iconName: 'horse',
       iconColor: '#7C2E69',
+      iconSize: 30,
     },
     {
       title: 'Lv.4',

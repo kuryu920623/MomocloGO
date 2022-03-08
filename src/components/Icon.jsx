@@ -6,6 +6,7 @@ import {
   Ionicons,
   MaterialIcons,
   AntDesign,
+  Feather,
 } from '@expo/vector-icons';
 import { useFonts } from '@use-expo/font';
 import { number, string } from 'prop-types';
@@ -23,6 +24,7 @@ export default function Icon(props) {
   if (provider === 'Ionicons') { return <Ionicons name={name} size={size} color={color} />; }
   if (provider === 'MaterialIcons') { return <MaterialIcons name={name} size={size} color={color} />; }
   if (provider === 'AntDesign') { return <AntDesign name={name} size={size} color={color} />; }
+  if (provider === 'Feather') { return <Feather name={name} size={size} color={color} />; }
 
   const [fontLoaded] = useFonts({ icomoon });
   const CustomIcon = createIconSetFromIcoMoon(selection);

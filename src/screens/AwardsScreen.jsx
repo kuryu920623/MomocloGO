@@ -73,7 +73,12 @@ function AwardIconSet(props) {
           setModalVisible(true);
         }}
       >
-        <Icon provider={obj.iconProvider} name={obj.iconName} color={iconColor} size={36} />
+        <Icon
+          provider={obj.iconProvider}
+          name={obj.iconName}
+          color={iconColor}
+          size={obj.iconSize || 36}
+        />
       </TouchableOpacity>
       <View style={iconSetStyles.progressView}>
         <ProgressMeter persentage={getCount / obj.targetCount} />

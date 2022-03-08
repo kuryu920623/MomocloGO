@@ -26,7 +26,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
       iconProvider: 'FontAwesome5',
       iconName: 'award',
-      iconColor: '#C47222',
+      iconColor: '#A0A0A0',
     },
     {
       title: '上桃兵',
@@ -35,7 +35,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
       iconProvider: 'FontAwesome5',
       iconName: 'award',
-      iconColor: '#A0A0A0',
+      iconColor: '#E8DC00',
     },
 
     {
@@ -45,7 +45,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
       iconProvider: 'FontAwesome5',
       iconName: 'award',
-      iconColor: '#A0A0A0',
+      iconColor: '#444444',
     },
 
     {
@@ -55,7 +55,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
       iconProvider: 'Ionicons',
       iconName: 'trophy',
-      iconColor: '#E8DC00',
+      iconColor: '#C47222',
     },
     {
       title: '桃曹長',
@@ -64,7 +64,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
       iconProvider: 'Ionicons',
       iconName: 'trophy',
-      iconColor: '#E8DC00',
+      iconColor: '#A0A0A0',
     },
     {
       title: '桃少尉',
@@ -73,7 +73,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond};`,
       iconProvider: 'Ionicons',
       iconName: 'trophy',
-      iconColor: '#444444',
+      iconColor: '#E8DC00',
     },
     {
       title: '桃大尉',
@@ -134,6 +134,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconProvider: 'MaterialCommunityIcons',
       iconName: 'shoe-heel',
       iconColor: 'red',
+      iconSize: 42,
     },
     {
       title: '太陽とえくぼ',
@@ -158,9 +159,9 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       description: 'タグ「百田夏菜子」のフラグを 50 個獲得する。',
       targetCount: 50,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "百田夏菜子";`,
-      iconProvider: 'MaterialIcons',
-      iconName: 'wb-sunny',
+      iconName: 'B',
       iconColor: 'red',
+      iconSize: 32,
     },
 
     // 涙目のアリス、若大将、
@@ -170,15 +171,16 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       description: 'タグ「玉井詩織」のフラグを 3 個獲得する。',
       targetCount: 3,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "玉井詩織";`,
-      iconName: 'sunflower',
+      iconName: 'taisho',
       iconColor: '#ffcc66',
+      iconSize: 32,
     },
     {
       title: '涙目のアリス',
       description: 'タグ「玉井詩織」のフラグを 10 個獲得する。',
       targetCount: 10,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "玉井詩織";`,
-      iconName: 'sunflower',
+      iconName: 'namida',
       iconColor: '#ffcc66',
     },
     {
@@ -215,8 +217,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       description: 'タグ「佐々木彩夏」のフラグを 10 個獲得する。',
       targetCount: 10,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "佐々木彩夏";`,
-      iconProvider: 'AntDesign',
-      iconName: 'heart',
+      iconName: 'hankoki',
       iconColor: '#F58E7D',
     },
     {
@@ -246,7 +247,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       description: 'タグ「高城れに」のフラグを 3 個獲得する。',
       targetCount: 3,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "高城れに";`,
-      iconName: 'eggplant',
+      iconName: 'hagane',
       iconColor: '#7C2E69',
     },
     {

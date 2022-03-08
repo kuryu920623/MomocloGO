@@ -8,20 +8,28 @@ import * as SQLite from 'expo-sqlite';
 
 import Button from '../components/Button';
 
+let navigation;
+
 function restoreFlags(flags) {
   const db = SQLite.openDatabase('test.db');
   db.transaction((tx) => {
     tx.executeSql(
       `UPDATE place_master SET get_flg = 1 WHERE place_seq IN (${flags});`,
       [],
-      () => { console.log('restoreFlags'); },
+      () => {
+        console.log('restoreFlags');
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Main' }],
+        });
+      },
       (_, err) => { console.log('restoreFlags', err); },
     );
   });
 }
 
 export default function LogInScreen(props) {
-  const { navigation } = props;
+  navigation = props.navigation;
   const [userId, setUserid] = useState('');
   const [password, setPassword] = useState('');
 
@@ -39,10 +47,6 @@ export default function LogInScreen(props) {
       .then((userCredential) => {
         const { user } = userCredential;
         console.log(user.email);
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Main' }],
-        });
         downloadFlags();
       })
       .catch((error) => {

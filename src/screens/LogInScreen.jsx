@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, StyleSheet, TextInput, Text, TouchableOpacity,
+  View, StyleSheet, TextInput, Text, TouchableOpacity, Alert,
 } from 'react-native';
 import firebase from 'firebase';
 import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
 
 import Button from '../components/Button';
-import { UserContext } from '../utils/settings';
+import { UserContext, transrateErrors } from '../utils/settings';
 
 let navigation;
 
@@ -65,6 +65,8 @@ export default function LogInScreen(props) {
       })
       .catch((error) => {
         console.log(error.code, error.message);
+        const err = transrateErrors(error.code);
+        Alert.alert(err.title, err.description);
       });
   }
 

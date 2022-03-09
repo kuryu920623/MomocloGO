@@ -137,16 +137,14 @@ export default function AwardsScreen(props) {
     </View>
   );
   let whereCond = 'get_flg = 1';
-  let displayUserId, displayUserName;
+  let displayUserId = UserContext.id;
+  let displayUserName = UserContext.name;
   if (friendsId) {
     displayUserId = friendsId;
     displayUserName = friendsName;
     whereCond = `place_seq IN (${friendsFlags})`;
     isFriend = true;
     tweetButton = null;
-  } else {
-    displayUserId = UserContext.id;
-    displayUserName = UserContext.name;
   }
 
   useEffect(async () => {

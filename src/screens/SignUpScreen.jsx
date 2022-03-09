@@ -5,7 +5,7 @@ import {
 import firebase from 'firebase';
 
 import Button from '../components/Button';
-import { UserContext } from '../utils/settings';
+import { UserContext, transrateErrors } from '../utils/settings';
 
 export default function SignUpScreen(props) {
   const { navigation } = props;
@@ -23,17 +23,24 @@ export default function SignUpScreen(props) {
     } else if (userId.length >= 16) {
       setIdTextColor('#F15B55');
       setIdCheck('IDは15文字以下です。');
+    } else if (!userId.match(/^[0-9a-zA-Z]+$/)) {
+      setIdTextColor('#F15B55');
+      setIdCheck('半角英数字のみ有効です。');
     } else {
       const email = `${userId}@dummy1234321.com`;
-      firebase.auth().fetchSignInMethodsForEmail(email).then((method) => {
-        if (method.indexOf(firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
-          setIdTextColor('#F15B55');
-          setIdCheck('既に取得されています。');
-        } else {
-          setIdTextColor('green');
-          setIdCheck('✔ OK');
-        }
-      });
+      try {
+        firebase.auth().fetchSignInMethodsForEmail(email).then((method) => {
+          if (method.indexOf(firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
+            setIdTextColor('#F15B55');
+            setIdCheck('既に取得されています。');
+          } else {
+            setIdTextColor('green');
+            setIdCheck('✔ OK');
+          }
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
   }
 
@@ -48,6 +55,14 @@ export default function SignUpScreen(props) {
     }
     if (userId.length > 16) {
       Alert.alert('ユーザーIDは15文字以下です。');
+      return;
+    }
+    if (userId.match(/^[0-9a-zA-Z]+$/)) {
+      Alert.alert('ユーザーID半角英数字のみ有効です。');
+      return;
+    }
+    if (password.length < 6) {
+      Alert.alert('パスワードは6文字以上です。');
       return;
     }
     if (userName.length > 15) {
@@ -75,6 +90,8 @@ export default function SignUpScreen(props) {
       })
       .catch((error) => {
         console.log(error.code, error.message);
+        const err = transrateErrors(error.code);
+        Alert.alert(err.title, err.description);
       });
   }
 

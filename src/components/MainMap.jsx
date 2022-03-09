@@ -54,12 +54,13 @@ function MainMap(props) {
 
   useEffect(() => {
     (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync({
-        accuracy: Location.Accuracy.Lowest,
-      });
+      const { status } = await Location.requestForegroundPermissionsAsync({});
       if (status !== 'granted') { return; }
 
-      const tmp = await Location.getCurrentPositionAsync({});
+      const tmp = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Lowest,
+        distanceInterval: 1000,
+      });
       const location = {};
       location.latitude = tmp.coords.latitude;
       location.longitude = tmp.coords.longitude;

@@ -17,12 +17,12 @@ function getFlagsAndMove(userId, navigation) {
   const docRef = db.collection('flags').doc(userId);
   docRef.get()
     .then(async (doc) => {
-      const { flags } = doc.data();
+      const { flags, displayName } = doc.data();
       let li = friendsList.concat([userId]);
       li = Array.from(new Set(li));
       setFriendList(li.filter((friend) => friend.length > 0));
       FileSystem.writeAsStringAsync(friendsPath, li.join(','));
-      navigation.navigate('FriendsAwards', { flags, userId });
+      navigation.navigate('FriendsAwards', { flags, userId, displayName: displayName || userId });
     })
     .catch(() => {
       Alert.alert('ユーザーが存在しません。');

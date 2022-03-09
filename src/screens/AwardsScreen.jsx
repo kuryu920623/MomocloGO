@@ -120,7 +120,17 @@ const iconSetStyles = {
 
 export default function AwardsScreen(props) {
   console.log('award screen');
-  const { friendsFlags, friendsId } = props;
+  const { friendsFlags, friendsId, friendsName } = props;
+  console.log(props);
+  [modalVisible, setModalVisible] = useState(false);
+  [modalBlock, setModalBlock] = useState(<Text>test</Text>);
+  const [getMedalCount, setGetMedalCount] = useState(0);
+  const [allMedalCount, setAllMedalCount] = useState(0);
+  const [userRanking, setUserRanking] = useState(0);
+  const [displayUserName, setDisplayUserName] = useState('');
+  const [allUserCount, setAllUserCount] = useState(0);
+  const [awardList, setAwardList] = useState([]);
+
   let isFriend = false;
   let tweetButton = (
     <View style={{ alignItems: 'center' }}>
@@ -128,22 +138,19 @@ export default function AwardsScreen(props) {
     </View>
   );
   let whereCond = 'get_flg = 1';
+  let displayUserId;
   if (friendsId) {
+    displayUserId = friendsId;
+    if (!friendsName) {
+      setDisplayUserName(friendsName);
+    }
     whereCond = `place_seq IN (${friendsFlags})`;
     isFriend = true;
     tweetButton = null;
+  } else {
+    const { currentUser } = firebase.auth();
+    displayUserId = currentUser.email.replace('@dummy1234321.com', '');
   }
-
-  [modalVisible, setModalVisible] = useState(false);
-  [modalBlock, setModalBlock] = useState(<Text>test</Text>);
-  const [getMedalCount, setGetMedalCount] = useState(0);
-  const [allMedalCount, setAllMedalCount] = useState(0);
-  const [userRanking, setUserRanking] = useState(0);
-  const [allUserCount, setAllUserCount] = useState(0);
-  const [awardList, setAwardList] = useState([]);
-
-  const { currentUser } = firebase.auth();
-  const userId = currentUser.email.replace('@dummy1234321.com', '');
 
   useEffect(async () => {
     setAwardList(await GetAwardList(whereCond));
@@ -167,6 +174,17 @@ export default function AwardsScreen(props) {
       );
     });
 
+    console.log(123);
+    if (!displayUserName) {
+      const fb = firebase.firestore();
+      const docRef = fb.collection('flags').doc(displayUserId);
+      docRef.get()
+        .then(async (doc) => {
+          const { displayName } = doc.data();
+          setDisplayUserName(displayName);
+        });
+    }
+
     // firebaseからユーザーランキング取得する処理
     // setUserRanking(123)
     // setAllUserCount(456)
@@ -186,7 +204,8 @@ export default function AwardsScreen(props) {
           end={{ x: 0.3, y: 0.3 }}
         >
           <View style={styles.userIdView}>
-            <Text style={styles.userIdText}>{`ID: ${friendsId || userId}`}</Text>
+            <Text style={styles.userNameText}>{displayUserName}</Text>
+            <Text style={styles.userIdText}>{`ID: ${displayUserId}`}</Text>
           </View>
 
           <View style={[styles.views, styles.rankingView]}>
@@ -226,10 +245,12 @@ export default function AwardsScreen(props) {
 AwardsScreen.propTypes = {
   friendsFlags: string,
   friendsId: string,
+  friendsName: string,
 };
 AwardsScreen.defaultProps = {
   friendsFlags: null,
   friendsId: null,
+  friendsName: null,
 };
 
 const styles = StyleSheet.create({
@@ -246,8 +267,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 18,
   },
-  userIdText: {
+  userNameText: {
     fontSize: 30,
+  },
+  userIdText: {
+    fontSize: 15,
+    color: 'gray',
   },
   rankingView: {
     flexDirection: 'row',

@@ -9,6 +9,7 @@ import Button from '../components/Button';
 export default function SignUpScreen(props) {
   const { navigation } = props;
   const [userId, setUserid] = useState('');
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [fixPassword, setFixPassword] = useState('');
   const [idCheck, setIdCheck] = useState('');
@@ -42,15 +43,28 @@ export default function SignUpScreen(props) {
     }
     if (userId.length < 5) {
       Alert.alert('ユーザーIDは6文字以上です。');
-    } else if (userId.length > 16) {
-      Alert.alert('ユーザーIDは15文字以下です。');
+      return;
     }
-    // 英数字のみか確認
-    // アラートは面倒なので、ポップアップにしたい。
+    if (userId.length > 16) {
+      Alert.alert('ユーザーIDは15文字以下です。');
+      return;
+    }
+    if (userName.length > 15) {
+      Alert.alert('表示名は15文字以下です。');
+      return;
+    }
+
     firebase.auth().createUserWithEmailAndPassword(`${userId}@dummy1234321.com`, password)
       .then((userCredential) => {
         const { user } = userCredential;
-        console.log(user.email);
+        const db = firebase.firestore();
+        const fullUserId = user.email.replace('@dummy1234321.com', '');
+        db.collection('flags').doc(fullUserId).set({
+          flags: '',
+          updateAt: new Date(),
+          count: 0,
+          displayName: userName || fullUserId,
+        });
         navigation.reset({
           index: 0,
           routes: [{ name: 'Main' }],
@@ -90,6 +104,19 @@ export default function SignUpScreen(props) {
             onPress={() => checkIdDuplication()}
             containerStyle={{ marginBottom: null }}
             label="取得可能か確認"
+          />
+        </View>
+
+        <View>
+          <Text style={styles.label}>
+            表示名 (15文字以下)
+          </Text>
+          <TextInput
+            value={userName}
+            style={styles.input}
+            onChangeText={(text) => { setUserName(text); }}
+            autoCapitalize="none"
+            placeholder="ももクロGO"
           />
         </View>
 

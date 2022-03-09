@@ -1,27 +1,36 @@
 import React from 'react';
 import {
-  StyleSheet, Text, TouchableOpacity,
+  StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { string, func, shape } from 'prop-types';
 
 export default function FriendListComponent(props) {
-  const { id, navigation, move } = props;
+  const {
+    id, name, navigation, moveFunc, deleteFunc,
+  } = props;
   return (
     <TouchableOpacity
-      onPress={() => { move(id, navigation); }}
+      onPress={() => { moveFunc(id, navigation); }}
       style={styles.topView}
     >
-      <Text style={styles.userText}>{id}</Text>
-      <AntDesign name="closecircleo" size={20} color="black" />
+      <View>
+        <Text style={styles.userNameText}>{name}</Text>
+        <Text style={styles.userIdText}>{`ID: ${id}`}</Text>
+      </View>
+      <TouchableOpacity onPress={() => { deleteFunc(id); }}>
+        <AntDesign name="closecircleo" size={28} color="black" />
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 }
 
 FriendListComponent.propTypes = {
   id: string.isRequired,
+  name: string.isRequired,
   navigation: shape().isRequired,
-  move: func.isRequired,
+  moveFunc: func.isRequired,
+  deleteFunc: func.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -34,7 +43,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  userText: {
-    fontSize: 15,
+  userNameText: {
+    fontSize: 18,
+  },
+  userIdText: {
+    fontSize: 12,
+    color: 'gray',
   },
 });

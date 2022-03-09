@@ -31,6 +31,11 @@ function getFlagsAndMove(userId, navigation) {
     });
 }
 
+function deleteFrined(userId) {
+  const tmp = friendsList.filter((friend) => Object.keys(friend)[0] !== userId);
+  setFriendList(tmp);
+}
+
 export default function FriendsSearchScreen(props) {
   const { navigation } = props;
   const [userId, setUserid] = useState('');
@@ -72,8 +77,10 @@ export default function FriendsSearchScreen(props) {
             (friend, index) => (
               <FriendListComponent
                 id={Object.keys(friend)[0]}
+                name={Object.values(friend)[0]}
                 navigation={navigation}
-                move={getFlagsAndMove}
+                moveFunc={getFlagsAndMove}
+                deleteFunc={deleteFrined}
                 key={index}
               />
             ),

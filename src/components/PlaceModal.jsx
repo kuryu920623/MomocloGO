@@ -156,7 +156,9 @@ export default function PlaceModal(props) {
   const [buttonComponent, setButtonComponent] = useState(null);
 
   useEffect(async () => {
-    const tmp = await Location.getCurrentPositionAsync({});
+    const tmp = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Low,
+    });
     const distMeter = CulcDistanceMeter(
       placeObj.latitude,
       placeObj.longitude,

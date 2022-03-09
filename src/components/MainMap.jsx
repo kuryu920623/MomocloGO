@@ -54,7 +54,9 @@ function MainMap(props) {
 
   useEffect(() => {
     (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync({
+        accuracy: Location.Accuracy.Lowest,
+      });
       if (status !== 'granted') { return; }
 
       const tmp = await Location.getCurrentPositionAsync({});

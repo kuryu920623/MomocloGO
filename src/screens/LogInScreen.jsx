@@ -7,6 +7,7 @@ import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
 
 import Button from '../components/Button';
+import { UserContext } from '../utils/settings';
 
 let navigation;
 
@@ -28,6 +29,17 @@ function restoreFlags(flags) {
   });
 }
 
+function setUserContext(id) {
+  UserContext.id = id;
+  const fb = firebase.firestore();
+  const docRef = fb.collection('flags').doc(id);
+  docRef.get()
+    .then(async (doc) => {
+      const { displayName } = doc.data();
+      UserContext.name = displayName;
+    });
+}
+
 export default function LogInScreen(props) {
   navigation = props.navigation;
   const [userId, setUserid] = useState('');
@@ -36,6 +48,7 @@ export default function LogInScreen(props) {
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        setUserContext(user.email.replace('@dummy1234321.com', ''));
         navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
       }
     });
@@ -46,7 +59,8 @@ export default function LogInScreen(props) {
     firebase.auth().signInWithEmailAndPassword(`${userId}@dummy1234321.com`, password)
       .then((userCredential) => {
         const { user } = userCredential;
-        console.log(user.email);
+        console.log('Login', user.email);
+        setUserContext(user.email.replace('@dummy1234321.com', ''));
         downloadFlags();
       })
       .catch((error) => {

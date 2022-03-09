@@ -5,6 +5,7 @@ import {
 import firebase from 'firebase';
 
 import Button from '../components/Button';
+import { UserContext } from '../utils/settings';
 
 export default function SignUpScreen(props) {
   const { navigation } = props;
@@ -65,6 +66,8 @@ export default function SignUpScreen(props) {
           count: 0,
           displayName: userName || fullUserId,
         });
+        UserContext.id = fullUserId;
+        UserContext.name = userName || fullUserId;
         navigation.reset({
           index: 0,
           routes: [{ name: 'Main' }],

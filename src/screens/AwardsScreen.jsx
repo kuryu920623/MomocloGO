@@ -15,6 +15,7 @@ import ModalBase from '../components/ModalBase';
 import AwardModal from '../components/AwardModal';
 import GetAwardList from '../utils/AwardList';
 import TweetButton from '../components/TweetButton';
+import { UserContext } from '../utils/settings';
 
 const modalOpenAudio = require('../../assets/sounds/modal_open.mp3');
 
@@ -121,13 +122,11 @@ const iconSetStyles = {
 export default function AwardsScreen(props) {
   console.log('award screen');
   const { friendsFlags, friendsId, friendsName } = props;
-  console.log(props);
   [modalVisible, setModalVisible] = useState(false);
   [modalBlock, setModalBlock] = useState(<Text>test</Text>);
   const [getMedalCount, setGetMedalCount] = useState(0);
   const [allMedalCount, setAllMedalCount] = useState(0);
   const [userRanking, setUserRanking] = useState(0);
-  const [displayUserName, setDisplayUserName] = useState('');
   const [allUserCount, setAllUserCount] = useState(0);
   const [awardList, setAwardList] = useState([]);
 
@@ -138,18 +137,16 @@ export default function AwardsScreen(props) {
     </View>
   );
   let whereCond = 'get_flg = 1';
-  let displayUserId;
+  let displayUserId, displayUserName;
   if (friendsId) {
     displayUserId = friendsId;
-    if (!friendsName) {
-      setDisplayUserName(friendsName);
-    }
+    displayUserName = friendsName;
     whereCond = `place_seq IN (${friendsFlags})`;
     isFriend = true;
     tweetButton = null;
   } else {
-    const { currentUser } = firebase.auth();
-    displayUserId = currentUser.email.replace('@dummy1234321.com', '');
+    displayUserId = UserContext.id;
+    displayUserName = UserContext.name;
   }
 
   useEffect(async () => {
@@ -173,17 +170,6 @@ export default function AwardsScreen(props) {
         },
       );
     });
-
-    console.log(123);
-    if (!displayUserName) {
-      const fb = firebase.firestore();
-      const docRef = fb.collection('flags').doc(displayUserId);
-      docRef.get()
-        .then(async (doc) => {
-          const { displayName } = doc.data();
-          setDisplayUserName(displayName);
-        });
-    }
 
     // firebaseからユーザーランキング取得する処理
     // setUserRanking(123)

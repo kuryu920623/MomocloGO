@@ -32,7 +32,7 @@ function getFlagsAndMove(userId, navigation) {
 }
 
 function deleteFrined(userId) {
-  Alert.alert('削除しますか？', '', [
+  Alert.alert('リストから削除しますか？', '', [
     {
       text: 'キャンセル',
       style: 'cancel',

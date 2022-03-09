@@ -153,8 +153,12 @@ export default function AwardsScreen(props) {
         'SELECT COUNT(get_flg = 1) AS getCount, COUNT(1) AS allCount FROM place_master;',
         [],
         (_, res) => {
-          if (friendsFlags) {
-            setGetMedalCount(friendsFlags.split(',').length);
+          if (friendsFlags !== null) {
+            if (friendsFlags === '') {
+              setGetMedalCount(0);
+            } else {
+              setGetMedalCount(friendsFlags.split(',').length);
+            }
           } else {
             setGetMedalCount(res.rows._array[0].getCount);
           }

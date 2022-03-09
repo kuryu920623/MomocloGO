@@ -20,7 +20,7 @@ function getFlagsAndMove(userId, navigation) {
       const { flags } = doc.data();
       let li = friendsList.concat([userId]);
       li = Array.from(new Set(li));
-      setFriendList(li);
+      setFriendList(li.filter((friend) => friend.length > 0));
       FileSystem.writeAsStringAsync(friendsPath, li.join(','));
       navigation.navigate('FriendsAwards', { flags, userId });
     })
@@ -40,7 +40,8 @@ export default function FriendsSearchScreen(props) {
       FileSystem.writeAsStringAsync(friendsPath, '');
       setFriendList([]);
     } else {
-      setFriendList((await FileSystem.readAsStringAsync(friendsPath)).split(','));
+      const li = (await FileSystem.readAsStringAsync(friendsPath)).split(',').filter((friend) => friend.length > 0);
+      setFriendList(li);
     }
   }, []);
 

@@ -32,8 +32,20 @@ function getFlagsAndMove(userId, navigation) {
 }
 
 function deleteFrined(userId) {
-  const tmp = friendsList.filter((friend) => Object.keys(friend)[0] !== userId);
-  setFriendList(tmp);
+  Alert.alert('削除しますか？', '', [
+    {
+      text: 'キャンセル',
+      style: 'cancel',
+    },
+    {
+      text: 'はい',
+      onPress: () => {
+        const tmp = friendsList.filter((friend) => Object.keys(friend)[0] !== userId);
+        setFriendList(tmp);
+        FileSystem.writeAsStringAsync(friendsPath, JSON.stringify(tmp));
+      },
+    },
+  ]);
 }
 
 export default function FriendsSearchScreen(props) {

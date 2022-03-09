@@ -18,11 +18,13 @@ function getFlagsAndMove(userId, navigation) {
   docRef.get()
     .then(async (doc) => {
       const { flags, displayName } = doc.data();
-      let li = friendsList.concat([userId]);
-      li = Array.from(new Set(li));
-      setFriendList(li.filter((friend) => friend.length > 0));
-      FileSystem.writeAsStringAsync(friendsPath, li.join(','));
-      navigation.navigate('FriendsAwards', { flags, userId, displayName: displayName || userId });
+      const ids = friendsList.map((friend) => Object.keys(friend)[0]);
+      if (!ids.includes(userId)) {
+        const tmp = friendsList.concat([{ [userId]: displayName }]);
+        setFriendList(tmp);
+        FileSystem.writeAsStringAsync(friendsPath, JSON.stringify(friendsList));
+      }
+      navigation.navigate('FriendsAwards', { flags, userId, displayName });
     })
     .catch(() => {
       Alert.alert('ユーザーが存在しません。');
@@ -37,11 +39,11 @@ export default function FriendsSearchScreen(props) {
   useEffect(async () => {
     const fileExists = await FileSystem.getInfoAsync(friendsPath);
     if (!fileExists.exists) {
-      FileSystem.writeAsStringAsync(friendsPath, '');
+      FileSystem.writeAsStringAsync(friendsPath, JSON.stringify([]));
       setFriendList([]);
     } else {
-      const li = (await FileSystem.readAsStringAsync(friendsPath)).split(',').filter((friend) => friend.length > 0);
-      setFriendList(li);
+      const userList = JSON.parse(await FileSystem.readAsStringAsync(friendsPath));
+      setFriendList(userList);
     }
   }, []);
 
@@ -69,7 +71,7 @@ export default function FriendsSearchScreen(props) {
           {friendsList.map(
             (friend, index) => (
               <FriendListComponent
-                id={friend}
+                id={Object.keys(friend)[0]}
                 navigation={navigation}
                 move={getFlagsAndMove}
                 key={index}

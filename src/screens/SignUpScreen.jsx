@@ -3,6 +3,7 @@ import {
   View, StyleSheet, TextInput, Text, Alert, TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import Button from '../components/Button';
 import { UserContext, transrateErrors } from '../utils/settings';
@@ -96,7 +97,8 @@ export default function SignUpScreen(props) {
   }
 
   return (
-    <View style={styles.container}>
+    <KeyboardAwareScrollView style={styles.container}>
+
       <View style={styles.inner}>
         <Text style={styles.title}>新規登録</Text>
         <Text style={styles.attention}>
@@ -182,7 +184,7 @@ export default function SignUpScreen(props) {
         </View>
 
       </View>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
 

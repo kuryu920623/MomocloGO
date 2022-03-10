@@ -2,7 +2,7 @@
   "expo": {
     "name": "MomocloGO",
     "slug": "MomocloGO",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "privacy": "unlisted",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.momoclomap.MomocloGOtest1",
+      "bundleIdentifier": "com.momoclomap.MomocloGO",
       "buildNumber": "1.0.0",
       "infoPlist": {
         "NSLocationAlwaysUsageDescription": "地図上で現在位置を表示するために位置情報を利用します",
@@ -31,7 +31,7 @@
       }
     },
     "android": {
-      "package": "com.momoclomap.MomocloGOtest1",
+      "package": "com.momoclomap.MomocloGO",
       "permissions": ["ACCESS_FINE_LOCATION"],
       "versionCode": 1,
       "adaptiveIcon": {

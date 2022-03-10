@@ -14,6 +14,7 @@ import Icon from './Icon';
 
 import Button from './Button';
 import TweetButton from './TweetButton';
+import { UserContext } from '../utils/settings';
 
 const medalGetAudio = require('../../assets/sounds/medal_get.mp3');
 const medalCantGetAudio = require('../../assets/sounds/medal_cannot_get.mp3');
@@ -120,6 +121,7 @@ function updateFirebaseFlags(memo) {
   const db = firebase.firestore();
   const fullUserId = currentUser.email.replace('@dummy1234321.com', '');
   db.collection('flags').doc(fullUserId).set({
+    displayName: UserContext.name,
     flags: memo,
     updateAt: new Date(),
     count: (memo.match(/,/g) || []).length + 1,

@@ -1,67 +1,151 @@
 import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
+import firebase from 'firebase';
 import { Asset } from 'expo-asset';
+import { UserContext } from './settings';
 
 const initialDatabase = require('./InitialDatabase.db');
 
-async function UpdatePlaceList(name) {
-  const db = SQLite.openDatabase(name);
+export default async function RefleshDBandFlagInfomation(userid) {
+  // - userContext設定
+  // - DBなければ新規作成 + デフォルトDBコピー
+  // - 聖地アップデート
+  // - firebaseのflags取得
+  // - firebaseのflags DBに書き込み
+  // - DBのflags、flags.txtにコピー
+  setUserContext(userid);
+  await InitializeFiles(userid);
+  await UpdatePlaceData(userid);
+}
+
+// userContextの設定
+function setUserContext(userid) {
+  console.log('setUserContext', userid);
+  UserContext.id = userid;
+  const fb = firebase.firestore();
+  const docRef = fb.collection('flags').doc(userid);
+  docRef.get()
+    .then(async (doc) => {
+      const { displayName } = doc.data();
+      UserContext.name = displayName;
+    });
+}
+
+// (ファイルが存在しない場合)DBとflagsのファイルを初期化
+async function InitializeFiles(userid) {
+  const fileDir = FileSystem.documentDirectory;
+
+  const sqliteDir = `${fileDir}SQLite`;
+  const sqliteDirInfo = await FileSystem.getInfoAsync(sqliteDir);
+  if (!sqliteDirInfo.exists) {
+    await FileSystem.makeDirectoryAsync(sqliteDir);
+  }
+  const filePath = `${sqliteDir}/${userid}.db`;
+  const filePathInfo = await FileSystem.getInfoAsync(filePath);
+  if (!filePathInfo.exists) {
+    await FileSystem.downloadAsync(Asset.fromModule(initialDatabase).uri, filePath);
+  }
+
+  const flagDir = `${fileDir}flags`;
+  const flagDirInfo = await FileSystem.getInfoAsync(flagDir);
+  if (!flagDirInfo.exists) {
+    await FileSystem.makeDirectoryAsync(flagDir);
+  }
+  const flagPath = `${flagDir}/${userid}.txt`;
+  const flagPathInfo = await FileSystem.getInfoAsync(flagPath);
+  if (!flagPathInfo.exists) {
+    FileSystem.writeAsStringAsync(flagPath, '');
+  }
+}
+
+// 聖地更新情報をAPIで取得してDBに書き込み
+async function UpdatePlaceData(userid) {
+  console.log('UpdatePlaceData', `${userid}.db`);
+  const db = SQLite.openDatabase(`${userid}.db`);
   db.transaction((tx) => {
     tx.executeSql(
       'SELECT updated_at FROM place_master ORDER BY updated_at DESC LIMIT 1;',
       [],
       (_, resSql) => {
-        console.log('UpdatePlaceList', resSql.rows._array[0].updated_at);
-        const lastUpdate = resSql.rows._array[0].updated_at.substring(0, 10);
-        fetch(`https://momoclomap.com/momoclogo/placeapi?last_update=${lastUpdate}`)
+        const lastUpdateAt = resSql.rows._array[0].updated_at.substring(0, 10);
+        console.log('UpdatePlaceList', lastUpdateAt);
+        fetch(`https://momoclomap.com/momoclogo/placeapi?last_update=${lastUpdateAt}`)
           .then((res) => res.json())
-          .then((json) => { InsertUpdatedPlaces(json); })
+          .then(async (json) => { await InsertUpdatedPlaces(json, userid); })
           .catch((error) => { console.log('GetUpdatedPlacesFromAPI', error); });
       },
     );
   });
 }
 
-function InsertUpdatedPlaces(places) {
+// APIで取得したリストをBDに書き込み
+async function InsertUpdatedPlaces(places, userid) {
   const cols = [
     'place_seq', 'region', 'prefecture', 'name', 'detail',
     'longitude', 'latitude', 'tag', 'address', 'updated_at',
   ];
-  const updates = cols.slice(1, 10).map((col) => `${col} = excluded.${col}`).join(', ');
   const sqlInsert = `
     INSERT OR REPLACE INTO place_master ( ${cols.join(', ')} )
     VALUES (?,?,?,?,?,?,?,?,?,?)
   `;
+  // const db = SQLite.openDatabase(`${userid}.db`);
+  const promises = [];
   places.forEach((place) => {
-    const db = SQLite.openDatabase('test.db');
     place.updated_at = place._updated_at;
     place.region = place.resion;
-    db.transaction((tx) => {
-      tx.executeSql(
-        sqlInsert,
-        cols.map((col) => place[col]),
-      );
+    const p = new Promise((resolve) => {
+      const db = SQLite.openDatabase(`${userid}.db`);
+      console.log(place.name);
+      db.transaction((tx) => {
+        tx.executeSql(
+          sqlInsert,
+          cols.map((col) => place[col]),
+          resolve,
+        );
+      });
     });
+    promises.push(p);
+  });
+  Promise.all(promises).then(
+    () => { DownloadAndRestoreFlags(userid); },
+  );
+}
+
+// firebaseのflagsを取得してローカルファイルとDBに書き込み
+async function DownloadAndRestoreFlags(userid) {
+  const db = firebase.firestore();
+  const docRef = db.collection('flags').doc(userid);
+  docRef.get().then((doc) => {
+    const { flags } = doc.data();
+    if (flags) {
+      const memoPath = `${FileSystem.documentDirectory}flags/${userid}.txt`;
+      FileSystem.writeAsStringAsync(memoPath, flags);
+      RestoreFlags(flags, userid);
+      console.log('DownloadAndRestoreFlags', flags);
+    } else {
+      // navigation.reset({
+      //   index: 0,
+      //   routes: [{ name: 'Main' }],
+      // });
+    }
   });
 }
 
-export default async function CopyDefaultDatabase(name = 'test.db') {
-  const fileDir = FileSystem.documentDirectory;
-  const fileExists = await FileSystem.getInfoAsync(`${fileDir}SQLite/${name}`);
-  if (!fileExists.exists) {
-    if (!(await FileSystem.getInfoAsync(`${fileDir}SQLite`)).exists) {
-      await FileSystem.makeDirectoryAsync(`${fileDir}SQLite`);
-    }
-    await FileSystem.downloadAsync(
-      Asset.fromModule(initialDatabase).uri,
-      `${fileDir}SQLite/${name}`,
+// firebaseから取得したflagsをDBに書き込み
+function RestoreFlags(flags, userid) {
+  const db = SQLite.openDatabase(`${userid}.db`);
+  db.transaction((tx) => {
+    tx.executeSql(
+      `UPDATE place_master SET get_flg = 1 WHERE place_seq IN (${flags});`,
+      [],
+      () => {
+        console.log('RestoreFlags');
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{ name: 'Main' }],
+        // });
+      },
+      (_, err) => { console.log('restoreFlags', err); },
     );
-  }
-  const memoPath = `${fileDir}flags.txt`;
-  const flagsMemo = await FileSystem.getInfoAsync(memoPath);
-  if (!flagsMemo.exists) {
-    FileSystem.writeAsStringAsync(memoPath, '');
-  }
-  // 聖地情報更新
-  await UpdatePlaceList(name);
+  });
 }

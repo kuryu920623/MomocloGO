@@ -8,6 +8,7 @@ import * as SQLite from 'expo-sqlite';
 
 import Button from '../components/Button';
 import { UserContext, transrateErrors } from '../utils/settings';
+import RefleshDBandFlagInfomation from '../utils/InitDataBase';
 
 let navigation;
 
@@ -48,7 +49,9 @@ export default function LogInScreen(props) {
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        setUserContext(user.email.replace('@dummy1234321.com', ''));
+        const userid = user.email.replace('@dummy1234321.com', '');
+        RefleshDBandFlagInfomation(userid);
+        console.log('move');
         navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
       }
     });
@@ -59,9 +62,10 @@ export default function LogInScreen(props) {
     firebase.auth().signInWithEmailAndPassword(`${userId}@dummy1234321.com`, password)
       .then((userCredential) => {
         const { user } = userCredential;
-        console.log('Login', user.email);
-        setUserContext(user.email.replace('@dummy1234321.com', ''));
-        downloadFlags();
+        console.log(user.email);
+        RefleshDBandFlagInfomation(user.email.replace('@dummy1234321.com', ''));
+        console.log('move');
+        navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
       })
       .catch((error) => {
         console.log(error.code, error.message);

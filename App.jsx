@@ -17,7 +17,6 @@ import ListScreen from './src/screens/ListScreen';
 import TestScreen from './src/screens/TestScreen';
 import FriendsSearchScreen from './src/screens/FriendSearchScreen';
 import FriendAwardScreen from './src/screens/FriendAwandsScreen';
-import CopyDefaultDatabase from './src/utils/InitDataBase';
 import LogOutButton from './src/components/LogOutButton';
 
 LogBox.ignoreLogs([
@@ -98,7 +97,6 @@ function TabScreen() {
 
 export default function App() {
   console.log('Load App');
-  CopyDefaultDatabase();
 
   return (
     <NavigationContainer>

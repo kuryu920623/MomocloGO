@@ -11,6 +11,7 @@ import { UserContext, transrateErrors } from '../utils/settings';
 import RefleshDBandFlagInfomation from '../utils/InitDataBase';
 
 let navigation;
+let refleshStart = false;
 
 function setUserContext(id) {
   UserContext.id = id;
@@ -30,7 +31,7 @@ export default function LogInScreen(props) {
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
+      if (user && !refleshStart) {
         console.log('auto Login', user.email);
         const userid = user.email.replace('@dummy1234321.com', '');
         RefleshDBandFlagInfomation(userid, navigation);
@@ -42,6 +43,7 @@ export default function LogInScreen(props) {
   function submit() {
     firebase.auth().signInWithEmailAndPassword(`${userId}@dummy1234321.com`, password)
       .then((userCredential) => {
+        refleshStart = true;
         const { user } = userCredential;
         console.log('submit', user.email);
         const userid = user.email.replace('@dummy1234321.com', '');

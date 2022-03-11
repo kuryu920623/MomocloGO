@@ -12,24 +12,6 @@ import RefleshDBandFlagInfomation from '../utils/InitDataBase';
 
 let navigation;
 
-function restoreFlags(flags) {
-  const db = SQLite.openDatabase('test.db');
-  db.transaction((tx) => {
-    tx.executeSql(
-      `UPDATE place_master SET get_flg = 1 WHERE place_seq IN (${flags});`,
-      [],
-      () => {
-        console.log('restoreFlags');
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Main' }],
-        });
-      },
-      (_, err) => { console.log('restoreFlags', err); },
-    );
-  });
-}
-
 function setUserContext(id) {
   UserContext.id = id;
   const fb = firebase.firestore();
@@ -49,10 +31,9 @@ export default function LogInScreen(props) {
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        console.log('auto Login', user.email);
         const userid = user.email.replace('@dummy1234321.com', '');
-        RefleshDBandFlagInfomation(userid);
-        console.log('move');
-        navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
+        RefleshDBandFlagInfomation(userid, navigation);
       }
     });
     return unsubscribe;
@@ -62,32 +43,15 @@ export default function LogInScreen(props) {
     firebase.auth().signInWithEmailAndPassword(`${userId}@dummy1234321.com`, password)
       .then((userCredential) => {
         const { user } = userCredential;
-        console.log(user.email);
-        RefleshDBandFlagInfomation(user.email.replace('@dummy1234321.com', ''));
-        console.log('move');
-        navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
+        console.log('submit', user.email);
+        const userid = user.email.replace('@dummy1234321.com', '');
+        RefleshDBandFlagInfomation(userid, navigation);
       })
       .catch((error) => {
         console.log(error.code, error.message);
         const err = transrateErrors(error.code);
         Alert.alert(err.title, err.description);
       });
-  }
-
-  async function downloadFlags() {
-    const { currentUser } = firebase.auth();
-
-    const db = firebase.firestore();
-    const fullUserId = currentUser.email.replace('@dummy1234321.com', '');
-    const docRef = db.collection('flags').doc(fullUserId);
-    docRef.get().then((doc) => {
-      const { flags } = doc.data();
-      if (!flags) return;
-      const memoPath = `${FileSystem.documentDirectory}flags.txt`;
-      FileSystem.writeAsStringAsync(memoPath, flags);
-      restoreFlags(flags);
-      console.log('downloadFlags', flags);
-    });
   }
 
   return (

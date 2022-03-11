@@ -6,13 +6,10 @@ import { UserContext } from './settings';
 
 const initialDatabase = require('./InitialDatabase.db');
 
-export default async function RefleshDBandFlagInfomation(userid) {
-  // - userContext設定
-  // - DBなければ新規作成 + デフォルトDBコピー
-  // - 聖地アップデート
-  // - firebaseのflags取得
-  // - firebaseのflags DBに書き込み
-  // - DBのflags、flags.txtにコピー
+let nav;
+
+export default async function RefleshDBandFlagInfomation(userid, navigation) {
+  nav = navigation;
   setUserContext(userid);
   await InitializeFiles(userid);
   await UpdatePlaceData(userid);
@@ -88,7 +85,6 @@ async function InsertUpdatedPlaces(places, userid) {
     INSERT OR REPLACE INTO place_master ( ${cols.join(', ')} )
     VALUES (?,?,?,?,?,?,?,?,?,?)
   `;
-  // const db = SQLite.openDatabase(`${userid}.db`);
   const promises = [];
   places.forEach((place) => {
     place.updated_at = place._updated_at;
@@ -122,6 +118,9 @@ async function DownloadAndRestoreFlags(userid) {
       FileSystem.writeAsStringAsync(memoPath, flags);
       RestoreFlags(flags, userid);
       console.log('DownloadAndRestoreFlags', flags);
+    } else {
+      console.log('no flags');
+      nav.reset({ index: 0, routes: [{ name: 'Main' }] });
     }
   });
 }
@@ -133,7 +132,10 @@ function RestoreFlags(flags, userid) {
     tx.executeSql(
       `UPDATE place_master SET get_flg = 1 WHERE place_seq IN (${flags});`,
       [],
-      () => { console.log('RestoreFlags'); },
+      () => {
+        console.log('RestoreFlags');
+        nav.reset({ index: 0, routes: [{ name: 'Main' }] });
+      },
       (_, err) => { console.log('restoreFlags', err); },
     );
   });

@@ -122,11 +122,6 @@ async function DownloadAndRestoreFlags(userid) {
       FileSystem.writeAsStringAsync(memoPath, flags);
       RestoreFlags(flags, userid);
       console.log('DownloadAndRestoreFlags', flags);
-    } else {
-      // navigation.reset({
-      //   index: 0,
-      //   routes: [{ name: 'Main' }],
-      // });
     }
   });
 }
@@ -138,13 +133,7 @@ function RestoreFlags(flags, userid) {
     tx.executeSql(
       `UPDATE place_master SET get_flg = 1 WHERE place_seq IN (${flags});`,
       [],
-      () => {
-        console.log('RestoreFlags');
-        // navigation.reset({
-        //   index: 0,
-        //   routes: [{ name: 'Main' }],
-        // });
-      },
+      () => { console.log('RestoreFlags'); },
       (_, err) => { console.log('restoreFlags', err); },
     );
   });

@@ -58,7 +58,7 @@ export default function SignUpScreen(props) {
       Alert.alert('ユーザーIDは15文字以下です。');
       return;
     }
-    if (userId.match(/^[0-9a-zA-Z]+$/)) {
+    if (!userId.match(/^[0-9a-zA-Z]+$/)) {
       Alert.alert('ユーザーID半角英数字のみ有効です。');
       return;
     }

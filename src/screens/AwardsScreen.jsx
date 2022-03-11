@@ -184,8 +184,8 @@ export default function AwardsScreen(props) {
         <LinearGradient
           style={styles.container}
           colors={['rgba(234,246,255,1)', 'rgba(183,225,255,0.5)']}
-          start={{ x: 0.7, y: 0.7 }}
-          end={{ x: 0.3, y: 0.3 }}
+          start={{ x: 0.9, y: 0.9 }}
+          end={{ x: 0.1, y: 0.1 }}
         >
           <View style={styles.userIdView}>
             <Text style={styles.userNameText}>{displayUserName}</Text>
@@ -194,7 +194,7 @@ export default function AwardsScreen(props) {
 
           <View style={[styles.views, styles.rankingView]}>
             <View style={styles.leftLabelView}>
-              <FontAwesome5 name="crown" size={48} color="#ffcc66" style={styles.test} />
+              <FontAwesome5 name="crown" size={48} color="#EFBF3D" />
               <Text style={styles.rankLabelText}> Ranking</Text>
             </View>
             <View style={styles.rightLabelView}>

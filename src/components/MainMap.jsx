@@ -43,6 +43,7 @@ function GenMarkerComponent(obj, resetMap) {
 }
 
 function MainMap(props) {
+  console.log('Main Map');
   setModalBlock = props.setModalBlock;
   setModalVisible = props.setModalVisible;
 
@@ -53,56 +54,58 @@ function MainMap(props) {
   const [places, setPlaces] = useState([]);
   const [map, setMap] = useState(0);
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync({});
-      if (status !== 'granted') { return; }
+  useEffect(async () => {
+    console.log('useEffect');
+    const { status } = await Location.requestForegroundPermissionsAsync({});
+    if (status !== 'granted') { return; }
 
-      const tmp = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Lowest,
-        distanceInterval: 1000,
-      });
-      const location = {};
-      location.latitude = tmp.coords.latitude;
-      location.longitude = tmp.coords.longitude;
-      setCurrentLocation(location);
+    const tmp = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Lowest,
+      distanceInterval: 1000,
+    });
+    const location = {};
+    location.latitude = tmp.coords.latitude;
+    location.longitude = tmp.coords.longitude;
+    setCurrentLocation(location);
 
-      const db = SQLite.openDatabase(`${UserContext.id}.db`);
-      db.transaction((tx) => {
-        tx.executeSql(
-          [
-            'SELECT * FROM place_master WHERE longitude IS NOT NULL',
-            'ORDER BY ABS(longitude - ?) + ABS(latitude - ?) ASC LIMIT 200;',
-          ].join(' '),
-          [location.longitude, location.latitude],
-          (_, res) => { setPlaces(res.rows._array); },
-        );
-      });
-    })();
+    const db = SQLite.openDatabase(`${UserContext.id}.db`);
+    db.transaction((tx) => {
+      tx.executeSql(
+        [
+          'SELECT * FROM place_master WHERE longitude IS NOT NULL',
+          'ORDER BY ABS(longitude - ?) + ABS(latitude - ?) % 360 ASC LIMIT 200;',
+        ].join(' '),
+        [location.longitude, location.latitude],
+        (_, res) => { setPlaces(res.rows._array); },
+      );
+    });
   }, [map]);
 
-  const baseMap = useMemo(() => (
-    <MapView
-      provider={PROVIDER_GOOGLE}
-      style={styles.map}
-      mapType="standard"
-      initialRegion={{
-        ...currentLocation,
-        ...{
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        },
-      }}
-      showsUserLocation
-      followsUserLocation
-      showsMyLocationButton
-      showsPointsOfInterest={false}
-      toolbarEnabled={false}
-      moveOnMarkerPress={false}
-    >
-      {places.map((obj) => GenMarkerComponent(obj, setMap))}
-    </MapView>
-  ), [map, places]);
+  const baseMap = useMemo(() => {
+    console.log('useMemo');
+    return (
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        style={styles.map}
+        mapType="standard"
+        initialRegion={{
+          ...currentLocation,
+          ...{
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          },
+        }}
+        showsUserLocation
+        followsUserLocation
+        showsMyLocationButton
+        showsPointsOfInterest={false}
+        toolbarEnabled={false}
+        moveOnMarkerPress={false}
+      >
+        {places.map((obj) => GenMarkerComponent(obj, setMap))}
+      </MapView>
+    );
+  }, [map, places, currentLocation]);
 
   return baseMap;
 }

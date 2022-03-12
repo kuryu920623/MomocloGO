@@ -1,4 +1,5 @@
 import * as SQLite from 'expo-sqlite';
+import { UserContext } from './settings';
 
 export default async function GetAwardList(whereCond = 'get_flg = 1') {
   // iconSizeのデフォルトは48
@@ -293,7 +294,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
 }
 
 async function GetSqlResult(sql, params = []) {
-  const db = SQLite.openDatabase('test.db');
+  const db = SQLite.openDatabase(`${UserContext.id}.db`);
   return new Promise((resolve) => {
     db.transaction((tx) => {
       tx.executeSql(

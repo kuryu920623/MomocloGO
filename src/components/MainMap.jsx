@@ -8,6 +8,7 @@ import { func } from 'prop-types';
 import * as SQLite from 'expo-sqlite';
 import { Audio } from 'expo-av';
 import PlaceModal from './PlaceModal';
+import { UserContext } from '../utils/settings';
 
 const flagOrange = require('../../assets/images/flag_orange.png');
 const flagBlack = require('../../assets/images/flag_black.png');
@@ -66,7 +67,7 @@ function MainMap(props) {
       location.longitude = tmp.coords.longitude;
       setCurrentLocation(location);
 
-      const db = SQLite.openDatabase('test.db');
+      const db = SQLite.openDatabase(`${UserContext.id}.db`);
       db.transaction((tx) => {
         tx.executeSql(
           [

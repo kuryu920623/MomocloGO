@@ -94,7 +94,7 @@ function GetButton(placeObj, setButtonComponent, resetMap) {
 }
 
 async function UpdateFlagsMemo(placeSeq) {
-  const db = SQLite.openDatabase('test.db');
+  const db = SQLite.openDatabase(`${UserContext.id}.db`);
   db.transaction((tx) => {
     tx.executeSql(
       'SELECT place_seq FROM place_master WHERE get_flg = 1;',
@@ -130,7 +130,7 @@ function updateFirebaseFlags(memo) {
 
 function UpdateGetPlace(placeSeq) {
   const sqlUpdate = 'UPDATE place_master SET get_flg = 1, got_at = ? WHERE place_seq = ?';
-  const db = SQLite.openDatabase('test.db');
+  const db = SQLite.openDatabase(`${UserContext.id}.db`);
   db.transaction((tx) => {
     tx.executeSql(sqlUpdate, [Date.now(), placeSeq]);
   });
@@ -177,7 +177,7 @@ export default function PlaceModal(props) {
     setDistance(dist);
 
     const sqlGetFlg = 'SELECT get_flg FROM place_master WHERE place_seq = ?;';
-    const db = SQLite.openDatabase('test.db');
+    const db = SQLite.openDatabase(`${UserContext.id}.db`);
     db.transaction((tx) => {
       tx.executeSql(
         sqlGetFlg,

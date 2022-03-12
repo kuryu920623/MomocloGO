@@ -10,6 +10,7 @@ import { Audio } from 'expo-av';
 import ModalBase from '../components/ModalBase';
 import PlaceModal from '../components/PlaceModal';
 import Loading from '../components/Loading';
+import { UserContext } from '../utils/settings';
 
 let curretRegion = '東京';
 let currentPage = 0;
@@ -62,7 +63,7 @@ function RegionButton(props) {
 }
 
 function setMaxPage() {
-  const db = SQLite.openDatabase('test.db');
+  const db = SQLite.openDatabase(`${UserContext.id}.db`);
   db.transaction((tx) => {
     tx.executeSql(
       `SELECT COUNT(1) AS cnt FROM place_master WHERE ${regions[curretRegion]};`,
@@ -92,7 +93,7 @@ RegionButton.propTypes = { region: string.isRequired };
 const renderTable = (region, page = 0) => {
   setIsLoading(true);
   displayRegion = region;
-  const db = SQLite.openDatabase('test.db');
+  const db = SQLite.openDatabase(`${UserContext.id}.db`);
   console.log('renderTable', page);
   db.transaction((tx) => {
     tx.executeSql(

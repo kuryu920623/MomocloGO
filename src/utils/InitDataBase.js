@@ -31,6 +31,7 @@ function setUserContext(userid) {
 // (ファイルが存在しない場合)DBとflagsのファイルを初期化
 async function InitializeFiles(userid) {
   const fileDir = FileSystem.documentDirectory;
+  console.log(fileDir);
 
   const sqliteDir = `${fileDir}SQLite`;
   const sqliteDirInfo = await FileSystem.getInfoAsync(sqliteDir);

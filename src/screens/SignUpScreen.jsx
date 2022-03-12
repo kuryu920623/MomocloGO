@@ -7,6 +7,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import Button from '../components/Button';
 import { UserContext, transrateErrors } from '../utils/settings';
+import RefleshDBandFlagInfomation from '../utils/InitDataBase';
 
 export default function SignUpScreen(props) {
   const { navigation } = props;
@@ -76,14 +77,16 @@ export default function SignUpScreen(props) {
         const { user } = userCredential;
         const db = firebase.firestore();
         const fullUserId = user.email.replace('@dummy1234321.com', '');
+        UserContext.id = fullUserId;
+        UserContext.name = userName || fullUserId;
         db.collection('flags').doc(fullUserId).set({
           flags: '',
           updateAt: new Date(),
           count: 0,
           displayName: userName || fullUserId,
+        }).then(() => {
+          RefleshDBandFlagInfomation(fullUserId, navigation);
         });
-        UserContext.id = fullUserId;
-        UserContext.name = userName || fullUserId;
         navigation.reset({
           index: 0,
           routes: [{ name: 'Main' }],

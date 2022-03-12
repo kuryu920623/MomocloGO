@@ -41,7 +41,7 @@ function AwardIconSet(props) {
   const [getCount, setGetCount] = useState(0);
   const [iconColor, setIconColor] = useState('rgba(200,200,200,0.3)');
   useEffect(async () => {
-    const db = SQLite.openDatabase('test.db');
+    const db = SQLite.openDatabase(`${UserContext.id}.db`);
     db.transaction((tx) => {
       tx.executeSql(
         obj.getCountSQL,
@@ -149,7 +149,7 @@ export default function AwardsScreen(props) {
 
   useEffect(async () => {
     setAwardList(await GetAwardList(whereCond));
-    const db = SQLite.openDatabase('test.db');
+    const db = SQLite.openDatabase(`${UserContext.id}.db`);
     db.transaction((tx) => {
       tx.executeSql(
         'SELECT COUNT(get_flg = 1) AS getCount, COUNT(1) AS allCount FROM place_master;',

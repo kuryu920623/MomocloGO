@@ -12,6 +12,11 @@ import { UserContext } from '../utils/settings';
 
 const flagOrange = require('../../assets/images/flag_orange.png');
 const flagBlack = require('../../assets/images/flag_black.png');
+const flagRed = require('../../assets/images/flag_red.png');
+const flagYellow = require('../../assets/images/flag_yellow.png');
+const flagPink = require('../../assets/images/flag_pink.png');
+const flagPurple = require('../../assets/images/flag_purple.png');
+
 const modaOprn = require('../../assets/sounds/modal_open.mp3');
 
 let setModalBlock;
@@ -25,9 +30,24 @@ async function PlayAudio() {
 
 function GenMarkerComponent(obj, resetMap) {
   const {
-    get_flg, place_seq, latitude, longitude,
+    get_flg, tag, place_seq, latitude, longitude,
   } = obj;
-  const flag = get_flg ? flagOrange : flagBlack;
+
+  let flag;
+  if (get_flg) {
+    flag = flagOrange;
+  } else if (tag === '百田夏菜子') {
+    flag = flagRed;
+  } else if (tag === '玉井詩織') {
+    flag = flagYellow;
+  } else if (tag === '佐々木彩夏') {
+    flag = flagPink;
+  } else if (tag === '高城れに') {
+    flag = flagPurple;
+  } else {
+    flag = flagBlack;
+  }
+
   return (
     <Marker
       key={place_seq}
@@ -53,6 +73,7 @@ function MainMap(props) {
   });
   const [places, setPlaces] = useState([]);
   const [map, setMap] = useState(0);
+  const [mapView, setMapView] = useState(null);
 
   useEffect(async () => {
     console.log('useEffect');

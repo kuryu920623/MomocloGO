@@ -41,7 +41,6 @@ async function InitializeFiles(userid) {
   const filePath = `${sqliteDir}/${userid}.db`;
   const filePathInfo = await FileSystem.getInfoAsync(filePath);
   const p1 = new Promise((resolve) => {
-    console.log('p1');
     if (!filePathInfo.exists) {
       FileSystem.downloadAsync(Asset.fromModule(initialDatabase).uri, filePath).then(resolve);
     } else {
@@ -57,7 +56,6 @@ async function InitializeFiles(userid) {
   const flagPath = `${flagDir}/${userid}.txt`;
   const flagPathInfo = await FileSystem.getInfoAsync(flagPath);
   const p2 = new Promise((resolve) => {
-    console.log('p2');
     if (!flagPathInfo.exists) {
       FileSystem.writeAsStringAsync(flagPath, '').then(resolve);
     } else {
@@ -73,7 +71,6 @@ async function UpdatePlaceData(userid) {
   console.log('UpdatePlaceData', `${userid}.db`);
   const db = SQLite.openDatabase(`${userid}.db`);
   db.transaction((tx) => {
-    console.log(123);
     tx.executeSql(
       'SELECT updated_at FROM place_master ORDER BY updated_at DESC LIMIT 1;',
       [],

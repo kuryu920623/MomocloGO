@@ -1,7 +1,7 @@
 import React, {
   useState, useEffect, useMemo,
 } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { func } from 'prop-types';
@@ -62,20 +62,35 @@ function GenMarkerComponent(obj, resetMap) {
   );
 }
 
+function generateMapView(lotation, places, setMapView, resetMap) {
+  console.log('generateMapView');
+  setMapView(
+    <MapView
+      provider={PROVIDER_GOOGLE}
+      style={styles.map}
+      mapType="standard"
+      initialRegion={lotation}
+      showsUserLocation
+      followsUserLocation
+      showsMyLocationButton
+      showsPointsOfInterest={false}
+      toolbarEnabled={false}
+      moveOnMarkerPress={false}
+    >
+      {places.map((obj) => GenMarkerComponent(obj, resetMap))}
+    </MapView>,
+  );
+}
+
 function MainMap(props) {
   console.log('Main Map');
   setModalBlock = props.setModalBlock;
   setModalVisible = props.setModalVisible;
-
-  const [currentLocation, setCurrentLocation] = useState({
-    latitude: 35.665755,
-    longitude: 139.698257,
-  });
-  const [places, setPlaces] = useState([]);
-  const [map, setMap] = useState(0);
+  const [map, resetMap] = useState(0);
   const [mapView, setMapView] = useState(null);
 
   useEffect(async () => {
+    // 現在位置
     console.log('useEffect');
     const { status } = await Location.requestForegroundPermissionsAsync({});
     if (status !== 'granted') { return; }
@@ -84,51 +99,27 @@ function MainMap(props) {
       accuracy: Location.Accuracy.Lowest,
       distanceInterval: 1000,
     });
-    const location = {};
-    location.latitude = tmp.coords.latitude;
-    location.longitude = tmp.coords.longitude;
-    setCurrentLocation(location);
+    const location = {
+      latitude: tmp.coords.latitude,
+      longitude: tmp.coords.longitude,
+      latitudeDelta: 0.01,
+      longitudeDelta: 0.01,
+    };
 
+    // 近くのフラグ取得
     const db = SQLite.openDatabase(`${UserContext.id}.db`);
     db.transaction((tx) => {
       tx.executeSql(
-        [
-          'SELECT * FROM place_master WHERE longitude IS NOT NULL',
-          'ORDER BY ABS(longitude - ?) + ABS(latitude - ?) % 360 ASC LIMIT 200;',
-        ].join(' '),
+        `SELECT * FROM place_master WHERE longitude IS NOT NULL
+        ORDER BY ABS(longitude - ?) + ABS(latitude - ?) % 360 ASC LIMIT 200;`,
         [location.longitude, location.latitude],
-        (_, res) => { setPlaces(res.rows._array); },
+        (_, res) => { generateMapView(location, res.rows._array, setMapView, resetMap); },
+        (_, err) => { console.log(err); },
       );
     });
   }, [map]);
 
-  const baseMap = useMemo(() => {
-    console.log('useMemo');
-    return (
-      <MapView
-        provider={PROVIDER_GOOGLE}
-        style={styles.map}
-        mapType="standard"
-        initialRegion={{
-          ...currentLocation,
-          ...{
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          },
-        }}
-        showsUserLocation
-        followsUserLocation
-        showsMyLocationButton
-        showsPointsOfInterest={false}
-        toolbarEnabled={false}
-        moveOnMarkerPress={false}
-      >
-        {places.map((obj) => GenMarkerComponent(obj, setMap))}
-      </MapView>
-    );
-  }, [map, places, currentLocation]);
-
-  return baseMap;
+  return mapView;
 }
 
 MainMap.propTypes = {

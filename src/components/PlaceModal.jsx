@@ -104,7 +104,7 @@ async function UpdateFlagsMemo(placeSeq) {
         placeListOld.push(placeSeq);
         const placeListNew = Array.from(new Set(placeListOld));
 
-        const memoPath = `${FileSystem.documentDirectory}flags.txt`;
+        const memoPath = `${FileSystem.documentDirectory}flags/${UserContext.id}.txt`;
         const memo = placeListNew.join(',');
         if (memo) {
           FileSystem.writeAsStringAsync(memoPath, placeListNew.join(','));

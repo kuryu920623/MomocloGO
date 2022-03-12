@@ -11,8 +11,8 @@ let nav;
 export default async function RefleshDBandFlagInfomation(userid, navigation) {
   nav = navigation;
   setUserContext(userid);
-  await InitializeFiles(userid);
-  await UpdatePlaceData(userid);
+  InitializeFiles(userid);
+  // UpdatePlaceData(userid);
 }
 
 // userContextの設定
@@ -40,9 +40,14 @@ async function InitializeFiles(userid) {
   }
   const filePath = `${sqliteDir}/${userid}.db`;
   const filePathInfo = await FileSystem.getInfoAsync(filePath);
-  if (!filePathInfo.exists) {
-    await FileSystem.downloadAsync(Asset.fromModule(initialDatabase).uri, filePath);
-  }
+  const p1 = new Promise((resolve) => {
+    console.log('p1');
+    if (!filePathInfo.exists) {
+      FileSystem.downloadAsync(Asset.fromModule(initialDatabase).uri, filePath).then(resolve);
+    } else {
+      resolve();
+    }
+  });
 
   const flagDir = `${fileDir}flags`;
   const flagDirInfo = await FileSystem.getInfoAsync(flagDir);
@@ -51,9 +56,16 @@ async function InitializeFiles(userid) {
   }
   const flagPath = `${flagDir}/${userid}.txt`;
   const flagPathInfo = await FileSystem.getInfoAsync(flagPath);
-  if (!flagPathInfo.exists) {
-    FileSystem.writeAsStringAsync(flagPath, '');
-  }
+  const p2 = new Promise((resolve) => {
+    console.log('p2');
+    if (!flagPathInfo.exists) {
+      FileSystem.writeAsStringAsync(flagPath, '').then(resolve);
+    } else {
+      resolve();
+    }
+  });
+
+  Promise.all([p1, p2]).then(() => { UpdatePlaceData(userid); });
 }
 
 // 聖地更新情報をAPIで取得してDBに書き込み
@@ -61,6 +73,7 @@ async function UpdatePlaceData(userid) {
   console.log('UpdatePlaceData', `${userid}.db`);
   const db = SQLite.openDatabase(`${userid}.db`);
   db.transaction((tx) => {
+    console.log(123);
     tx.executeSql(
       'SELECT updated_at FROM place_master ORDER BY updated_at DESC LIMIT 1;',
       [],
@@ -72,6 +85,7 @@ async function UpdatePlaceData(userid) {
           .then(async (json) => { await InsertUpdatedPlaces(json, userid); })
           .catch((error) => { console.log('GetUpdatedPlacesFromAPI', error); });
       },
+      (_, err) => { console.log(err); },
     );
   });
 }

@@ -13,17 +13,6 @@ import RefleshDBandFlagInfomation from '../utils/InitDataBase';
 let navigation;
 let refleshStart = false;
 
-function setUserContext(id) {
-  UserContext.id = id;
-  const fb = firebase.firestore();
-  const docRef = fb.collection('flags').doc(id);
-  docRef.get()
-    .then(async (doc) => {
-      const { displayName } = doc.data();
-      UserContext.name = displayName;
-    });
-}
-
 export default function LogInScreen(props) {
   navigation = props.navigation;
   const [userId, setUserid] = useState('');

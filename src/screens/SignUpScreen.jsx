@@ -32,7 +32,9 @@ export default function SignUpScreen(props) {
       const email = `${userId}@dummy1234321.com`;
       try {
         firebase.auth().fetchSignInMethodsForEmail(email).then((method) => {
-          if (method.indexOf(firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD) !== -1) {
+          if (method.indexOf(
+            firebase.auth.EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD,
+          ) !== -1) {
             setIdTextColor('#F15B55');
             setIdCheck('既に取得されています。');
           } else {

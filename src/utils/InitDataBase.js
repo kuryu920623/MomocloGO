@@ -12,7 +12,6 @@ export default async function RefleshDBandFlagInfomation(userid, navigation) {
   nav = navigation;
   setUserContext(userid);
   InitializeFiles(userid);
-  // UpdatePlaceData(userid);
 }
 
 // userContextの設定

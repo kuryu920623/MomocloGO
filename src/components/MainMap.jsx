@@ -62,32 +62,32 @@ function GenMarkerComponent(obj, resetMap) {
   );
 }
 
-function generateMapView(lotation, places, setMapView, resetMap) {
-  console.log('generateMapView');
-  setMapView(
-    <MapView
-      provider={PROVIDER_GOOGLE}
-      style={styles.map}
-      mapType="standard"
-      initialRegion={lotation}
-      showsUserLocation
-      followsUserLocation
-      showsMyLocationButton
-      showsPointsOfInterest={false}
-      toolbarEnabled={false}
-      moveOnMarkerPress={false}
-    >
-      {places.map((obj) => GenMarkerComponent(obj, resetMap))}
-    </MapView>,
-  );
-}
-
 function MainMap(props) {
   console.log('Main Map');
   setModalBlock = props.setModalBlock;
   setModalVisible = props.setModalVisible;
   const [map, resetMap] = useState(0);
   const [mapView, setMapView] = useState(null);
+
+  function generateMapView(lotation, places) {
+    console.log('generateMapView');
+    setMapView(
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        style={styles.map}
+        mapType="standard"
+        initialRegion={lotation}
+        showsUserLocation
+        followsUserLocation
+        showsMyLocationButton
+        showsPointsOfInterest={false}
+        toolbarEnabled={false}
+        moveOnMarkerPress={false}
+      >
+        {places.map((obj) => GenMarkerComponent(obj, resetMap))}
+      </MapView>,
+    );
+  }
 
   useEffect(async () => {
     // 現在位置

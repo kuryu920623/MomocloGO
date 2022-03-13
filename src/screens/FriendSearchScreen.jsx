@@ -104,6 +104,7 @@ export default function FriendsSearchScreen(props) {
 }
 
 const displayWidth = Dimensions.get('window').width;
+const displayHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -162,6 +163,6 @@ const styles = StyleSheet.create({
   friendsListView: {
     borderWidth: 1,
     borderColor: '#AAAAAA',
-    marginBottom: 150,
+    height: displayHeight * 0.5,
   },
 });

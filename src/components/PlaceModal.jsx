@@ -185,7 +185,7 @@ export default function PlaceModal(props) {
         (_, result) => {
           if (result.rows._array[0].get_flg) {
             setButtonComponent(AlreadyGotButton(placeObj));
-          } else if (distMeter < 5000) {
+          } else if (distMeter < 100) {
             setButtonComponent(GetButton(placeObj, setButtonComponent, resetMap));
           } else {
             setButtonComponent(farFromPlaceButton());

@@ -89,10 +89,6 @@ export default function SignUpScreen(props) {
         }).then(() => {
           RefleshDBandFlagInfomation(fullUserId, navigation);
         });
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Main' }],
-        });
       })
       .catch((error) => {
         console.log(error.code, error.message);
@@ -120,6 +116,7 @@ export default function SignUpScreen(props) {
             style={styles.input}
             onChangeText={(text) => { setUserid(text); }}
             autoCapitalize="none"
+            autoFocus
             placeholder="userID"
             textContentType="emailAddress"
           />

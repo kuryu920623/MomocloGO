@@ -5,6 +5,7 @@ import {
 import firebase from 'firebase';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import Loading from '../components/Loading';
 import Button from '../components/Button';
 import { UserContext, transrateErrors } from '../utils/settings';
 import RefleshDBandFlagInfomation from '../utils/InitDataBase';
@@ -17,6 +18,7 @@ export default function SignUpScreen(props) {
   const [fixPassword, setFixPassword] = useState('');
   const [idCheck, setIdCheck] = useState('');
   const [idTextColor, setIdTextColor] = useState('black');
+  const [isLoading, setIsLoading] = useState(false);
 
   function checkIdDuplication() {
     if (userId.length <= 5) {
@@ -73,7 +75,7 @@ export default function SignUpScreen(props) {
       Alert.alert('表示名は15文字以下です。');
       return;
     }
-
+    setIsLoading(true);
     firebase.auth().createUserWithEmailAndPassword(`${userId}@dummy1234321.com`, password)
       .then((userCredential) => {
         const { user } = userCredential;
@@ -91,6 +93,7 @@ export default function SignUpScreen(props) {
         });
       })
       .catch((error) => {
+        setIsLoading(false);
         console.log(error.code, error.message);
         const err = transrateErrors(error.code);
         Alert.alert(err.title, err.description);
@@ -98,95 +101,98 @@ export default function SignUpScreen(props) {
   }
 
   return (
-    <KeyboardAwareScrollView style={styles.container}>
+    <>
+      <Loading isLoading={isLoading} />
+      <KeyboardAwareScrollView style={styles.container}>
 
-      <View style={styles.inner}>
-        <Text style={styles.title}>新規登録</Text>
-        <Text style={styles.attention}>
-          Friends機能を使用する場合、ユーザーIDを公開する必要があります。ユーザーIDとパスワードは一致させないことを推奨いたします。
-        </Text>
-
-        <View>
-          <Text style={styles.label}>
-            <Text style={styles.textRequire}>* </Text>
-            ユーザーID (半角英数字6文字以上15文字以下)
+        <View style={styles.inner}>
+          <Text style={styles.title}>新規登録</Text>
+          <Text style={styles.attention}>
+            Friends機能を使用する場合、ユーザーIDを公開する必要があります。ユーザーIDとパスワードは一致させないことを推奨いたします。
           </Text>
-          <TextInput
-            value={userId}
-            style={styles.input}
-            onChangeText={(text) => { setUserid(text); }}
-            autoCapitalize="none"
-            autoFocus
-            placeholder="userID"
-            textContentType="emailAddress"
-          />
+
+          <View>
+            <Text style={styles.label}>
+              <Text style={styles.textRequire}>* </Text>
+              ユーザーID (半角英数字6文字以上15文字以下)
+            </Text>
+            <TextInput
+              value={userId}
+              style={styles.input}
+              onChangeText={(text) => { setUserid(text); }}
+              autoCapitalize="none"
+              autoFocus
+              placeholder="userID"
+              textContentType="emailAddress"
+            />
+          </View>
+
+          <View style={styles.buttonLine}>
+            <Text style={[styles.idCheck, { color: idTextColor }]}>{idCheck}</Text>
+            <Button
+              onPress={() => checkIdDuplication()}
+              containerStyle={{ marginBottom: null }}
+              label="取得可能か確認"
+            />
+          </View>
+
+          <View>
+            <Text style={styles.label}>
+              表示名 (15文字以下)
+            </Text>
+            <TextInput
+              value={userName}
+              style={styles.input}
+              onChangeText={(text) => { setUserName(text); }}
+              autoCapitalize="none"
+              placeholder="ももクロGO"
+            />
+          </View>
+
+          <View>
+            <Text style={styles.label}>
+              <Text style={styles.textRequire}>* </Text>
+              パスワード(6文字以上)
+            </Text>
+            <TextInput
+              value={password}
+              style={styles.input}
+              onChangeText={(text) => { setPassword(text); }}
+              autoCapitalize="none"
+              placeholder="Password"
+              secureTextEntry
+              textContentType="password"
+            />
+
+            <Text style={styles.label}>
+              <Text style={styles.textRequire}>* </Text>
+              パスワード(確認用)
+            </Text>
+            <TextInput
+              value={fixPassword}
+              style={styles.input}
+              onChangeText={(text) => { setFixPassword(text); }}
+              autoCapitalize="none"
+              placeholder="Password"
+              secureTextEntry
+              textContentType="password"
+            />
+          </View>
+
+          <View style={styles.buttonLine}>
+            <Button onPress={() => submit()} label="登録" />
+          </View>
+
+          <View style={styles.signUpLink}>
+            <Text>ログインは </Text>
+            <TouchableOpacity onPress={() => { navigation.navigate('LogIn'); }}>
+              <Text style={styles.signUpLinkText}>こちら</Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
-
-        <View style={styles.buttonLine}>
-          <Text style={[styles.idCheck, { color: idTextColor }]}>{idCheck}</Text>
-          <Button
-            onPress={() => checkIdDuplication()}
-            containerStyle={{ marginBottom: null }}
-            label="取得可能か確認"
-          />
-        </View>
-
-        <View>
-          <Text style={styles.label}>
-            表示名 (15文字以下)
-          </Text>
-          <TextInput
-            value={userName}
-            style={styles.input}
-            onChangeText={(text) => { setUserName(text); }}
-            autoCapitalize="none"
-            placeholder="ももクロGO"
-          />
-        </View>
-
-        <View>
-          <Text style={styles.label}>
-            <Text style={styles.textRequire}>* </Text>
-            パスワード(6文字以上)
-          </Text>
-          <TextInput
-            value={password}
-            style={styles.input}
-            onChangeText={(text) => { setPassword(text); }}
-            autoCapitalize="none"
-            placeholder="Password"
-            secureTextEntry
-            textContentType="password"
-          />
-
-          <Text style={styles.label}>
-            <Text style={styles.textRequire}>* </Text>
-            パスワード(確認用)
-          </Text>
-          <TextInput
-            value={fixPassword}
-            style={styles.input}
-            onChangeText={(text) => { setFixPassword(text); }}
-            autoCapitalize="none"
-            placeholder="Password"
-            secureTextEntry
-            textContentType="password"
-          />
-        </View>
-
-        <View style={styles.buttonLine}>
-          <Button onPress={() => submit()} label="登録" />
-        </View>
-
-        <View style={styles.signUpLink}>
-          <Text>ログインは </Text>
-          <TouchableOpacity onPress={() => { navigation.navigate('LogIn'); }}>
-            <Text style={styles.signUpLinkText}>こちら</Text>
-          </TouchableOpacity>
-        </View>
-
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </>
   );
 }
 

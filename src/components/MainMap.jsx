@@ -8,6 +8,7 @@ import { func } from 'prop-types';
 import * as SQLite from 'expo-sqlite';
 import { Audio } from 'expo-av';
 import PlaceModal from './PlaceModal';
+import Loading from './Loading';
 import { UserContext } from '../utils/settings';
 
 const flagOrange = require('../../assets/images/flag_orange.png');
@@ -68,6 +69,7 @@ function MainMap(props) {
   setModalVisible = props.setModalVisible;
   const [map, resetMap] = useState(0);
   const [mapView, setMapView] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   function generateMapView(lotation, places) {
     console.log('generateMapView');
@@ -87,6 +89,7 @@ function MainMap(props) {
         {places.map((obj) => GenMarkerComponent(obj, resetMap))}
       </MapView>,
     );
+    setIsLoading(false);
   }
 
   useEffect(async () => {
@@ -119,7 +122,12 @@ function MainMap(props) {
     });
   }, [map]);
 
-  return mapView;
+  return (
+    <>
+      <Loading isLoading={isLoading} />
+      {mapView}
+    </>
+  );
 }
 
 MainMap.propTypes = {

@@ -41,7 +41,9 @@ async function InitializeFiles(userid) {
   const filePathInfo = await FileSystem.getInfoAsync(filePath);
   const p1 = new Promise((resolve) => {
     if (!filePathInfo.exists) {
-      FileSystem.downloadAsync(Asset.fromModule(initialDatabase).uri, filePath).then(resolve);
+      FileSystem.downloadAsync(Asset.fromModule(initialDatabase).uri, filePath).then(
+        () => { setTimeout(resolve, 1000); },
+      );
     } else {
       resolve();
     }

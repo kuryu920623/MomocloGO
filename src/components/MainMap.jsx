@@ -114,7 +114,7 @@ function MainMap(props) {
     db.transaction((tx) => {
       tx.executeSql(
         `SELECT * FROM place_master WHERE longitude IS NOT NULL
-        ORDER BY ABS(longitude - ?) + ABS(latitude - ?) % 360 ASC LIMIT 200;`,
+        ORDER BY ABS(longitude - ?) + ABS(latitude - ?) ASC LIMIT 200;`,
         [location.longitude, location.latitude],
         (_, res) => { generateMapView(location, res.rows._array, setMapView, resetMap); },
         (_, err) => { console.log(err); },

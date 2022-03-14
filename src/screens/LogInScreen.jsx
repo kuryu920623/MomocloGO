@@ -63,7 +63,6 @@ export default function LogInScreen(props) {
               style={styles.input}
               onChangeText={(text) => { setUserid(text); }}
               autoCapitalize="none"
-              autoFocus
               placeholder="userID"
               textContentType="emailAddress"
             />

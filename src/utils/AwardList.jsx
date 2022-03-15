@@ -147,7 +147,7 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: 'red',
     },
     {
-      title: 'すっくてごらん',
+      title: 'すくってごらん',
       description: 'タグ「百田夏菜子」のフラグを 30 個獲得する。',
       targetCount: 30,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "百田夏菜子";`,

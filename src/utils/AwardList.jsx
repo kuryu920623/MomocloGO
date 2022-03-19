@@ -165,7 +165,6 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconSize: 32,
     },
 
-    // 涙目のアリス、若大将、
     {
       // 和食の大将 アイコン
       title: '若大将',
@@ -185,19 +184,19 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconColor: '#ffcc66',
     },
     {
-      title: 'Lv.3',
+      title: 'オズの魔法使い',
       description: 'タグ「玉井詩織」のフラグを 30 個獲得する。',
       targetCount: 30,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "玉井詩織";`,
-      iconName: 'sunflower',
+      iconName: 'ozMagic',
       iconColor: '#ffcc66',
     },
     {
-      title: 'Lv.4',
+      title: 'スーパーサブ',
       description: 'タグ「玉井詩織」のフラグを 50 個獲得する。',
       targetCount: 50,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "玉井詩織";`,
-      iconName: 'sunflower',
+      iconName: 'superSub',
       iconColor: '#ffcc66',
     },
 
@@ -271,11 +270,11 @@ export default async function GetAwardList(whereCond = 'get_flg = 1') {
       iconSize: 30,
     },
     {
-      title: 'Lv.4',
+      title: '幽体離脱',
       description: 'タグ「高城れに」のフラグを 50 個獲得する。',
       targetCount: 50,
       getCountSQL: `SELECT COUNT(1) AS count FROM place_master WHERE ${whereCond} AND tag = "高城れに";`,
-      iconName: 'eggplant',
+      iconName: 'yutairidatsu',
       iconColor: '#7C2E69',
     },
   ];
